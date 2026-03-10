@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-REPO="https://raw.githubusercontent.com/ahoa/claude-agents/main"
+REPO="https://raw.githubusercontent.com/ahoa/claude-agents/master"
 
 echo "🤖 Installing Claude agents..."
 

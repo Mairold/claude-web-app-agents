@@ -7,7 +7,7 @@ Multi-agent review setup for Claude Code. One command runs implementation + para
 Run this in any project root:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ahoa/claude-agents/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ahoa/claude-agents/master/install.sh | bash
 ```
 
 ## Usage
