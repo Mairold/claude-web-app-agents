@@ -1,0 +1,27 @@
+name: Update version
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Write version
+        run: |
+          VERSION=$(date -u +"%Y.%m.%d")+${GITHUB_SHA::7}
+          echo $VERSION > .claude/agents-version
+          echo "Version: $VERSION"
+
+      - name: Commit version file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .claude/agents-version
+          git diff --staged --quiet || git commit -m "chore: update agents-version [skip ci]"
+          git push

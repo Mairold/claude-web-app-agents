@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-REPO="https://raw.githubusercontent.com/ahoa/claude-agents/master"
+REPO="https://raw.githubusercontent.com/ahoa/claude-agents/main"
 
 echo "🤖 Installing Claude agents..."
 
@@ -13,6 +13,7 @@ curl -fsSL "$REPO/.claude/agents/test-reviewer.md"         -o .claude/agents/tes
 curl -fsSL "$REPO/.claude/agents/docs-reviewer.md"         -o .claude/agents/docs-reviewer.md
 curl -fsSL "$REPO/.claude/commands/develop.md"             -o .claude/commands/develop.md
 curl -fsSL "$REPO/.claude/commands/review.md"              -o .claude/commands/review.md
+curl -fsSL "$REPO/.claude/agents-version"                  -o .claude/agents-version
 
 if [ -f "CLAUDE.md" ]; then
   echo "" >> CLAUDE.md
@@ -24,7 +25,10 @@ else
   echo "✅ Created CLAUDE.md"
 fi
 
+VERSION=$(cat .claude/agents-version)
 echo ""
-echo "✅ Done! Usage:"
+echo "✅ Claude agents $VERSION installed."
+echo "   Restart Claude Code to apply."
+echo ""
 echo "   /develop <id|slug>   — implement + review"
 echo "   /review <id|slug>    — review only"
