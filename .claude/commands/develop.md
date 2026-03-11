@@ -10,7 +10,7 @@ Story to develop: $ARGUMENTS
 2. Check if the story title contains "[FOLLOWUP]" — if yes, skip Phase 2 entirely and go straight to Phase 3.
 3. Understand requirements fully. State assumptions clearly — do not ask, document them.
 4. Use `update_story` to append under `## Details`:
-   - Implementation plan: what you will build, files to create or modify, assumptions made
+   - Briefly: what will be built and key assumptions. No file lists.
 
 ---
 
