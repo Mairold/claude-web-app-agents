@@ -7,10 +7,10 @@ Story to develop: $ARGUMENTS
 ## Phase 1 — Read & Plan
 
 1. Use `read_story` with "$ARGUMENTS" (works with both ID and slug).
-2. Check if the story title contains "[FOLLOWUP]" — if yes, skip Phase 2 entirely and go straight to Phase 3.
-3. Understand requirements fully. State assumptions clearly — do not ask, document them.
-4. Use `update_story` to append under `## Details`:
+2. Understand requirements fully. State assumptions clearly — do not ask, document them.
+3. If the story title does NOT contain "[FOLLOWUP]", use `update_story` to append under `## Details`:
     - Briefly: what will be built and key assumptions. No file lists. Do not repeat information that is already covered in the story.
+4. If the story title contains "[FOLLOWUP]": the `## Tasks` checklist IS your plan — implement each task directly in Phase 2c (skip 2a/2b TDD scaffolding, just fix each item and verify tests pass).
 
 ---
 
@@ -93,19 +93,15 @@ Story to develop: $ARGUMENTS
     Keep each row to one line. Omit rows with no findings.
 
 14. If the story title contains "[FOLLOWUP]":
-    - Append full detailed findings directly to this story as `## Security Findings`, `## Architecture Findings`, `## Testing Findings`, `## Docs Findings`
-    - Do NOT create another follow-up story
+    - Do NOT create another follow-up story. Ever.
 
     Otherwise, if CRITICAL, MUST FIX, SHOULD FIX, or IMPORTANT items remain (exclude NICE TO HAVE, MINOR, and LOW):
     - Use `create_story` for a single follow-up:
       - Title: `# Feature: [FOLLOWUP] <original story title> — <today's date>`
       - Tag: "followup"
-      - `## Details`: brief summary
       - `## Tasks`: one `- [ ]` per remaining item prefixed with category (ARCH/TEST/SEC/DOCS)
       - Only include CRITICAL, MUST FIX, SHOULD FIX, and IMPORTANT items as tasks
-      - Append full detailed findings as `## Security Findings`, `## Architecture Findings`, `## Testing Findings`, `## Docs Findings`
-
-    If no qualifying items remain, append full detailed findings directly to the original story (no follow-up created).
+      - Keep it minimal — task checklist only, no detailed findings sections
 
 15. Use `change_status` on the original story → "done".
 
