@@ -15,6 +15,7 @@ FOCUS ONLY ON:
 - Packages or modules with unclear or overlapping responsibility
 - Deep inheritance chains where composition would be better
 - Hardcoded configuration that should be injected
+- AI context bloat: files >300 lines or classes that mix concerns make it hard for AI to reason about them in one context window — flag these even if they technically "work"
 
 Map the overall structure first, then go deep on problem areas.
 Return findings in this exact format:

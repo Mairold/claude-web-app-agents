@@ -96,15 +96,16 @@ Story to develop: $ARGUMENTS
     - Append full detailed findings directly to this story as `## Security Findings`, `## Architecture Findings`, `## Testing Findings`, `## Docs Findings`
     - Do NOT create another follow-up story
 
-    Otherwise, if SHOULD FIX, NICE TO HAVE, IMPORTANT, or MINOR items remain:
+    Otherwise, if CRITICAL, MUST FIX, SHOULD FIX, or IMPORTANT items remain (exclude NICE TO HAVE, MINOR, and LOW):
     - Use `create_story` for a single follow-up:
       - Title: `# Feature: [FOLLOWUP] <original story title> — <today's date>`
       - Tag: "followup"
       - `## Details`: brief summary
       - `## Tasks`: one `- [ ]` per remaining item prefixed with category (ARCH/TEST/SEC/DOCS)
+      - Only include CRITICAL, MUST FIX, SHOULD FIX, and IMPORTANT items as tasks
       - Append full detailed findings as `## Security Findings`, `## Architecture Findings`, `## Testing Findings`, `## Docs Findings`
 
-    If no remaining items, append full detailed findings directly to the original story.
+    If no qualifying items remain, append full detailed findings directly to the original story (no follow-up created).
 
 15. Use `change_status` on the original story → "done".
 
