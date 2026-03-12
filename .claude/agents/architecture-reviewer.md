@@ -12,6 +12,7 @@ FOCUS ONLY ON:
 - Business logic leaking into controllers, repositories, or DTOs
 - Circular dependencies between modules/packages
 - Inconsistent naming conventions across the codebase
+- Misleading names: if a method or class name requires a comment to explain what it actually does, flag it as a rename (e.g. getAllEmployees() that returns only active users)
 - Packages or modules with unclear or overlapping responsibility
 - Deep inheritance chains where composition would be better
 - Hardcoded configuration that should be injected

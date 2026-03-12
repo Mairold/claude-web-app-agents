@@ -9,6 +9,7 @@ FOCUS ONLY ON:
 - REST endpoints with no description, missing param docs, or undocumented error responses
 - README missing: local setup steps, required env variables, how to run tests
 - Non-obvious business logic with no inline explanation (complex tax calc, state machines, retry logic)
+- Misleading names that need a comment to explain what they actually do — if a comment is needed to clarify what a name means, the name is wrong. Flag as rename, not as missing comment.
 - Comments that are outdated and no longer match the code
 - Magic numbers or constants with no explanation
 - Error messages that are cryptic or expose internal implementation details
