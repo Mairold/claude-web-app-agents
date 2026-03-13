@@ -10,6 +10,7 @@
 ## Custom Commands
 - `/develop <id|slug>` — full development cycle for a story (implement + review)
 - `/review <id|slug>` — run only the review agents on existing code
+- `/e2e-test <id|slug|description>` — write Playwright E2E tests (bootstraps Playwright on first use)
 
 ## Review Scope Rules
 - **Only review code written/modified in the current story.** Do not flag pre-existing issues in files that were only touched for minor edits (imports, signature changes).

@@ -25,6 +25,7 @@ curl -fsSL "$REPO/.claude/agents/test-reviewer.md"         -o .claude/agents/tes
 curl -fsSL "$REPO/.claude/agents/docs-reviewer.md"         -o .claude/agents/docs-reviewer.md
 curl -fsSL "$REPO/.claude/commands/develop.md"             -o .claude/commands/develop.md
 curl -fsSL "$REPO/.claude/commands/review.md"              -o .claude/commands/review.md
+curl -fsSL "$REPO/.claude/commands/e2e-test.md"            -o .claude/commands/e2e-test.md
 echo "$REMOTE_VERSION" > "$VERSION_FILE"
 
 if [ -f "CLAUDE.md" ]; then
@@ -70,5 +71,6 @@ echo ""
 echo "✅ Claude agents $REMOTE_VERSION installed."
 echo "   Agents will auto-update at the start of every Claude Code session."
 echo ""
-echo "   /develop <id|slug>   — implement + review"
-echo "   /review <id|slug>    — review only"
+echo "   /develop <id|slug>          — implement + review"
+echo "   /review <id|slug>           — review only"
+echo "   /e2e-test <id|slug|desc>    — write E2E tests (bootstraps Playwright if needed)"

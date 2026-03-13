@@ -20,8 +20,9 @@ Restart Claude Code after the first install — files are loaded at session star
 ## Usage
 
 ```
-/develop <id|slug>    — implement story + auto review
-/review <id|slug>     — review only (code already exists)
+/develop <id|slug>          — implement story + auto review
+/review <id|slug>           — review only (code already exists)
+/e2e-test <id|slug|desc>    — write E2E tests (bootstraps Playwright on first use)
 ```
 
 ## Requirements
