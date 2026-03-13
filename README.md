@@ -33,11 +33,11 @@ Restart Claude Code after the first install — files are loaded at session star
 
 | #  | Phase                | Description                                                                                                               |
 |----|----------------------|---------------------------------------------------------------------------------------------------------------------------|
-| 1  | Read & Plan          | Reads story via MCP. Briefly documents what will be built and key assumptions.                                            |
-| 2a | Write Tests First    | ⚠️ Writes unit tests before any implementation. Tests are expected to fail to compile.                                    |
-| 2b | Stub Implementations | ⚠️ Creates empty stubs just enough to compile. All tests must be red before moving on.                                    |
+| 1  | Read & Plan          | Reads story via MCP. Adds acceptance criteria if missing. Documents what will be built and key assumptions.               |
+| 2a | Write Tests First    | Writes unit tests before any implementation. Tests are expected to fail to compile.                                       |
+| 2b | Stub Implementations | Creates empty stubs just enough to compile. All tests must be red before moving on.                                       |
 | 2c | Implement            | Implements real logic one failing test at a time until all green. Refactors after green.                                  |
-| 3  | Parallel Review      | Spawns 4 independent agents simultaneously. Each returns findings as text — no DB writes.                                 |
+| 3  | Parallel Review      | Triages first — skips review for CSS-only changes. Otherwise spawns 4 independent agents simultaneously.                  |
 | 4  | Fix & Synthesize     | Fixes CRITICAL/MUST FIX immediately. Writes compact summary to story. Creates follow-up story for remaining items if any. |
 
 ## Agents
