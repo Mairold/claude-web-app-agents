@@ -11,6 +11,12 @@
 - `/develop <id|slug>` — full development cycle for a story (implement + review)
 - `/review <id|slug>` — run only the review agents on existing code
 
+## Review Scope Rules
+- **Only review code written/modified in the current story.** Do not flag pre-existing issues in files that were only touched for minor edits (imports, signature changes).
+- **Only report CRITICAL and HIGH findings.** MEDIUM/LOW/Nice-to-have go into the story summary but do NOT generate follow-up stories or tasks.
+- **Fix CRITICAL inline. Log the rest.** Never create follow-up stories from reviews. If something isn't worth fixing now, it's not worth tracking.
+- **No endless cycles.** Each `/develop` run produces exactly one review round. No re-reviews, no follow-up reviews.
+
 ## Agent Roles (used internally by commands)
 
 ### Security Agent
