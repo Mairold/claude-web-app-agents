@@ -99,7 +99,11 @@ Read existing E2E tests in the `e2e/` directory to understand patterns and helpe
 
 ## Step 4 — Run and verify
 
-Run E2E tests. If tests fail, read the screenshot from the test-results directory to understand what the page actually looks like, then fix selectors/assertions. Iterate until green.
+Run ALL E2E tests (not just the new ones) — this is a regression check:
+```
+npx playwright test
+```
+If tests fail, read the screenshot from the test-results directory to understand what the page actually looks like, then fix selectors/assertions. Iterate until all green.
 
 ## Step 5 — Cleanup & Report
 
