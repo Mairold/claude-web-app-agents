@@ -16,7 +16,7 @@ Check CLAUDE.md and the project structure to determine if this is a web project 
 
 ## Step 0b — Bootstrap (only if Playwright is not yet configured)
 
-Check if `frontend/playwright.config.js` (or `playwright.config.js` / `playwright.config.ts` in the project root) exists.
+Check if `playwright.config.js` (or `playwright.config.ts`) exists in the frontend directory or project root.
 
 If NOT, set up the E2E infrastructure:
 
@@ -24,34 +24,50 @@ If NOT, set up the E2E infrastructure:
 
 2. **Install Playwright:**
    ```
-   cd frontend && npm install -D @playwright/test && npx playwright install chromium
+   npm install -D @playwright/test && npx playwright install chromium
    ```
-   (Adjust path if frontend is in root.)
+   (Run in the frontend directory if separate from root.)
 
-3. **Create `docker-compose.test.yml`** with:
+3. **Create `docker-compose.test.yml`** in the project root with:
    - Separate postgres on port 5433 (using `tmpfs` for speed, no persistent volume)
-   - Backend on port 8081 with `TEST_MODE=true` (or equivalent env var)
-   - CORS allowing `http://localhost:5174`
+   - Backend on a separate port (e.g. 8091) so it doesn't conflict with dev
+   - Use a multi-arch Dockerfile (no `amd64/` prefix on base images) so it works on ARM (Apple Silicon) and x86
+   - If the existing Dockerfile uses arch-specific images, create a `Dockerfile.test` with multi-arch equivalents
 
 4. **Create test auth backdoor** (backend):
    - A controller/endpoint like `POST /api/auth/test-login` that creates a user + session without OAuth
-   - Must be guarded by an env var (`APP_TEST_MODE=true`) so it's never active in production
-   - Use `@ConditionalOnProperty` (Spring Boot), middleware check (Express), or equivalent
+   - Must be guarded so it's never active in production:
+     - Spring Boot: `@ConditionalOnProperty(name = "app.test-mode", havingValue = "true")`
+     - Express: middleware check for `APP_TEST_MODE` env var
+   - Add the endpoint to the security config's permit-all list
+   - Create an `application-test.properties` (or equivalent) that enables test mode
 
 5. **Create `playwright.config.js`:**
    - testDir: `./e2e`
    - baseURL: `http://localhost:5174`
-   - webServer: starts the frontend dev server on port 5174 pointing at test backend (port 8081)
+   - reporter: `[['html', {open: 'never'}], ['list']]` for HTML report generation
+   - webServer: starts the frontend dev server on port 5174 pointing at test backend
+   - Make the frontend proxy target configurable via env var (e.g. `VITE_API_TARGET`)
 
-6. **Create `e2e/helpers.js`** with a `login(page, username)` function that calls the test-login endpoint.
+6. **Create `e2e/helpers.js`** with a `login(page, email)` and `loginAndGo(page, email, path)` function that calls the test-login endpoint.
 
 7. **Create first smoke test** `e2e/smoke.spec.js`:
    - Unauthenticated user sees login page
    - Authenticated user sees the main page
+   - Read the actual page content from failure screenshots to get the correct text/selectors
 
-8. **Add npm scripts:** `test:e2e` and `test:e2e:ui`
+8. **Add npm scripts:**
+   - `test:e2e` — runs all E2E tests headless (with env var pointing to test backend)
+   - `test:e2e:ui` — interactive Playwright UI mode (best for debugging)
+   - `test:e2e:report` — opens the HTML report in browser
 
-9. **Update CLAUDE.md** with E2E commands.
+9. **Exclude E2E tests from unit test runner** (e.g. add `e2e/**` to Vitest/Jest exclude list).
+
+10. **Add to .gitignore:** `playwright-report`, `test-results`
+
+11. **Update CLAUDE.md** with E2E section: commands, file locations, test users, report path.
+
+12. Run smoke tests and fix until green. Read screenshots on failure to understand actual page state.
 
 ---
 
@@ -60,38 +76,44 @@ If NOT, set up the E2E infrastructure:
 If `$ARGUMENTS` looks like a story slug or ID, use `read_story` to understand what the feature does and what the acceptance criteria are.
 If it's a plain description (e.g. "image upload"), use that directly.
 
-## Step 2 — Write tests
+## Step 2 — Ensure test environment is running
 
-Read existing E2E tests in `e2e/` to understand patterns and helpers, then write tests that cover:
+1. Check if the test backend is up (e.g. `curl -sf http://localhost:8091/api/isAuthenticated`).
+2. If not, start it: `docker compose -f docker-compose.test.yml up --build -d` and wait for it.
+
+## Step 3 — Write tests
+
+Read existing E2E tests in the `e2e/` directory to understand patterns and helpers, then write tests that cover:
 - Happy path (the main user flow)
 - Key edge cases from the story's acceptance criteria
-- Mobile viewport if the story involves UI changes (use `page.setViewportSize({ width: 375, height: 812 })`)
+- Mobile viewport if the story involves responsive UI changes (use `page.setViewportSize({ width: 375, height: 812 })`)
 
-## Step 3 — Run and verify
+### Conventions
+- One test file per feature/story: `e2e/<feature-name>.spec.js`
+- Use descriptive test names that read like user actions
+- Prefer `getByRole`, `getByText`, `getByLabel` over CSS selectors
+- Keep tests independent — each test logs in fresh
+- Use `test.describe` to group related tests
+- Use the `loginAndGo()` helper from `./helpers.js` for authentication
 
-Before running tests, ensure the test backend is up:
+## Step 4 — Run and verify
 
-1. Check if `docker-compose.test.yml` exists. If not, create it (see Step 0.3).
-2. Start the test environment:
-   ```
-   docker compose -f docker-compose.test.yml up --build -d
-   ```
-3. Wait for backend-test to be healthy (check `docker compose -f docker-compose.test.yml logs backend-test` for startup confirmation).
-4. Run tests:
-   ```
-   cd frontend && npx playwright test <test-file>
-   ```
+Run E2E tests. If tests fail, read the screenshot from the test-results directory to understand what the page actually looks like, then fix selectors/assertions. Iterate until green.
 
-## Step 4 — Update story
+## Step 5 — Cleanup & Report
+
+1. Stop the test Docker containers:
+   ```
+   docker compose -f docker-compose.test.yml down
+   ```
+2. Print the report URL so the user can review what was tested:
+   ```
+   npx playwright show-report
+   ```
+   Or tell the user: "Run `cd UI && npx playwright show-report` to view the HTML test report."
+
+## Step 6 — Update story
 
 If a story was provided, use `update_story` to append under `## Test Plan`:
 - E2E test file(s) created
 - What flows are covered
-
-## Conventions
-- One test file per feature/story: `e2e/<feature-name>.spec.js`
-- Use descriptive test names that read like user actions
-- Prefer `getByRole`, `getByText`, `getByPlaceholder` over CSS selectors
-- Keep tests independent — each test logs in fresh
-- Use `test.describe` to group related tests
-- Use the `login()` helper from `e2e/helpers.js` for authentication

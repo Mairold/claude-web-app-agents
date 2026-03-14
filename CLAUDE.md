@@ -8,9 +8,16 @@
 - `change_status` — change story status
 
 ## Custom Commands
-- `/develop <id|slug>` — full development cycle for a story (implement + review)
+- `/develop <id|slug>` — full development cycle for a story (implement + review + E2E tests for UI stories)
 - `/review <id|slug>` — run only the review agents on existing code
 - `/e2e-test <id|slug|description>` — write Playwright E2E tests (bootstraps Playwright on first use)
+
+## E2E Testing
+`/e2e-test` bootstraps the full Playwright E2E infrastructure on first use, then writes tests for subsequent runs.
+- **Bootstrap creates:** `docker-compose.test.yml`, test auth backdoor, `playwright.config.js`, `e2e/helpers.js`, smoke tests, npm scripts
+- **Test auth:** `POST /api/auth/test-login` — guarded by `@ConditionalOnProperty` / env var, never active in production
+- **Multi-arch:** Uses `Dockerfile.test` with arch-independent base images (works on ARM + x86)
+- **`/develop` integration:** Phase 2d automatically writes E2E tests for UI stories after implementation
 
 ## Review Scope Rules
 - **Only review code written/modified in the current story.** Do not flag pre-existing issues in files that were only touched for minor edits (imports, signature changes).

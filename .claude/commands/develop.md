@@ -58,11 +58,19 @@ Story to develop: $ARGUMENTS
 
 ---
 
+## Phase 2d — E2E Tests (web projects with UI changes only)
+
+Skip this phase if the story is backend-only (no UI changes) or the project has no browser frontend.
+
+11. Spawn an Agent to run `/e2e-test $ARGUMENTS`. This agent handles everything: bootstrap (if needed), writing tests, running them, and updating the story.
+
+---
+
 ## Phase 3 — Parallel Review
 
-11. **Triage before review.** If ALL modified files are CSS-only, Tailwind class changes, or SVG icon components — skip the full review. Instead, append a short `## Review Summary` noting "Trivial/styling-only change — review skipped" and proceed to Phase 4 step 17.
+15. **Triage before review.** If ALL modified files are CSS-only, Tailwind class changes, or SVG icon components — skip the full review. Instead, append a short `## Review Summary` noting "Trivial/styling-only change — review skipped" and proceed to Phase 4 step 21.
 
-12. Spawn all 4 Tasks simultaneously — agents are fully independent and must run in parallel.
+16. Spawn all 4 Tasks simultaneously — agents are fully independent and must run in parallel.
     Pass each agent the list of files from Phase 2 (or ask the user which files to review if this is a [FOLLOWUP] story).
 
     - Task 1: agent `security-reviewer`
@@ -77,15 +85,15 @@ Story to develop: $ARGUMENTS
     - Task 4: agent `docs-reviewer`
       > Analyze these files: [MODIFIED_FILES]. Return your findings as structured text.
 
-13. Wait for all 4 tasks to complete and collect their output.
+17. Wait for all 4 tasks to complete and collect their output.
 
 ---
 
 ## Phase 4 — Fix & Synthesize
 
-14. Fix everything marked CRITICAL or MUST FIX immediately.
+18. Fix everything marked CRITICAL or MUST FIX immediately.
 
-15. Use `update_story` ONCE on the original story to append `## Review Summary`
+19. Use `update_story` ONCE on the original story to append `## Review Summary`
     with all 4 agent outputs as a compact summary:
 
     ```
@@ -102,7 +110,7 @@ Story to develop: $ARGUMENTS
 
     Keep each row to one line. Omit rows with no findings.
 
-16. If the story title contains "[FOLLOWUP]":
+20. If the story title contains "[FOLLOWUP]":
     - Do NOT create another follow-up story. Ever.
 
     Otherwise, if CRITICAL, MUST FIX, SHOULD FIX, or IMPORTANT items remain (exclude NICE TO HAVE, MINOR, and LOW):
@@ -113,9 +121,9 @@ Story to develop: $ARGUMENTS
       - Only include CRITICAL, MUST FIX, SHOULD FIX, and IMPORTANT items as tasks
       - Keep it minimal — task checklist only, no detailed findings sections
 
-17. Use `change_status` on the original story → "done".
+21. Use `change_status` on the original story → "done".
 
-18. Print final console summary:
+22. Print final console summary:
     ```
     ✅ Story [ID/slug] complete
     🔴 Critical issues fixed: N
