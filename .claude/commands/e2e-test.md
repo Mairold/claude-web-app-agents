@@ -107,11 +107,11 @@ Run E2E tests. If tests fail, read the screenshot from the test-results director
    ```
    docker compose -f docker-compose.test.yml down
    ```
-2. Print the report URL so the user can review what was tested:
+2. Start the Playwright HTML report server in the background and output the URL:
    ```
-   npx playwright show-report
+   npx playwright show-report --host localhost --port 9323 &
    ```
-   Or tell the user: "Run `cd UI && npx playwright show-report` to view the HTML test report."
+   Then tell the user: **http://localhost:9323**
 
 ## Step 6 — Update story
 
