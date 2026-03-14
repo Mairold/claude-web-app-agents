@@ -38,7 +38,7 @@ Restart Claude Code after the first install — files are loaded at session star
 | 2a | Write Tests First    | Writes unit tests before any implementation. Tests are expected to fail to compile.                                       |
 | 2b | Stub Implementations | Creates empty stubs just enough to compile. All tests must be red before moving on.                                       |
 | 2c | Implement            | Implements real logic one failing test at a time until all green. Refactors after green.                                  |
-| 2d | E2E Tests            | Writes Playwright E2E tests for UI stories. Bootstraps Playwright on first use. Skipped for backend-only stories.        |
+| 2d | E2E Tests            | Spawns `/e2e-test` agent for UI stories. Handles bootstrap, test writing, and cleanup. Skipped for backend-only stories. |
 | 3  | Parallel Review      | Triages first — skips review for CSS-only changes. Otherwise spawns 4 independent agents simultaneously.                  |
 | 4  | Fix & Synthesize     | Fixes CRITICAL/MUST FIX immediately. Writes compact summary to story. Creates follow-up story for remaining items if any. |
 
@@ -50,7 +50,7 @@ On first use in a project, `/e2e-test` automatically sets up the full E2E infras
 - **`docker-compose.test.yml`** — separate test DB (tmpfs) + backend on a non-conflicting port
 - **Test auth backdoor** — `POST /api/auth/test-login` guarded by `@ConditionalOnProperty` (Spring) or env var check, never active in production
 - **Multi-arch Dockerfile** — uses arch-independent base images so it works on both ARM (Apple Silicon) and x86
-- **`playwright.config.js`** — webServer config, HTML reporter, screenshot on failure
+- **`playwright.config.js`** — webServer config, HTML reporter, screenshot on every test
 - **`e2e/helpers.js`** — `login(page, email)` and `loginAndGo(page, email, path)` helpers
 - **Smoke tests** — verifies login page + authenticated main page
 - **npm scripts** — `test:e2e` (headless), `test:e2e:ui` (interactive), `test:e2e:report` (HTML report)
