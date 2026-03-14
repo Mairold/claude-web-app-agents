@@ -46,6 +46,7 @@ If NOT, set up the E2E infrastructure:
    - testDir: `./e2e`
    - baseURL: `http://localhost:5174`
    - reporter: `[['html', {open: 'never'}], ['list']]` for HTML report generation
+   - screenshot: `'on'` — captures final state of every test (visible in HTML report)
    - webServer: starts the frontend dev server on port 5174 pointing at test backend
    - Make the frontend proxy target configurable via env var (e.g. `VITE_API_TARGET`)
 
