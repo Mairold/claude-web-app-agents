@@ -60,7 +60,7 @@ If NOT, set up the E2E infrastructure:
 8. **Add npm scripts:**
    - `test:e2e` — runs all E2E tests headless (with env var pointing to test backend)
    - `test:e2e:ui` — interactive Playwright UI mode (best for debugging)
-   - `test:e2e:report` — opens the HTML report in browser
+   - `test:e2e:report` — serves the HTML report on `0.0.0.0:8082` via `http-server` (accessible over network/Tailscale, not just localhost)
 
 9. **Exclude E2E tests from unit test runner** (e.g. add `e2e/**` to Vitest/Jest exclude list).
 
@@ -111,11 +111,13 @@ If tests fail, read the screenshot from the test-results directory to understand
    ```
    docker compose -f docker-compose.test.yml down
    ```
-2. Start the Playwright HTML report server in the background and output the URL:
+2. Serve the HTML report so it's accessible over the network (not just localhost):
    ```
-   npx playwright show-report --host localhost --port 9323 &
+   npm run test:e2e:report
    ```
-   Then tell the user: **http://localhost:9323** (N tests passed)
+   If the `test:e2e:report` script doesn't exist, use `npx http-server playwright-report -p 8082 -a 0.0.0.0 --cors -c-1`.
+   **Do NOT use `npx playwright show-report`** — it binds to localhost only and exits immediately in background mode.
+   Tell the user the report URL using the machine's network IP and port 8082.
 
 ## Step 6 — Update story
 
