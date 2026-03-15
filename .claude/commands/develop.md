@@ -112,4 +112,8 @@ Skip this phase if the story is backend-only (no UI changes) or the project has 
     ✅ Story [ID/slug] complete
     🔴 Critical issues fixed: N
     🟡 Follow-up story created: #ID (N items) / none
+
+    📊 Tests: X/Y unit passed, X/Y E2E passed
+    📋 E2E report: http://<machine-ip>:8082
     ```
+    To get the report URL: run `npm run test:e2e:report` (or `npx http-server playwright-report -p 8082 -a 0.0.0.0 --cors -c-1`) and use the machine's network IP.
