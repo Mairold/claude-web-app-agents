@@ -103,7 +103,13 @@ Run ALL E2E tests (not just the new ones) — this is a regression check:
 ```
 npx playwright test
 ```
-If tests fail, read the screenshot from the test-results directory to understand what the page actually looks like, then fix selectors/assertions. Iterate until all green.
+
+### Handling failures
+
+- **New tests** (written in Step 3): If they fail, fix the test — but always verify that your fix stays aligned with the story's acceptance criteria. Never weaken assertions just to make a test pass.
+- **Existing tests** (were passing before): Do NOT modify them. Analyze the root cause (is it a regression from new code, or a test environment issue?), present your findings to the user, and wait for approval before changing anything.
+
+Read the screenshot from the test-results directory to understand what the page actually looks like, then fix accordingly. Iterate until all green.
 
 ## Step 5 — Cleanup & Report
 
