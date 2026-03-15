@@ -12,6 +12,11 @@
 - `/review <id|slug>` — run only the review agents on existing code
 - `/e2e-test <id|slug|description>` — write Playwright E2E tests (bootstraps Playwright on first use)
 
+## Story Sizing
+- **Stories must be minimally testable units.** Never create a single story that spans DB migration + new service + UI changes for multiple concepts.
+- Split large features into dependent stories with clear ordering. Each story should be independently deployable and testable.
+- When creating stories via `create_story`, check if the scope covers more than one vertical slice. If it does, split and note dependencies.
+
 ## Review Scope Rules
 - **Only review code written/modified in the current story.** Do not flag pre-existing issues in files that were only touched for minor edits (imports, signature changes).
 - **Only report CRITICAL and HIGH findings.** MEDIUM/LOW/Nice-to-have go into the story summary but do NOT generate follow-up stories or tasks.
