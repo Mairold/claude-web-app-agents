@@ -7,11 +7,7 @@ Multi-agent review + development orchestration for Claude Code. Composable skill
 Run this in any project root in Hezner build machine:
 
 ```bash
-./../claude-agents/install.sh
-```
-other places:
-```bash
-git clone git@github.com:ahoa/claude-agents.git /tmp/ca && bash /tmp/ca/install.sh && rm -rf /tmp/ca
+curl -fsSL https://raw.githubusercontent.com/ahoa/claude-agents/master/install.sh | bash
 ```
 
 
