@@ -40,5 +40,5 @@ Use the Skill tool to invoke `fix-and-ship` with args "$ARGUMENTS".
 ## Done
 Print summary:
 ```
-[slug] done | Tests: X unit, X E2E | Follow-up: #ID / none
+[slug] done | Tests: X unit, X E2E
 ```

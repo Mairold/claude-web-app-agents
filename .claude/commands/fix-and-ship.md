@@ -1,7 +1,7 @@
 ---
 model: sonnet
 ---
-Fix review findings, close the story, create follow-up if needed.
+Fix CRITICAL/MUST FIX findings and close the story. No follow-ups.
 
 Story: $ARGUMENTS
 
@@ -14,14 +14,8 @@ Story: $ARGUMENTS
    - Run: `cd frontend && npx playwright test`
    - Fix any failures before continuing
 
-3. **FOLLOWUP stories** (title contains "[FOLLOWUP]"): do NOT create another follow-up. Ever.
+3. SHOULD FIX / IMPORTANT / MEDIUM / LOW — log in review summary, do NOT create follow-up stories. If it's not worth fixing now, it's not worth tracking.
 
-4. **Regular stories** with remaining SHOULD FIX or IMPORTANT items:
-   - `create_story` for a single follow-up:
-     - Title: `[FOLLOWUP] <original title> — <today's date>`
-     - Tag: "followup"
-     - `## Tasks`: one `- [ ]` per item, prefixed with ARCH/TEST/SEC/DOCS/SVELTE/SPRING
+4. `change_status("$ARGUMENTS", "done")`
 
-5. `change_status("$ARGUMENTS", "done")`
-
-6. Print: `[slug] done | Follow-up: #ID / none`
+5. Print: `[slug] done`
