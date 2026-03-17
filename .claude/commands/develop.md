@@ -16,9 +16,20 @@ Use the Skill tool to invoke `plan` with args "$ARGUMENTS".
 Use the Skill tool to invoke `implement` with args "$ARGUMENTS".
 
 ## Phase 3 — E2E Tests
-Check if any UI files (.svelte, frontend .js/.ts, CSS) were modified in Phase 2.
-- **If yes:** Use the Skill tool to invoke `e2e-test` with args "$ARGUMENTS".
-- **If backend-only:** Skip. Print: `E2E skipped (backend-only)`
+Run E2E tests if ANY of these are true:
+- UI files (.svelte, frontend .js/.ts, CSS) were modified
+- More than 3 backend files were changed
+- API endpoints, return types, or security config changed
+- Story is labeled "security" or "architecture"
+
+**If yes:** Use the Skill tool to invoke `e2e-test` with args "$ARGUMENTS".
+After E2E tests finish, always serve the report and show the URL:
+```
+cd frontend && npm run test:e2e:report
+```
+Print: `E2E report: http://100.113.160.107:8082`
+
+**Skip only for:** isolated single-file fixes, test-only changes, docs. Print: `E2E skipped (isolated change)`
 
 ## Phase 4 — Review
 **Triage first:** If ALL modified files are CSS-only, Tailwind classes, or SVG icon components — skip review. Print: `Review skipped (trivial change)`.
