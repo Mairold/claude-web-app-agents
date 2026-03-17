@@ -82,8 +82,9 @@ If it's a plain description (e.g. "image upload"), use that directly.
 
 ## Step 2 — Ensure test environment is running
 
-1. Check if the test backend is up (e.g. `curl -sf http://localhost:8091/api/isAuthenticated`).
-2. If not, start it: `docker compose -f docker-compose.test.yml up --build -d` and wait for it.
+Check CLAUDE.md for E2E test commands (test backend start/stop, health check URL).
+1. Check if the test backend is up by hitting its health endpoint.
+2. If not, start it using the command from CLAUDE.md and wait for it.
 
 ## Step 3 — Write tests
 
