@@ -1,3 +1,6 @@
+---
+model: sonnet
+---
 Write Playwright E2E tests for a story or feature. If Playwright is not yet set up in this project, bootstrap it first.
 
 Story/feature to test: $ARGUMENTS
