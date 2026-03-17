@@ -23,12 +23,6 @@ Run E2E tests if ANY of these are true:
 - Story is labeled "security" or "architecture"
 
 **If yes:** Use the Skill tool to invoke `e2e-test` with args "$ARGUMENTS".
-After E2E tests finish, always serve the report and show the URL:
-```
-cd frontend && npm run test:e2e:report
-```
-Print: `E2E report: http://100.113.160.107:8082`
-
 **Skip only for:** isolated single-file fixes, test-only changes, docs. Print: `E2E skipped (isolated change)`
 
 ## Phase 4 — Review
