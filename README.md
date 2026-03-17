@@ -1,6 +1,6 @@
 # claude-agents
 
-Multi-agent review setup for Claude Code. One command runs implementation + parallel security, architecture, testing, and docs review — all writing results back to your story tracker via MCP.
+Multi-agent review + development orchestration for Claude Code. Composable skills that chain into a full cycle: plan → implement → test → review → fix → deploy. Story state managed via MCP.
 
 ## Install
 
@@ -13,16 +13,21 @@ curl -fsSL https://raw.githubusercontent.com/ahoa/claude-agents/master/install.s
 The installer will:
 - Copy all agent and command files into `.claude/`
 - Append agent conventions to `CLAUDE.md`
-- Add a `preSession` hook to `.claude/settings.json` so agents **auto-update at the start of every Claude Code session** — no manual reinstall needed when the repo changes
+- Add a `SessionStart` hook to `.claude/settings.json` so agents **auto-update at the start of every Claude Code session**
 
 Restart Claude Code after the first install — files are loaded at session start.
 
-## Usage
+## Commands
 
 ```
-/develop <id|slug>          — implement story + auto review + E2E tests
-/review <id|slug>           — review only (code already exists)
-/e2e-test <id|slug|desc>    — write E2E tests (bootstraps Playwright on first use)
+/develop <slug>       — full cycle: plan → implement → test → review → fix → deploy
+/plan <slug>          — read story, add AC + plan
+/implement <slug>     — TDD implementation
+/e2e-test <slug>      — Playwright E2E tests
+/review <slug>        — parallel review (up to 6 agents)
+/fix-and-ship <slug>  — fix findings + close story + follow-up
+/fix-bug <slug>       — standalone: read bug → test → fix → deploy → done
+/refactor             — standalone: baseline → refactor → verify → deploy
 ```
 
 ## Requirements
@@ -32,15 +37,14 @@ Restart Claude Code after the first install — files are loaded at session star
 
 ## /develop phases
 
-| #  | Phase                | Description                                                                                                               |
-|----|----------------------|---------------------------------------------------------------------------------------------------------------------------|
-| 1  | Read & Plan          | Reads story via MCP. Adds acceptance criteria if missing. Documents what will be built and key assumptions.               |
-| 2a | Write Tests First    | Writes unit tests before any implementation. Tests are expected to fail to compile.                                       |
-| 2b | Stub Implementations | Creates empty stubs just enough to compile. All tests must be red before moving on.                                       |
-| 2c | Implement            | Implements real logic one failing test at a time until all green. Refactors after green.                                  |
-| 2d | E2E Tests            | Spawns `/e2e-test` agent for UI stories. Handles bootstrap, test writing, and cleanup. Skipped for backend-only stories. |
-| 3  | Parallel Review      | Triages first — skips review for CSS-only changes. Otherwise spawns 4 independent agents simultaneously.                  |
-| 4  | Fix & Synthesize     | Fixes CRITICAL/MUST FIX immediately. Writes compact summary to story. Creates follow-up story for remaining items if any. |
+| # | Phase | Skill | MCP tools |
+|---|-------|-------|-----------|
+| 1 | Plan | `/plan` | `read_story`, `update_story` |
+| 2 | Implement | `/implement` | `update_story` (tasks [x]) |
+| 3 | E2E Tests | `/e2e-test` | `update_story` (test plan) |
+| 4 | Review | `/review` | — |
+| 5 | Fix & Ship | `/fix-and-ship` | `change_status`, `create_story` |
+| 6 | Commit & Deploy | inline | — |
 
 ## /e2e-test bootstrap
 
@@ -57,13 +61,38 @@ On first use in a project, `/e2e-test` automatically sets up the full E2E infras
 
 Subsequent runs skip bootstrap and go straight to writing tests.
 
-## Agents
+## Agents and model assignment
 
-| Agent                   | Focuses on                                                                                      |
-|-------------------------|-------------------------------------------------------------------------------------------------|
-| `security-reviewer`     | OWASP Top 10:2025 (A01–A10) — findings tagged by category, ordered CRITICAL → LOW               |
-| `architecture-reviewer` | Clean Code rules, SOLID, God classes (>200 lines), circular deps, business logic in wrong layer |
-| `test-reviewer`         | Untested critical paths, happy-path-only tests, missing edge cases, over-mocked tests           |
-| `docs-reviewer`         | Missing README, undocumented endpoints, unexplained business logic, outdated comments           |
+| Agent/Command | Model | Reason |
+|---|---|---|
+| **Agents** | | |
+| `security-reviewer` | sonnet | Pattern matching against OWASP checklist |
+| `architecture-reviewer` | sonnet | Pattern matching against SOLID/Clean Code rules |
+| `test-reviewer` | sonnet | Cross-referencing src/ vs test/ coverage |
+| `docs-reviewer` | haiku | Simple documentation completeness check |
+| `svelte-reviewer` | sonnet | Framework-specific pattern check |
+| `spring-reviewer` | sonnet | Framework-specific pattern check |
+| **Commands** | | |
+| `/develop` | opus | Orchestrator — runs /implement inline, needs opus |
+| `/plan` | sonnet | Story reading + AC generation is straightforward |
+| `/implement` | opus | Code generation requires strongest model |
+| `/e2e-test` | sonnet | Test writing follows established patterns |
+| `/review` | sonnet | Spawns agents, no code generation |
+| `/fix-and-ship` | sonnet | Mechanical: fix + status change |
+| `/fix-bug` | opus | Root cause analysis requires deep reasoning |
+| `/refactor` | opus | Code changes must preserve correctness |
+
+### Why this split
+
+`/develop` chains sub-skills via the Skill tool (inline expansion). This means all phases within `/develop` run as **opus** regardless of the sub-skill's own model frontmatter. The sub-skill model only applies to standalone invocation (e.g. `/plan slug` directly).
+
+This is the right tradeoff:
+- **Implementation dominates token usage (~60%)** — it needs opus anyway
+- **Context preservation between phases is more valuable** than saving sonnet vs opus cost on plan/review
+- **Review agents are spawned via Agent tool** — they DO get their own model (sonnet/haiku), so the optimization works there
 
 Each agent runs in its own clean context — it sees only the file paths it was given and its own system prompt. No shared state between agents.
+
+### Verbosity constraints
+
+All agents: max 30 lines output, max 3 lines per finding. Commands: one status line per phase.
