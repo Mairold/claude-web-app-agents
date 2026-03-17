@@ -25,7 +25,7 @@ Restart Claude Code after the first install — files are loaded at session star
 /implement <slug>     — TDD implementation
 /e2e-test <slug>      — Playwright E2E tests
 /review <slug>        — parallel review (up to 6 agents)
-/fix-and-ship <slug>  — fix findings + close story + follow-up
+/fix-and-ship <slug>  — fix CRITICAL/MUST FIX + close story
 /fix-bug <slug>       — standalone: read bug → test → fix → deploy → done
 /refactor             — standalone: baseline → refactor → verify → deploy
 ```
@@ -43,7 +43,7 @@ Restart Claude Code after the first install — files are loaded at session star
 | 2 | Implement | `/implement` | `update_story` (tasks [x]) |
 | 3 | E2E Tests | `/e2e-test` | `update_story` (test plan) |
 | 4 | Review | `/review` | — |
-| 5 | Fix & Ship | `/fix-and-ship` | `change_status`, `create_story` |
+| 5 | Fix & Ship | `/fix-and-ship` | `change_status` |
 | 6 | Commit & Deploy | inline | — |
 
 ## /e2e-test bootstrap
