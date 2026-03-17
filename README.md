@@ -4,11 +4,16 @@ Multi-agent review + development orchestration for Claude Code. Composable skill
 
 ## Install
 
-Run this in any project root:
+Run this in any project root in Hezner build machine:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ahoa/claude-agents/master/install.sh | bash
+./../claude-agents/install.sh
 ```
+other places:
+```bash
+git clone git@github.com:ahoa/claude-agents.git /tmp/ca && bash /tmp/ca/install.sh && rm -rf /tmp/ca
+```
+
 
 The installer will:
 - Copy all agent and command files into `.claude/`
@@ -37,14 +42,14 @@ Restart Claude Code after the first install — files are loaded at session star
 
 ## /develop phases
 
-| # | Phase | Skill | MCP tools |
-|---|-------|-------|-----------|
-| 1 | Plan | `/plan` | `read_story`, `update_story` |
-| 2 | Implement | `/implement` | `update_story` (tasks [x]) |
-| 3 | E2E Tests | `/e2e-test` | `update_story` (test plan) |
-| 4 | Review | `/review` | — |
-| 5 | Fix & Ship | `/fix-and-ship` | `change_status` |
-| 6 | Commit & Deploy | inline | — |
+| # | Phase           | Skill           | MCP tools                    |
+|---|-----------------|-----------------|------------------------------|
+| 1 | Plan            | `/plan`         | `read_story`, `update_story` |
+| 2 | Implement       | `/implement`    | `update_story` (tasks [x])   |
+| 3 | E2E Tests       | `/e2e-test`     | `update_story` (test plan)   |
+| 4 | Review          | `/review`       | —                            |
+| 5 | Fix & Ship      | `/fix-and-ship` | `change_status`              |
+| 6 | Commit & Deploy | inline          | —                            |
 
 ## /e2e-test bootstrap
 
@@ -63,24 +68,24 @@ Subsequent runs skip bootstrap and go straight to writing tests.
 
 ## Agents and model assignment
 
-| Agent/Command | Model | Reason |
-|---|---|---|
-| **Agents** | | |
-| `security-reviewer` | sonnet | Pattern matching against OWASP checklist |
-| `architecture-reviewer` | sonnet | Pattern matching against SOLID/Clean Code rules |
-| `test-reviewer` | sonnet | Cross-referencing src/ vs test/ coverage |
-| `docs-reviewer` | haiku | Simple documentation completeness check |
-| `svelte-reviewer` | sonnet | Framework-specific pattern check |
-| `spring-reviewer` | sonnet | Framework-specific pattern check |
-| **Commands** | | |
-| `/develop` | opus | Orchestrator — runs /implement inline, needs opus |
-| `/plan` | sonnet | Story reading + AC generation is straightforward |
-| `/implement` | opus | Code generation requires strongest model |
-| `/e2e-test` | sonnet | Test writing follows established patterns |
-| `/review` | sonnet | Spawns agents, no code generation |
-| `/fix-and-ship` | sonnet | Mechanical: fix + status change |
-| `/fix-bug` | opus | Root cause analysis requires deep reasoning |
-| `/refactor` | opus | Code changes must preserve correctness |
+| Agent/Command           | Model  | Reason                                            |
+|-------------------------|--------|---------------------------------------------------|
+| **Agents**              |        |                                                   |
+| `security-reviewer`     | sonnet | Pattern matching against OWASP checklist          |
+| `architecture-reviewer` | sonnet | Pattern matching against SOLID/Clean Code rules   |
+| `test-reviewer`         | sonnet | Cross-referencing src/ vs test/ coverage          |
+| `docs-reviewer`         | haiku  | Simple documentation completeness check           |
+| `svelte-reviewer`       | sonnet | Framework-specific pattern check                  |
+| `spring-reviewer`       | sonnet | Framework-specific pattern check                  |
+| **Commands**            |        |                                                   |
+| `/develop`              | opus   | Orchestrator — runs /implement inline, needs opus |
+| `/plan`                 | sonnet | Story reading + AC generation is straightforward  |
+| `/implement`            | opus   | Code generation requires strongest model          |
+| `/e2e-test`             | sonnet | Test writing follows established patterns         |
+| `/review`               | sonnet | Spawns agents, no code generation                 |
+| `/fix-and-ship`         | sonnet | Mechanical: fix + status change                   |
+| `/fix-bug`              | opus   | Root cause analysis requires deep reasoning       |
+| `/refactor`             | opus   | Code changes must preserve correctness            |
 
 ### Why this split
 
