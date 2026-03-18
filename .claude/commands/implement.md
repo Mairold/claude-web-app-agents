@@ -7,6 +7,10 @@ Story: $ARGUMENTS
 
 ---
 
+Completeness Principle: when the marginal cost of full implementation 
+is near-zero, always implement the complete version. The delta between 
+80 lines and 150 lines is meaningless. Do not suggest shortcuts.
+
 1. `read_story("$ARGUMENTS")` — get tasks and acceptance criteria
 
 2. **FOLLOWUP stories** (title contains "[FOLLOWUP]"): skip TDD scaffolding (steps 3a-3b), implement tasks directly, verify tests pass after each.

@@ -86,7 +86,22 @@ Check CLAUDE.md for E2E test commands (test backend start/stop, health check URL
 1. Check if the test backend is up by hitting its health endpoint.
 2. If not, start it using the command from CLAUDE.md and wait for it.
 
-## Step 3 — Write tests
+## Step 3 — Detect affected routes (diff-aware)
+
+If `$ARGUMENTS` is a story slug or ID:
+- Read the story's `## Implementation Notes` for modified files.
+
+If no Implementation Notes exist, run:
+```
+git diff main --name-only
+```
+Map changed files to affected routes:
+- `frontend/src/routes/X/` → test `/X`
+- `backend/.../XController.java` → test all endpoints in that controller
+
+Print: `Diff-aware mode: testing [N] affected routes: [list]`
+
+## Step 4 — Write tests
 
 Read existing E2E tests in the `e2e/` directory to understand patterns and helpers, then write tests that cover:
 - Happy path (the main user flow)
@@ -101,21 +116,34 @@ Read existing E2E tests in the `e2e/` directory to understand patterns and helpe
 - Use `test.describe` to group related tests
 - Use the `loginAndGo()` helper from `./helpers.js` for authentication
 
-## Step 4 — Run and verify
+## Step 5 — Run and verify
 
 Run ALL E2E tests (not just the new ones) — this is a regression check:
 ```
 npx playwright test
 ```
 
+### Find-fix-verify cycle
+When a test fails:
+1. Read the screenshot from `test-results/` to understand actual page state
+2. Fix the issue (in code or test — but never weaken assertions)
+3. Commit the fix atomically: `git commit -m "fix: <what was wrong>"`
+4. Generate a regression test that would have caught this bug
+5. Re-run and verify green
+
 ### Handling failures
 
-- **New tests** (written in Step 3): If they fail, fix the test — but always verify that your fix stays aligned with the story's acceptance criteria. Never weaken assertions just to make a test pass.
-- **Existing tests** (were passing before): Do NOT modify them. Analyze the root cause (is it a regression from new code, or a test environment issue?), present your findings to the user, and wait for approval before changing anything.
+- **New tests** (written in Step 4): Fix the underlying code or test — stay aligned with acceptance criteria. Never weaken assertions.
+- **Existing tests** (were passing before): Do NOT modify them. Analyze root cause, present findings to the user, wait for approval before changing anything.
 
-Read the screenshot from the test-results directory to understand what the page actually looks like, then fix accordingly. Iterate until all green.
+### Health score
+After all tests pass, compute:
+```
+100 - (critical_failures × 25) - (high_failures × 10) - (warnings × 2)
+```
+Print: `Health score: X/100`
 
-## Step 5 — Cleanup & Report
+## Step 6 — Cleanup & Report
 
 1. Stop the test Docker containers:
    ```
@@ -129,8 +157,9 @@ Read the screenshot from the test-results directory to understand what the page 
    **Do NOT use `npx playwright show-report`** — it binds to localhost only and exits immediately in background mode.
    Tell the user the report URL using the machine's network IP and port 8082.
 
-## Step 6 — Update story
+## Step 7 — Update story
 
 If a story was provided, use `update_story` to append under `## Test Plan`:
 - E2E test file(s) created
 - What flows are covered
+- Health score

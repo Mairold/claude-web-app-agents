@@ -21,6 +21,9 @@ FOCUS ONLY ON:
 - Deep inheritance chains where composition would be better
 - Hardcoded configuration that should be injected
 - AI context bloat: files >300 lines or classes that mix concerns make it hard for AI to reason about them in one context window — flag these even if they technically "work"
+- Error paths: for each new public method, trace what can go wrong — flag any path where an exception is swallowed silently or the user sees nothing. Format as: METHOD → what fails → rescued? → user sees
+- Cyclomatic complexity: flag any new method that branches more than 5 times (if/else/switch/catch chains). Propose extraction by name.
+
 
 Map the overall structure first, then go deep on problem areas.
 Return findings in this exact format:

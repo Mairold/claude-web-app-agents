@@ -92,9 +92,16 @@ Return findings in this exact format:
 - src/config/SecurityConfig.java — headers correctly configured
 - Dependencies (pom.xml) — no known CVEs in current versions
 ```
+#### Threat Model
+*(only if new endpoints or data mutations exist in reviewed files)*
+| Threat | Likelihood | Impact |
+|--------|------------|--------|
+| Unauthenticated access to POST /api/stories | L | H |
+| IDOR via story ID in path | M | H |
 
 Rules:
 - Tag each finding with its OWASP category (A01–A10)
 - Order by severity: CRITICAL first, then HIGH, MEDIUM, LOW
 - Omit severity levels with no findings
 - Clean Areas is mandatory — list every area checked that was clean
+- Threat Model only if new endpoints or data mutations exist — omit otherwise
