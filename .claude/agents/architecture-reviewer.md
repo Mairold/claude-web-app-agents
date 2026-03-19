@@ -23,6 +23,7 @@ FOCUS ONLY ON:
 - AI context bloat: files >300 lines or classes that mix concerns make it hard for AI to reason about them in one context window — flag these even if they technically "work"
 - Error paths: for each new public method, trace what can go wrong — flag any path where an exception is swallowed silently or the user sees nothing. Format as: METHOD → what fails → rescued? → user sees
 - Cyclomatic complexity: flag any new method that branches more than 5 times (if/else/switch/catch chains). Propose extraction by name.
+- Duplicate logic: scan for methods or code blocks that do the same thing in different places. If two functions share >50% of their logic, flag it — name the existing one to reuse or extract a shared helper.
 
 
 Map the overall structure first, then go deep on problem areas.

@@ -19,6 +19,7 @@ is near-zero, always implement the complete version. The delta between
    a. **Tests first:** Write unit tests for every non-trivial function. Cover: happy path, null/empty, boundary, error cases. Arrange-Act-Assert, one concept per test. Tests will fail to compile — that's correct.
    b. **Stubs:** Create empty implementations so tests compile. Methods return null/Optional.empty()/throw UnsupportedOperationException. All tests should compile and fail (red).
    c. **Implement:** One failing test at a time. No code without a failing test. Refactor after green (Boy Scout Rule).
+   d. **Dedup check:** Before writing new logic, search for existing methods/utilities that already do the same thing. Reuse or extend existing code — never duplicate.
 
 4. Mark completed tasks: `update_story` with `- [x]` for each done task
 
