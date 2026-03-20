@@ -33,4 +33,14 @@ Story: $ARGUMENTS
      - Effort: [S/M/L] human → [S/M/L] with AI
        (S=hours, M=day, L=days — AI typically drops one level)
 
-5. Print: `Plan ready for [slug]`
+5. **Technical approach (conditional):** Skip if the story already has a `## Technical Approach` section or equivalent technical detail, OR if the story is simple (single-file change, config tweak, copy change).
+
+   Otherwise, explore the codebase (Glob, Grep, Read) to understand existing patterns, then use `update_story` to append under `## Technical Approach`:
+   - Which existing files/modules will be modified and why
+   - New files/classes to create (with intended responsibility)
+   - API changes (new or modified endpoints, request/response shape)
+   - DB changes (new tables, columns, migrations)
+   - Key design decision: if multiple approaches exist, state the chosen one and why
+   - Reuse: name existing utilities, services, or patterns to build on — never duplicate
+
+   **Present the plan to the user and wait for approval before continuing.** Do not proceed to implementation until the user confirms.
