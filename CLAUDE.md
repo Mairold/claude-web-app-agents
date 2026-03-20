@@ -7,14 +7,20 @@
 - `update_story` — update story description/content
 - `change_status` — change story status
 
+## MCP Fallback Behavior
+When an MCP story tool is unavailable or a call fails:
+- **`read_story`**: if `$ARGUMENTS` contains spaces, treat it as the task description directly. If it looks like a slug (no spaces, hyphen-separated), ask the user to paste the requirements.
+- **`update_story`**: print the content that would have been written, prefixed with the target section name (e.g. `## Acceptance Criteria:`).
+- **`change_status`**: print `[slug] done (story system unavailable)` and continue.
+
 ## Custom Commands
-- `/develop <slug>` — full cycle: plan → implement → test → review → fix → commit → push → deploy
-- `/plan <slug>` — read story, add AC + implementation plan
-- `/implement <slug>` — TDD implementation cycle
-- `/e2e-test <slug>` — write Playwright E2E tests (bootstraps Playwright on first use)
-- `/review <slug>` — parallel review (up to 6 agents, conditional tech-stack agents)
-- `/fix-and-ship <slug>` — fix CRITICAL/MUST FIX + close story
-- `/fix-bug <slug>` — standalone bug fix + deploy + done
+- `/develop <slug or description>` — full cycle: plan → implement → test → review → fix → commit → push → deploy
+- `/plan <slug or description>` — read story, add AC + implementation plan
+- `/implement <slug or description>` — TDD implementation cycle
+- `/e2e-test <slug or description>` — write Playwright E2E tests (bootstraps Playwright on first use)
+- `/review <slug or description>` — parallel review (up to 6 agents, conditional tech-stack agents)
+- `/fix-and-ship <slug or description>` — fix CRITICAL/MUST FIX + close story
+- `/fix-bug <slug or description>` — standalone bug fix + deploy + done
 - `/refactor` — standalone refactoring + deploy
 
 ## Story Sizing

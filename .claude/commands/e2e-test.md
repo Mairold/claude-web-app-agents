@@ -78,6 +78,7 @@ If NOT, set up the E2E infrastructure:
 ## Step 1 — Understand the feature
 
 If `$ARGUMENTS` looks like a story slug or ID, use `read_story` to understand what the feature does and what the acceptance criteria are.
+If `read_story` fails (MCP unavailable), treat $ARGUMENTS as a plain description.
 If it's a plain description (e.g. "image upload"), use that directly.
 
 ## Step 2 — Ensure test environment is running
@@ -159,7 +160,7 @@ Print: `Health score: X/100`
 
 ## Step 7 — Update story
 
-If a story was provided, use `update_story` to append under `## Test Plan`:
+If a story was provided, use `update_story` to append under `## Test Plan` (if MCP unavailable: print the content instead):
 - E2E test file(s) created
 - What flows are covered
 - Health score

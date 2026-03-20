@@ -12,6 +12,7 @@ is near-zero, always implement the complete version. The delta between
 80 lines and 150 lines is meaningless. Do not suggest shortcuts.
 
 1. `read_story("$ARGUMENTS")` — get tasks and acceptance criteria
+   (If MCP unavailable: use $ARGUMENTS as description if it has spaces, else ask user to paste requirements.)
 
 2. **FOLLOWUP stories** (title contains "[FOLLOWUP]"): skip TDD scaffolding (steps 3a-3b), implement tasks directly, verify tests pass after each.
 
@@ -21,7 +22,7 @@ is near-zero, always implement the complete version. The delta between
    c. **Implement:** One failing test at a time. No code without a failing test. Refactor after green (Boy Scout Rule).
    d. **Dedup check:** Before writing new logic, search for existing methods/utilities that already do the same thing. Reuse or extend existing code — never duplicate.
 
-4. Mark completed tasks: `update_story` with `- [x]` for each done task
+4. Mark completed tasks: `update_story` with `- [x]` for each done task (if MCP unavailable: print completed tasks)
 
 5. Verify:
    - Backend: `cd backend && ./gradlew test`
