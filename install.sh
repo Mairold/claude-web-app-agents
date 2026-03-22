@@ -17,15 +17,20 @@ fi
 
 echo "🤖 Installing Claude agents ($LOCAL_VERSION → $REMOTE_VERSION)..."
 
-mkdir -p .claude/agents .claude/commands .claude/skills/svelte-tailwind .claude/skills/ui-ux .claude/rules
+mkdir -p .claude/agents .claude/commands .claude/skills/svelte-tailwind .claude/skills/ui-ux .claude/skills/swiftui .claude/rules agent_docs
 
-# 6 agents
+# 11 agents (8 review + 3 TDD)
 curl -fsSL "$REPO/.claude/agents/security-reviewer.md"      -o .claude/agents/security-reviewer.md
 curl -fsSL "$REPO/.claude/agents/architecture-reviewer.md"  -o .claude/agents/architecture-reviewer.md
 curl -fsSL "$REPO/.claude/agents/test-reviewer.md"          -o .claude/agents/test-reviewer.md
 curl -fsSL "$REPO/.claude/agents/docs-reviewer.md"          -o .claude/agents/docs-reviewer.md
 curl -fsSL "$REPO/.claude/agents/svelte-reviewer.md"        -o .claude/agents/svelte-reviewer.md
 curl -fsSL "$REPO/.claude/agents/spring-reviewer.md"        -o .claude/agents/spring-reviewer.md
+curl -fsSL "$REPO/.claude/agents/swift-reviewer.md"         -o .claude/agents/swift-reviewer.md
+curl -fsSL "$REPO/.claude/agents/swiftui-reviewer.md"       -o .claude/agents/swiftui-reviewer.md
+curl -fsSL "$REPO/.claude/agents/tdd-test-writer.md"        -o .claude/agents/tdd-test-writer.md
+curl -fsSL "$REPO/.claude/agents/tdd-implementer.md"        -o .claude/agents/tdd-implementer.md
+curl -fsSL "$REPO/.claude/agents/tdd-refactorer.md"         -o .claude/agents/tdd-refactorer.md
 
 # 8 commands
 curl -fsSL "$REPO/.claude/commands/develop.md"              -o .claude/commands/develop.md
@@ -37,13 +42,24 @@ curl -fsSL "$REPO/.claude/commands/fix-and-ship.md"         -o .claude/commands/
 curl -fsSL "$REPO/.claude/commands/fix-bug.md"              -o .claude/commands/fix-bug.md
 curl -fsSL "$REPO/.claude/commands/refactor.md"             -o .claude/commands/refactor.md
 
-# 2 skills
+# 3 skills
 curl -fsSL "$REPO/.claude/skills/svelte-tailwind/SKILL.md"  -o .claude/skills/svelte-tailwind/SKILL.md
 curl -fsSL "$REPO/.claude/skills/ui-ux/SKILL.md"            -o .claude/skills/ui-ux/SKILL.md
+curl -fsSL "$REPO/.claude/skills/swiftui/SKILL.md"          -o .claude/skills/swiftui/SKILL.md
 
-# 2 rules (auto-activate for *.java files)
+# 4 rules (auto-activate for *.java and *.swift files)
 curl -fsSL "$REPO/.claude/rules/java-best-practices.md"     -o .claude/rules/java-best-practices.md
 curl -fsSL "$REPO/.claude/rules/java-naming.md"             -o .claude/rules/java-naming.md
+curl -fsSL "$REPO/.claude/rules/swift-best-practices.md"    -o .claude/rules/swift-best-practices.md
+curl -fsSL "$REPO/.claude/rules/swift-naming.md"            -o .claude/rules/swift-naming.md
+
+# agent_docs (referenced by CLAUDE.md)
+curl -fsSL "$REPO/agent_docs/clean-code.md"                 -o agent_docs/clean-code.md
+curl -fsSL "$REPO/agent_docs/engineering-principles.md"     -o agent_docs/engineering-principles.md
+curl -fsSL "$REPO/agent_docs/mobile-guidelines.md"          -o agent_docs/mobile-guidelines.md
+curl -fsSL "$REPO/agent_docs/spring-conventions.md"         -o agent_docs/spring-conventions.md
+curl -fsSL "$REPO/agent_docs/svelte-conventions.md"         -o agent_docs/svelte-conventions.md
+curl -fsSL "$REPO/agent_docs/swift-conventions.md"          -o agent_docs/swift-conventions.md
 
 echo "$REMOTE_VERSION" > "$VERSION_FILE"
 
@@ -90,11 +106,11 @@ echo ""
 echo "✅ Claude agents $REMOTE_VERSION installed."
 echo "   Agents will auto-update at the start of every Claude Code session."
 echo ""
-echo "   /develop <slug>      — full cycle: plan → implement → test → review → fix → deploy"
+echo "   /develop <slug>      — full cycle (Java/Spring + SvelteKit + Swift/SwiftUI)"
 echo "   /plan <slug>         — read story, add AC + plan"
 echo "   /implement <slug>    — TDD implementation"
 echo "   /e2e-test <slug>     — Playwright E2E tests"
-echo "   /review <slug>       — parallel review (6 agents)"
+echo "   /review <slug>       — parallel review (up to 8 agents)"
 echo "   /fix-and-ship <slug> — fix findings + close story"
 echo "   /fix-bug <slug>      — standalone bug fix + deploy"
 echo "   /refactor            — standalone refactoring + deploy"

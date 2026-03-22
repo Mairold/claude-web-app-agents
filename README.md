@@ -12,7 +12,7 @@ curl -fsSL https://raw.githubusercontent.com/ahoa/claude-agents/master/install.s
 
 
 The installer will:
-- Copy all agent and command files into `.claude/`
+- Copy 11 agents (8 review + 3 TDD), 8 commands, 3 skills, and 4 rules into `.claude/`
 - Append agent conventions to `CLAUDE.md`
 - Add a `SessionStart` hook to `.claude/settings.json` so agents **auto-update at the start of every Claude Code session**
 
@@ -25,7 +25,7 @@ Restart Claude Code after the first install — files are loaded at session star
 /plan <slug>          — read story, add AC + plan
 /implement <slug>     — TDD implementation
 /e2e-test <slug>      — Playwright E2E tests
-/review <slug>        — parallel review (up to 6 agents)
+/review <slug>        — parallel review (up to 8 agents)
 /fix-and-ship <slug>  — fix CRITICAL/MUST FIX + close story
 /fix-bug <slug>       — standalone: read bug → test → fix → deploy → done
 /refactor             — standalone: baseline → refactor → verify → deploy
@@ -41,7 +41,7 @@ Restart Claude Code after the first install — files are loaded at session star
 | # | Phase           | Skill           | MCP tools                    |
 |---|-----------------|-----------------|------------------------------|
 | 1 | Plan            | `/plan`         | `read_story`, `update_story` |
-| 2 | Implement       | `/implement`    | `update_story` (tasks [x])   |
+| 2 | Implement       | `/implement`    | `update_story` (tasks [x]) — spawns TDD agents |
 | 3 | E2E Tests       | `/e2e-test`     | `update_story` (test plan)   |
 | 4 | Review          | `/review`       | —                            |
 | 5 | Fix & Ship      | `/fix-and-ship` | `change_status`              |
@@ -73,6 +73,12 @@ Subsequent runs skip bootstrap and go straight to writing tests.
 | `docs-reviewer`         | haiku  | Simple documentation completeness check           |
 | `svelte-reviewer`       | sonnet | Framework-specific pattern check                  |
 | `spring-reviewer`       | sonnet | Framework-specific pattern check                  |
+| `swift-reviewer`        | sonnet | Swift memory, concurrency, security checks        |
+| `swiftui-reviewer`      | sonnet | SwiftUI property wrappers, perf, accessibility    |
+| **TDD Agents**          |        |                                                   |
+| `tdd-test-writer`       | sonnet | RED phase — writes failing tests only             |
+| `tdd-implementer`       | opus   | GREEN phase — makes tests pass one at a time      |
+| `tdd-refactorer`        | sonnet | REFACTOR phase — improves code, tests stay green  |
 | **Commands**            |        |                                                   |
 | `/develop`              | opus   | Orchestrator — runs /implement inline, needs opus |
 | `/plan`                 | sonnet | Story reading + AC generation is straightforward  |
@@ -93,6 +99,14 @@ This is the right tradeoff:
 - **Review agents are spawned via Agent tool** — they DO get their own model (sonnet/haiku), so the optimization works there
 
 Each agent runs in its own clean context — it sees only the file paths it was given and its own system prompt. No shared state between agents.
+
+### Swift / iOS support
+
+Swift and SwiftUI files (`.swift`) activate:
+- **`swift-reviewer`** — memory safety, concurrency, force operations, Keychain security, SwiftLint
+- **`swiftui-reviewer`** — property wrapper misuse, performance anti-patterns, accessibility, navigation
+- **Rules** — `swift-best-practices.md` and `swift-naming.md` auto-activate for `**/*.swift`
+- **Skill** — `swiftui` skill auto-invokes for SwiftUI views, MVVM, Combine, property wrappers
 
 ### Verbosity constraints
 

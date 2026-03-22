@@ -16,11 +16,26 @@ is near-zero, always implement the complete version. The delta between
 
 2. **FOLLOWUP stories** (title contains "[FOLLOWUP]"): skip TDD scaffolding (steps 3a-3b), implement tasks directly, verify tests pass after each.
 
-3. **Regular stories — TDD cycle:**
-   a. **Tests first:** Write unit tests for every non-trivial function. Cover: happy path, null/empty, boundary, error cases. Arrange-Act-Assert, one concept per test. Tests will fail to compile — that's correct.
-   b. **Stubs:** Create empty implementations so tests compile. Methods return null/Optional.empty()/throw UnsupportedOperationException. All tests should compile and fail (red).
-   c. **Implement:** One failing test at a time. No code without a failing test. Refactor after green (Boy Scout Rule).
-   d. **Dedup check:** Before writing new logic, search for existing methods/utilities that already do the same thing. Reuse or extend existing code — never duplicate.
+3. **Regular stories — TDD cycle (isolated phases):**
+
+   a. **RED — spawn `tdd-test-writer` agent:**
+      Pass: story slug, requirements from read_story, interface specification.
+      Gate: do NOT proceed until agent prints `RED phase complete`.
+      Verify: test files exist and tests fail to compile or fail at runtime.
+
+   b. **Dedup check:** Before spawning tdd-implementer, search for existing
+      methods/utilities that already do the same thing. Pass findings to the
+      implementer: "Reuse or extend — never duplicate."
+
+   c. **GREEN — spawn `tdd-implementer` agent:**
+      Pass: list of failing test files from phase a + dedup findings from phase b.
+      Gate: do NOT proceed until agent prints `GREEN phase complete`.
+      Verify: `cd backend && ./gradlew test` — all tests pass.
+
+   d. **REFACTOR — spawn `tdd-refactorer` agent:**
+      Pass: list of implementation files modified in phase c.
+      Gate: do NOT proceed until agent prints `REFACTOR phase complete`.
+      Verify: tests still all pass.
 
 4. Mark completed tasks: `update_story` with `- [x]` for each done task (if MCP unavailable: print completed tasks)
 

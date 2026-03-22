@@ -24,6 +24,7 @@ Determine which agents to run based on modified file types:
 **Conditionally run:**
 - If `.svelte`, `.js`, `.ts` files in `frontend/`: add `svelte-reviewer` (model: sonnet)
 - If `.java` files in `backend/`: add `spring-reviewer` (model: sonnet)
+- If `.swift` files modified: add `swift-reviewer` (model: sonnet) + `swiftui-reviewer` (model: sonnet)
 
 Spawn ALL selected agents in parallel using the Agent tool. Pass each agent:
 > Analyze these files: [MODIFIED_FILES]. Only review code written/modified in this story, not pre-existing issues. Return your findings as structured text.
