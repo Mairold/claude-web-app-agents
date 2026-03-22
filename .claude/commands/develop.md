@@ -9,6 +9,11 @@ Story: $ARGUMENTS
 
 Execute each phase in order. One line status after each phase.
 
+## Timing
+Before each phase, run `date +%s` and store the result. After each phase completes, run `date +%s` again and calculate duration. Print duration after each phase status line in format: `(Xm Ys)`.
+
+At the very start, run `date +%s` and store as `DEVELOP_START`.
+
 ## Phase 1 — Plan
 Use the Skill tool to invoke `plan` with args "$ARGUMENTS".
 
@@ -43,7 +48,17 @@ Use the Skill tool to invoke `fix-and-ship` with args "$ARGUMENTS".
 6. Wait 10s, check `docker compose logs backend --tail 20` for startup errors
 
 ## Done
-Print summary:
+Calculate total duration from `DEVELOP_START`. Print timing summary:
 ```
 [slug] done | Tests: X unit, X E2E
+
+⏱ Timing:
+  Plan:       Xm Ys
+  Implement:  Xm Ys
+  E2E Tests:  Xm Ys (or "skipped")
+  Review:     Xm Ys (or "skipped")
+  Fix & Ship: Xm Ys
+  Deploy:     Xm Ys
+  ─────────────────
+  Total:      Xm Ys
 ```
