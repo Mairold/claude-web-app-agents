@@ -31,15 +31,16 @@ When an MCP story tool is unavailable or a call fails:
 
 ## Review Scope Rules
 - **Only review code written/modified in the current story.** Do not flag pre-existing issues in files that were only touched for minor edits (imports, signature changes).
-- **Only report CRITICAL, HIGH and MEDIUM findings.** LOW/Nice-to-have go into the story summary but do NOT generate follow-up stories or tasks.
-- **Fix CRITICAL, HIGH and MEDIUM inline. Log the rest.** Never create follow-up stories from reviews. If something isn't worth fixing now, it's not worth tracking.
+- **Only report CRITICAL and HIGH findings for inline fixing.** MEDIUM go into summary.
+- **Fix CRITICAL and HIGH inline.** MEDIUM findings across the whole review get bundled into exactly ONE follow-up story (not one per finding). LOW/Nice-to-have are logged but ignored.
+- **Max one follow-up story per `/develop` run.** Title format: `[FOLLOWUP] <original-slug> — review cleanup`
 - **No endless cycles.** Each `/develop` run produces exactly one review round. No re-reviews, no follow-up reviews.
 
 ## Agents
 11 review/TDD agents in `.claude/agents/` — agent files are authoritative, not this section.
 Review agents (8): security, architecture, test, docs, svelte, spring, swift, swiftui.
-  Core (always): security, architecture, test, docs.
-  Conditional: svelte (frontend files), spring (Java files), swift + swiftui (Swift files).
+  Core (always): security, architecture, test.
+  Conditional: docs (new API endpoints/public-facing), svelte (frontend files), spring (Java files), swift + swiftui (Swift files).
 TDD agents (3): tdd-test-writer (RED), tdd-implementer (GREEN), tdd-refactorer (REFACTOR).
   Invoked by /implement — not called directly.
 Max 30 lines per review agent, max 3 lines per finding. Clean Areas section mandatory.

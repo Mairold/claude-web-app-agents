@@ -37,7 +37,7 @@ This triage does NOT apply to Phase 3 (E2E tests must always run for UI changes)
 Otherwise: Use the Skill tool to invoke `review` with args "$ARGUMENTS".
 
 ## Phase 5 — Fix & Ship
-Use the Skill tool to invoke `fix-and-ship` with args "$ARGUMENTS".
+Use the Skill tool to invoke `fix-and-ship` with args "--from-develop $ARGUMENTS".
 
 ## Phase 6 — Commit & Deploy
 1. Restore any docs/ changes: `git restore --staged docs/ 2>/dev/null; git checkout -- docs/ 2>/dev/null`

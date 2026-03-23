@@ -32,7 +32,9 @@ is near-zero, always implement the complete version. The delta between
       Gate: do NOT proceed until agent prints `GREEN phase complete`.
       Verify: `cd backend && ./gradlew test` — all tests pass.
 
-   d. **REFACTOR — spawn `tdd-refactorer` agent:**
+   d. **REFACTOR (conditional) — skip if fewer than 5 files were modified in phase c.**
+      If skipped, print: `REFACTOR skipped (small change)`
+      Otherwise, spawn `tdd-refactorer` agent:
       Pass: list of implementation files modified in phase c.
       Gate: do NOT proceed until agent prints `REFACTOR phase complete`.
       Verify: tests still all pass.
