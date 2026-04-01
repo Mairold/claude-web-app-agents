@@ -17,6 +17,7 @@ Story: $ARGUMENTS
    - Start test backend if needed: `docker compose -f docker-compose.test.yml up --build -d`
    - Run: `cd frontend && npx playwright test`
    - Fix any failures before continuing
+   - Stop test containers: `docker compose -f docker-compose.test.yml down`
 
 4. MEDIUM / SHOULD FIX / IMPORTANT — collect all into ONE follow-up story:
    - Title: `[FOLLOWUP] <slug> — review cleanup`

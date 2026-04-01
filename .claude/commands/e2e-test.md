@@ -32,7 +32,7 @@ If NOT, set up the E2E infrastructure:
    (Run in the frontend directory if separate from root.)
 
 3. **Create `docker-compose.test.yml`** in the project root with:
-   - Separate postgres on port 5433 (using `tmpfs` for speed, no persistent volume)
+   - Separate postgres (using `tmpfs` for speed, no persistent volume, NO exposed host port — backend connects via docker network)
    - Backend on a separate port (e.g. 8091) so it doesn't conflict with dev
    - Use a multi-arch Dockerfile (no `amd64/` prefix on base images) so it works on ARM (Apple Silicon) and x86
    - If the existing Dockerfile uses arch-specific images, create a `Dockerfile.test` with multi-arch equivalents
