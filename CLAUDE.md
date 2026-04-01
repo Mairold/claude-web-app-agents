@@ -11,6 +11,8 @@
 When an MCP story tool is unavailable or a call fails:
 - **`read_story`**: if `$ARGUMENTS` contains spaces, treat it as the task description directly. If it looks like a slug (no spaces, hyphen-separated), ask the user to paste the requirements.
 - **`update_story`**: print the content that would have been written, prefixed with the target section name (e.g. `## Acceptance Criteria:`).
+- **`create_story`**: print the story content (title, description, tasks) as markdown. Prefix with `📋 Story (not saved — no story system):`.
+- **`list_stories`**: print `Story system unavailable` and continue.
 - **`change_status`**: print `[slug] done (story system unavailable)` and continue.
 
 ## Custom Commands
