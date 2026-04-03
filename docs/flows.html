@@ -290,8 +290,8 @@
 
 <header>
   <div class="title-block">
-    <h1>Claude Agents \u2014 Flow Visualizer</h1>
-    <p>Interaktiivne arendusk\u00e4skude ja agentide \u00fclevaade</p>
+    <h1>Claude Agents — Flow Visualizer</h1>
+    <p>Interaktiivne arenduskäskude ja agentide ülevaade</p>
   </div>
   <div class="view-toggle" id="viewToggle">
     <button class="active" data-view="timeline">Timeline</button>
@@ -377,41 +377,41 @@ const FLOWS = [
   {
     id: 'develop', name: '/develop', color: 'var(--accent)', model: 'opus',
     mdFile: COMMAND_FILES['develop'],
-    desc: 'Kogu arendustsükkel: plan \u2192 implement \u2192 test \u2192 review \u2192 fix \u2192 commit \u2192 push \u2192 deploy.',
+    desc: 'Kogu arendustsükkel: plan → implement → test → review → fix → commit → push → deploy.',
     steps: [
       { title: 'Timing Setup', tags: [], detail: '<code>date +%s</code> salvestab algusaja.', condition: null, loop: null, mdFile: null },
-      { title: 'Phase 1 \u2014 Plan', tags: [{ text: 'skill: plan', cls: 'tag-agent' }, { text: 'sonnet', cls: 'tag-model' }], detail: 'Kutsub <strong>/plan</strong> skilli.', condition: null, loop: null, mdFile: COMMAND_FILES['plan'], link: 'plan' },
-      { title: 'Phase 2 \u2014 Implement', tags: [{ text: 'skill: implement', cls: 'tag-agent' }, { text: 'opus', cls: 'tag-model' }], detail: 'TDD tsükkel: RED \u2192 GREEN \u2192 REFACTOR.', condition: null, loop: null, mdFile: COMMAND_FILES['implement'], link: 'implement' },
-      { title: 'Phase 3 \u2014 E2E Tests', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'skill: e2e-test', cls: 'tag-agent' }], detail: 'Playwright E2E testid.', condition: 'UI failid muudetud, >3 backend faili, API endpointid/turvaconfig muudetud v\u00f5i story label \"security\"/\"architecture\"', loop: null, mdFile: COMMAND_FILES['e2e-test'], link: 'e2e-test' },
-      { title: 'Phase 4 \u2014 Review', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'skill: review', cls: 'tag-agent' }], detail: 'Kuni 8 review agenti paralleelselt.', condition: 'J\u00e4etakse vahele kui K\u00d5IK muudetud failid on CSS-only, Tailwind v\u00f5i SVG ikoonid', loop: null, mdFile: COMMAND_FILES['review'], link: 'review' },
-      { title: 'Phase 5 \u2014 Fix & Ship', tags: [{ text: 'skill: fix-and-ship', cls: 'tag-agent' }], detail: 'Parandab CRITICAL/HIGH leiud.', condition: null, loop: null, mdFile: COMMAND_FILES['fix-and-ship'], link: 'fix-and-ship' },
-      { title: 'Phase 6 \u2014 Commit & Deploy', tags: [{ text: 'deploy', cls: 'tag-deploy' }], detail: '<code>git add</code> \u2192 <code>git commit</code> \u2192 <code>git push</code> \u2192 <code>docker compose up --build -d</code>', condition: null, loop: null, mdFile: null },
+      { title: 'Phase 1 — Plan', tags: [{ text: 'skill: plan', cls: 'tag-agent' }, { text: 'sonnet', cls: 'tag-model' }], detail: 'Kutsub <strong>/plan</strong> skilli.', condition: null, loop: null, mdFile: COMMAND_FILES['plan'], link: 'plan' },
+      { title: 'Phase 2 — Implement', tags: [{ text: 'skill: implement', cls: 'tag-agent' }, { text: 'opus', cls: 'tag-model' }], detail: 'TDD tsükkel: RED → GREEN → REFACTOR.', condition: null, loop: null, mdFile: COMMAND_FILES['implement'], link: 'implement' },
+      { title: 'Phase 3 — E2E Tests', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'skill: e2e-test', cls: 'tag-agent' }], detail: 'Playwright E2E testid.', condition: 'UI failid muudetud, >3 backend faili, API endpointid/turvaconfig muudetud või story label \"security\"/\"architecture\"', loop: null, mdFile: COMMAND_FILES['e2e-test'], link: 'e2e-test' },
+      { title: 'Phase 4 — Review', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'skill: review', cls: 'tag-agent' }], detail: 'Kuni 8 review agenti paralleelselt.', condition: 'Jäetakse vahele kui KÕIK muudetud failid on CSS-only, Tailwind või SVG ikoonid', loop: null, mdFile: COMMAND_FILES['review'], link: 'review' },
+      { title: 'Phase 5 — Fix & Ship', tags: [{ text: 'skill: fix-and-ship', cls: 'tag-agent' }], detail: 'Parandab CRITICAL/HIGH leiud.', condition: null, loop: null, mdFile: COMMAND_FILES['fix-and-ship'], link: 'fix-and-ship' },
+      { title: 'Phase 6 — Commit & Deploy', tags: [{ text: 'deploy', cls: 'tag-deploy' }], detail: '<code>git add</code> → <code>git commit</code> → <code>git push</code> → <code>docker compose up --build -d</code>', condition: null, loop: null, mdFile: null },
       { title: 'Timing Summary', tags: [], detail: 'Ajatabel iga faasi kohta + testide arv.', condition: null, loop: null, mdFile: null }
     ]
   },
   {
     id: 'plan', name: '/plan', color: 'var(--cyan)', model: 'sonnet',
     mdFile: COMMAND_FILES['plan'],
-    desc: 'Loeb story, lisab vastuv\u00f5tukriteeriumid ja tehnilise plaani.',
+    desc: 'Loeb story, lisab vastuvõtukriteeriumid ja tehnilise plaani.',
     steps: [
       { title: 'Read Story', tags: [{ text: 'MCP: read_story', cls: 'tag-agent' }], detail: '<code>read_story("slug")</code>', condition: null, loop: null, mdFile: null },
-      { title: 'FOLLOWUP Check', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: 'Tasks nimekiri ON plaan \u2014 ülejäänud sammud jäetakse vahele.', condition: 'Story pealkiri sisaldab [FOLLOWUP]', loop: null, mdFile: null },
+      { title: 'FOLLOWUP Check', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: 'Tasks nimekiri ON plaan — ülejäänud sammud jäetakse vahele.', condition: 'Story pealkiri sisaldab [FOLLOWUP]', loop: null, mdFile: null },
       { title: 'Add Acceptance Criteria', tags: [{ text: 'MCP: update_story', cls: 'tag-agent' }], detail: 'Genereerib testitavad AC-d.', condition: 'Ainult kui ## Acceptance Criteria puudub', loop: null, mdFile: null },
-      { title: 'Triage \u2014 Scope', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: '<strong>Tehniline</strong>: mis tehakse + maht.<br><strong>User-facing</strong>: CURRENT \u2192 THIS PLAN \u2192 12-MONTH.', condition: 'Hargnemine: tehniline vs user-facing', loop: null, mdFile: null },
-      { title: 'Technical Approach', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: 'Uurib koodibaasi. <strong>Ootab kasutaja kinnitust.</strong>', condition: 'Vahele kui Technical Approach olemas v\u00f5i lihtne muudatus', loop: null, mdFile: null }
+      { title: 'Triage — Scope', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: '<strong>Tehniline</strong>: mis tehakse + maht.<br><strong>User-facing</strong>: CURRENT → THIS PLAN → 12-MONTH.', condition: 'Hargnemine: tehniline vs user-facing', loop: null, mdFile: null },
+      { title: 'Technical Approach', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: 'Uurib koodibaasi. <strong>Ootab kasutaja kinnitust.</strong>', condition: 'Vahele kui Technical Approach olemas või lihtne muudatus', loop: null, mdFile: null }
     ]
   },
   {
     id: 'implement', name: '/implement', color: 'var(--green)', model: 'opus',
     mdFile: COMMAND_FILES['implement'],
-    desc: 'TDD implementatsioon: RED \u2192 GREEN \u2192 REFACTOR.',
+    desc: 'TDD implementatsioon: RED → GREEN → REFACTOR.',
     steps: [
       { title: 'Read Story', tags: [{ text: 'MCP: read_story', cls: 'tag-agent' }], detail: 'Loeb tasks ja AC.', condition: null, loop: null, mdFile: null },
-      { title: 'FOLLOWUP Shortcut', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: 'J\u00e4tab TDD vahele, implementeerib otse.', condition: 'Story pealkiri sisaldab [FOLLOWUP]', loop: null, mdFile: null },
-      { title: 'RED \u2014 Write Failing Tests', tags: [{ text: 'agent: tdd-test-writer', cls: 'tag-agent' }, { text: 'sonnet', cls: 'tag-model' }, { text: 'gate', cls: 'tag-gate' }], detail: 'Loeb interfaces, DTO-d, signatuure (MITTE implementatsiooni).', condition: null, loop: null, mdFile: AGENT_FILES['tdd-test-writer'] },
+      { title: 'FOLLOWUP Shortcut', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: 'Jätab TDD vahele, implementeerib otse.', condition: 'Story pealkiri sisaldab [FOLLOWUP]', loop: null, mdFile: null },
+      { title: 'RED — Write Failing Tests', tags: [{ text: 'agent: tdd-test-writer', cls: 'tag-agent' }, { text: 'sonnet', cls: 'tag-model' }, { text: 'gate', cls: 'tag-gate' }], detail: 'Loeb interfaces, DTO-d, signatuure (MITTE implementatsiooni).', condition: null, loop: null, mdFile: AGENT_FILES['tdd-test-writer'] },
       { title: 'Dedup Check', tags: [], detail: 'Otsib olemasolevaid meetodeid. "Reuse or extend."', condition: null, loop: null, mdFile: null },
-      { title: 'GREEN \u2014 Make Tests Pass', tags: [{ text: 'agent: tdd-implementer', cls: 'tag-agent' }, { text: 'opus', cls: 'tag-model' }, { text: 'gate', cls: 'tag-gate' }], detail: 'Miinimumkood, test p\u00e4rast iga muudatust.', condition: null, loop: { label: '\u00dcks test korraga', condition: 'Kordub kuni k\u00f5ik testid rohelised' }, mdFile: AGENT_FILES['tdd-implementer'] },
-      { title: 'REFACTOR \u2014 Clean Up', tags: [{ text: 'agent: tdd-refactorer', cls: 'tag-agent' }, { text: 'sonnet', cls: 'tag-model' }, { text: 'conditional', cls: 'tag-conditional' }], detail: 'Ekstraheerib, eemaldab duplikatsiooni, parandab nimesid.', condition: '<5 faili muudetud \u2192 vahele', loop: { label: 'Iga muudatus eraldi', condition: 'Testid iga muudatuse j\u00e4rel \u2014 punane \u2192 revert' }, mdFile: AGENT_FILES['tdd-refactorer'] },
+      { title: 'GREEN — Make Tests Pass', tags: [{ text: 'agent: tdd-implementer', cls: 'tag-agent' }, { text: 'opus', cls: 'tag-model' }, { text: 'gate', cls: 'tag-gate' }], detail: 'Miinimumkood, test pärast iga muudatust.', condition: null, loop: { label: 'Üks test korraga', condition: 'Kordub kuni kõik testid rohelised' }, mdFile: AGENT_FILES['tdd-implementer'] },
+      { title: 'REFACTOR — Clean Up', tags: [{ text: 'agent: tdd-refactorer', cls: 'tag-agent' }, { text: 'sonnet', cls: 'tag-model' }, { text: 'conditional', cls: 'tag-conditional' }], detail: 'Ekstraheerib, eemaldab duplikatsiooni, parandab nimesid.', condition: '<5 faili muudetud → vahele', loop: { label: 'Iga muudatus eraldi', condition: 'Testid iga muudatuse järel — punane → revert' }, mdFile: AGENT_FILES['tdd-refactorer'] },
       { title: 'Update Story & Verify', tags: [{ text: 'MCP: update_story', cls: 'tag-agent' }, { text: 'tests', cls: 'tag-test' }], detail: '<code>./gradlew test</code> + <code>npm run build</code>', condition: null, loop: null, mdFile: null }
     ]
   },
@@ -421,7 +421,7 @@ const FLOWS = [
     desc: 'Paralleelne koodireview kuni 8 agendiga.',
     steps: [
       { title: 'Determine Scope', tags: [{ text: 'MCP: read_story', cls: 'tag-agent' }], detail: '<code>git diff main --name-only</code>', condition: null, loop: null, mdFile: null },
-      { title: 'Select Agents', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: 'Valib agendid failit\u00fc\u00fcpide p\u00f5hjal.', condition: 'Agentide valik s\u00f5ltub failit\u00fc\u00fcpidest',
+      { title: 'Select Agents', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: 'Valib agendid failitüüpide põhjal.', condition: 'Agentide valik sõltub failitüüpidest',
         loop: null, mdFile: null,
         subAgents: [
           { name: 'security-reviewer', type: 'core', mdFile: AGENT_FILES['security-reviewer'] },
@@ -434,22 +434,22 @@ const FLOWS = [
           { name: 'swiftui-reviewer', type: 'conditional', condition: '.swift (SwiftUI)', mdFile: AGENT_FILES['swiftui-reviewer'] },
         ]
       },
-      { title: 'Spawn Agents', tags: [{ text: 'parallel', cls: 'tag-model' }], detail: 'K\u00f5ik valitud agendid samaaegselt.', condition: null, loop: null, mdFile: null, isParallel: true },
-      { title: 'Synthesize Results', tags: [], detail: 'CRITICAL+HIGH \u2192 parandamiseks. MEDIUM+LOW \u2192 kokkuv\u00f5te.', condition: null, loop: null, mdFile: null }
+      { title: 'Spawn Agents', tags: [{ text: 'parallel', cls: 'tag-model' }], detail: 'Kõik valitud agendid samaaegselt.', condition: null, loop: null, mdFile: null, isParallel: true },
+      { title: 'Synthesize Results', tags: [], detail: 'CRITICAL+HIGH → parandamiseks. MEDIUM+LOW → kokkuvõte.', condition: null, loop: null, mdFile: null }
     ]
   },
   {
     id: 'e2e-test', name: '/e2e-test', color: 'var(--yellow)', model: 'sonnet',
     mdFile: COMMAND_FILES['e2e-test'],
-    desc: 'Playwright E2E testid. Bootstrap esimesel k\u00e4ivitusel.',
+    desc: 'Playwright E2E testid. Bootstrap esimesel käivitusel.',
     steps: [
-      { title: 'Applicability Check', tags: [], detail: 'CLI/library/API \u2192 vahele.', condition: 'Ainult veebiprojektid', loop: null, mdFile: null },
+      { title: 'Applicability Check', tags: [], detail: 'CLI/library/API → vahele.', condition: 'Ainult veebiprojektid', loop: null, mdFile: null },
       { title: 'Bootstrap Playwright', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: 'Playwright + Chromium, test docker-compose, auth backdoor.', condition: 'Ainult kui playwright.config.js puudub', loop: null, mdFile: null },
       { title: 'Understand Feature', tags: [{ text: 'MCP: read_story', cls: 'tag-agent' }], detail: 'Loeb story.', condition: null, loop: null, mdFile: null },
       { title: 'Start Test Environment', tags: [], detail: 'Health endpoint check, start vajadusel.', condition: null, loop: null, mdFile: null },
-      { title: 'Detect Affected Routes', tags: [], detail: 'Diff-p\u00f5hine marsruutide kaardistus.', condition: null, loop: null, mdFile: null },
+      { title: 'Detect Affected Routes', tags: [], detail: 'Diff-põhine marsruutide kaardistus.', condition: null, loop: null, mdFile: null },
       { title: 'Write Tests', tags: [{ text: 'tests', cls: 'tag-test' }], detail: 'Happy path + edge cases + mobile.', condition: null, loop: null, mdFile: null },
-      { title: 'Run & Fix Loop', tags: [{ text: 'tests', cls: 'tag-test' }, { text: 'loop', cls: 'tag-loop' }], detail: 'K\u00f5ik E2E testid. Screenshot \u2192 fix \u2192 re-run.', condition: null, loop: { label: 'Fix loop', condition: 'Kordub kuni k\u00f5ik testid l\u00e4bivad' }, mdFile: null },
+      { title: 'Run & Fix Loop', tags: [{ text: 'tests', cls: 'tag-test' }, { text: 'loop', cls: 'tag-loop' }], detail: 'Kõik E2E testid. Screenshot → fix → re-run.', condition: null, loop: { label: 'Fix loop', condition: 'Kordub kuni kõik testid läbivad' }, mdFile: null },
       { title: 'Cleanup & Report', tags: [{ text: 'deploy', cls: 'tag-deploy' }], detail: 'Docker down, HTML raport <code>0.0.0.0:8082</code>.', condition: null, loop: null, mdFile: null }
     ]
   },
@@ -458,37 +458,37 @@ const FLOWS = [
     mdFile: COMMAND_FILES['fix-and-ship'],
     desc: 'Parandab CRITICAL/HIGH leiud ja sulgeb story.',
     steps: [
-      { title: 'Review Check', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: '--from-develop \u2192 vahele.', condition: '--from-develop puudub: kontrollib /review', loop: null, mdFile: null },
+      { title: 'Review Check', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: '--from-develop → vahele.', condition: '--from-develop puudub: kontrollib /review', loop: null, mdFile: null },
       { title: 'Fix CRITICAL + HIGH', tags: [], detail: 'Parandab otse koodis.', condition: null, loop: null, mdFile: null },
       { title: 'Re-run E2E Tests', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'tests', cls: 'tag-test' }], detail: 'Playwright testid.', condition: 'Ainult kui koodi muudeti', loop: null, mdFile: null },
-      { title: 'Bundle MEDIUM \u2192 Follow-up', tags: [{ text: 'MCP: create_story', cls: 'tag-agent' }], detail: '\u00dcks follow-up story k\u00f5igi MEDIUM leidude jaoks.', condition: 'Ainult kui on MEDIUM leide', loop: null, mdFile: null },
+      { title: 'Bundle MEDIUM → Follow-up', tags: [{ text: 'MCP: create_story', cls: 'tag-agent' }], detail: 'Üks follow-up story kõigi MEDIUM leidude jaoks.', condition: 'Ainult kui on MEDIUM leide', loop: null, mdFile: null },
       { title: 'Close Story', tags: [{ text: 'MCP: change_status', cls: 'tag-agent' }], detail: '<code>change_status("slug", "done")</code>', condition: null, loop: null, mdFile: null }
     ]
   },
   {
     id: 'fix-bug', name: '/fix-bug', color: 'var(--orange)', model: 'opus',
     mdFile: COMMAND_FILES['fix-bug'],
-    desc: 'Bug fix: m\u00f5ista \u2192 failiv test \u2192 paranda \u2192 deploy.',
+    desc: 'Bug fix: mõista → failiv test → paranda → deploy.',
     steps: [
       { title: 'Read Bug Report', tags: [{ text: 'MCP: read_story', cls: 'tag-agent' }], detail: 'Bug report, reprodutseerimise sammud.', condition: null, loop: null, mdFile: null },
       { title: 'Analyze Root Cause', tags: [], detail: 'Uurib koodibaasi.', condition: null, loop: null, mdFile: null },
       { title: 'Write Failing Test', tags: [{ text: 'tests', cls: 'tag-test' }], detail: 'PEAB failima praeguse koodiga.', condition: null, loop: null, mdFile: null },
-      { title: 'Fix the Bug', tags: [], detail: 'Eelnev test peab l\u00e4bi minema.', condition: null, loop: null, mdFile: null },
+      { title: 'Fix the Bug', tags: [], detail: 'Eelnev test peab läbi minema.', condition: null, loop: null, mdFile: null },
       { title: 'Full Test Suite', tags: [{ text: 'tests', cls: 'tag-test' }], detail: '<code>./gradlew test</code> + <code>npm run build</code>', condition: null, loop: null, mdFile: null },
-      { title: 'E2E Tests', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'tests', cls: 'tag-test' }], detail: 'Playwright testid.', condition: 'Ainult kui UI m\u00f5jutatud', loop: null, mdFile: null },
-      { title: 'Commit & Deploy', tags: [{ text: 'deploy', cls: 'tag-deploy' }], detail: '<code>git add</code> \u2192 <code>git commit</code> \u2192 <code>git push</code> \u2192 <code>docker compose up</code>', condition: null, loop: null, mdFile: null }
+      { title: 'E2E Tests', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'tests', cls: 'tag-test' }], detail: 'Playwright testid.', condition: 'Ainult kui UI mõjutatud', loop: null, mdFile: null },
+      { title: 'Commit & Deploy', tags: [{ text: 'deploy', cls: 'tag-deploy' }], detail: '<code>git add</code> → <code>git commit</code> → <code>git push</code> → <code>docker compose up</code>', condition: null, loop: null, mdFile: null }
     ]
   },
   {
     id: 'refactor', name: '/refactor', color: 'var(--pink)', model: 'opus',
     mdFile: COMMAND_FILES['refactor'],
-    desc: 'Refaktoreering: roheline baas \u2192 samm-sammuline \u2192 deploy.',
+    desc: 'Refaktoreering: roheline baas → samm-sammuline → deploy.',
     steps: [
-      { title: 'Green Baseline', tags: [{ text: 'tests', cls: 'tag-test' }], detail: 'K\u00f5ik testid peavad olema rohelised.', condition: null, loop: null, mdFile: null },
-      { title: 'Refactor Step by Step', tags: [{ text: 'gate', cls: 'tag-gate' }, { text: 'loop', cls: 'tag-loop' }], detail: 'Iga muudatus peab testid rohelisena hoidma.', condition: null, loop: { label: 'Samm-sammuline', condition: 'Testid p\u00e4rast IGA muudatust. Punane \u2192 revert.' }, mdFile: null },
-      { title: 'Full Test Suite', tags: [{ text: 'tests', cls: 'tag-test' }], detail: 'T\u00e4ielik testikomplekt.', condition: null, loop: null, mdFile: null },
+      { title: 'Green Baseline', tags: [{ text: 'tests', cls: 'tag-test' }], detail: 'Kõik testid peavad olema rohelised.', condition: null, loop: null, mdFile: null },
+      { title: 'Refactor Step by Step', tags: [{ text: 'gate', cls: 'tag-gate' }, { text: 'loop', cls: 'tag-loop' }], detail: 'Iga muudatus peab testid rohelisena hoidma.', condition: null, loop: { label: 'Samm-sammuline', condition: 'Testid pärast IGA muudatust. Punane → revert.' }, mdFile: null },
+      { title: 'Full Test Suite', tags: [{ text: 'tests', cls: 'tag-test' }], detail: 'Täielik testikomplekt.', condition: null, loop: null, mdFile: null },
       { title: 'E2E Tests', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'tests', cls: 'tag-test' }], detail: 'Playwright testid.', condition: 'Ainult kui E2E olemas ja UI muudetud', loop: null, mdFile: null },
-      { title: 'Commit & Deploy', tags: [{ text: 'deploy', cls: 'tag-deploy' }], detail: '<code>git add</code> \u2192 <code>git commit</code> \u2192 <code>git push</code> \u2192 <code>docker compose up</code>', condition: null, loop: null, mdFile: null }
+      { title: 'Commit & Deploy', tags: [{ text: 'deploy', cls: 'tag-deploy' }], detail: '<code>git add</code> → <code>git commit</code> → <code>git push</code> → <code>docker compose up</code>', condition: null, loop: null, mdFile: null }
     ]
   }
 ];
@@ -546,7 +546,7 @@ const sidebar = document.getElementById('sidebar');
 const main = document.getElementById('main');
 
 function renderSidebar() {
-  sidebar.innerHTML = '<h3>K\u00e4sud</h3>';
+  sidebar.innerHTML = '<h3>Käsud</h3>';
   FLOWS.forEach(flow => {
     const btn = document.createElement('button');
     btn.dataset.id = flow.id;
@@ -565,7 +565,7 @@ function selectFlow(id) {
 }
 
 function renderFlowHeader(flow) {
-  const mdBtn = flow.mdFile ? `<span style="font-size:0.7rem;color:var(--purple);cursor:pointer;margin-left:0.5rem" class="md-btn" data-md="${flow.mdFile}" data-name="${flow.name}">\u2630 .md</span>` : '';
+  const mdBtn = flow.mdFile ? `<span style="font-size:0.7rem;color:var(--purple);cursor:pointer;margin-left:0.5rem" class="md-btn" data-md="${flow.mdFile}" data-name="${flow.name}">☰ .md</span>` : '';
   return `<div class="flow-header">
     <h2><span style="color:${flow.color}">${flow.name}</span>
       <span class="badge" style="background:${flow.color}22;color:${flow.color}">${flow.model}</span>${mdBtn}</h2>
@@ -589,13 +589,13 @@ function renderTimeline(flow) {
   let html = renderFlowHeader(flow) + renderLegend() + '<div class="flow-steps">';
   flow.steps.forEach((step, i) => {
     const tags = (step.tags||[]).map(t => `<span class="tag ${t.cls}">${t.text}</span>`).join(' ');
-    const linkHtml = step.link ? ` <span style="font-size:0.7rem;color:var(--text-dim);cursor:pointer" data-link="${step.link}" class="step-link">\u2192 vaata</span>` : '';
-    const mdBtn = step.mdFile ? ` <span style="font-size:0.65rem;color:var(--purple);cursor:pointer;margin-left:auto;margin-right:0.5rem" class="md-btn" data-md="${step.mdFile}" data-name="${step.title}">\u2630 .md</span>` : '';
+    const linkHtml = step.link ? ` <span style="font-size:0.7rem;color:var(--text-dim);cursor:pointer" data-link="${step.link}" class="step-link">→ vaata</span>` : '';
+    const mdBtn = step.mdFile ? ` <span style="font-size:0.65rem;color:var(--purple);cursor:pointer;margin-left:auto;margin-right:0.5rem" class="md-btn" data-md="${step.mdFile}" data-name="${step.title}">☰ .md</span>` : '';
     html += `<div class="step"><div class="step-dot"></div><div class="step-card">
       <div class="step-title" onclick="toggleStep(this)"><span class="step-num">${i+1}</span>${step.title} ${tags}${linkHtml}${mdBtn}<span class="step-chevron">&#9654;</span></div>
       <div class="step-detail"><div class="step-detail-inner">
         ${step.condition ? '<div class="condition-block"><strong>Tingimus:</strong> '+step.condition+'</div>' : ''}
-        ${step.loop ? '<div class="condition-block" style="border-left-color:var(--pink);background:var(--pink-glow)"><strong>\u21BB Kordus:</strong> '+step.loop.condition+'</div>' : ''}
+        ${step.loop ? '<div class="condition-block" style="border-left-color:var(--pink);background:var(--pink-glow)"><strong>↻ Kordus:</strong> '+step.loop.condition+'</div>' : ''}
         ${step.detail}
         ${step.subAgents ? renderSubAgentList(step.subAgents) : ''}
       </div></div></div></div>`;
@@ -609,7 +609,7 @@ function renderSubAgentList(agents) {
   let html = '<div style="margin-top:0.6rem"><strong style="font-size:0.78rem">Agendid:</strong>';
   html += '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.3rem">';
   agents.forEach(a => {
-    const cond = a.type === 'conditional' ? ' \u2014 ' + a.condition : '';
+    const cond = a.type === 'conditional' ? ' — ' + a.condition : '';
     const md = a.mdFile ? `class="md-btn" data-md="${a.mdFile}" data-name="${a.name}" style="cursor:pointer;text-decoration:underline dotted"` : '';
     html += `<span class="tag ${a.type==='core'?'tag-agent':'tag-conditional'}" ${md}>${a.name}${cond}</span>`;
   });
@@ -637,9 +637,9 @@ function renderDiagram(flow) {
         const cls = a.type==='core'?'diagram-node':'diagram-node node-conditional';
         const mdA = a.mdFile ? `data-md="${a.mdFile}" data-name="${a.name}"` : '';
         html += `<div class="${cls}${a.mdFile?' has-md':''}" ${mdA} onclick="onNodeClick(this)">
-          ${a.mdFile?'<span class="md-indicator">\u2630</span>':''}
+          ${a.mdFile?'<span class="md-indicator">☰</span>':''}
           <div class="node-title">${a.name}</div>
-          <div class="node-subtitle">${a.type==='conditional'?a.condition:'P\u00f5hiagent'}</div></div>`;
+          <div class="node-subtitle">${a.type==='conditional'?a.condition:'Põhiagent'}</div></div>`;
       });
       html += '</div>';
       return;
@@ -652,15 +652,15 @@ function renderDiagram(flow) {
     if (step.mdFile) nc += ' has-md';
     const tags = (step.tags||[]).map(t=>`<span class="tag ${t.cls}">${t.text}</span>`).join(' ');
     const mdA = step.mdFile ? `data-md="${step.mdFile}" data-name="${step.title}"` : '';
-    const linkH = step.link ? `<div class="node-link" data-link="${step.link}">\u2192 ${step.link}</div>` : '';
+    const linkH = step.link ? `<div class="node-link" data-link="${step.link}">→ ${step.link}</div>` : '';
     const inner = `<div class="${nc}" ${mdA} onclick="onNodeClick(this)">
-      ${step.mdFile?'<span class="md-indicator">\u2630</span>':''}
+      ${step.mdFile?'<span class="md-indicator">☰</span>':''}
       <div class="node-title">${step.title}</div>
       <div class="node-subtitle">${stripHtml(step.detail)}</div>
       <div class="node-tags">${tags}</div>${linkH}</div>`;
     if (step.loop) {
       html += `<div class="diagram-loop-wrapper">${inner}
-        <div class="loop-label">\u21BB ${step.loop.condition}</div>
+        <div class="loop-label">↻ ${step.loop.condition}</div>
         <svg class="loop-arrow-svg" width="50" height="70" viewBox="0 0 50 70">
           <path d="M5,5 C40,5 45,35 45,35 C45,35 45,65 5,65" fill="none" stroke="var(--pink)" stroke-width="2" stroke-dasharray="4,3"/>
           <polygon points="5,60 5,70 12,65" fill="var(--pink)"/></svg></div>`;
@@ -727,7 +727,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeReader(
 const themeBtn = document.getElementById('themeToggle');
 function setTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
-  themeBtn.textContent = t === 'light' ? '\u2600' : '\u263E';
+  themeBtn.textContent = t === 'light' ? '☀' : '☾';
   localStorage.setItem('flows-theme', t);
 }
 themeBtn.addEventListener('click', () => {
