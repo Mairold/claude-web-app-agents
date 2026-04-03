@@ -15,7 +15,7 @@ Before each phase, run `date +%s` and store the result. After each phase complet
 At the very start, run `date +%s` and store as `DEVELOP_START`.
 
 ## Phase 1 — Plan
-Use the Skill tool to invoke `plan` with args "$ARGUMENTS".
+Use the Skill tool to invoke `plan` with args `"--from-develop $ARGUMENTS"`.
 
 ## Phase 2 — Implement
 Use the Skill tool to invoke `implement` with args "$ARGUMENTS".

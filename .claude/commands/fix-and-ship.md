@@ -1,7 +1,7 @@
 ---
 model: sonnet
 ---
-Fix CRITICAL/MUST FIX findings and close the story. No follow-ups.
+Fix CRITICAL/HIGH findings inline. Bundle MEDIUM findings into one follow-up story. Close the story.
 
 Story: $ARGUMENTS
 

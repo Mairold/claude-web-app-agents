@@ -17,61 +17,11 @@ Check CLAUDE.md and the project structure to determine if this is a web project 
 
 ---
 
-## Step 0b — Bootstrap (only if Playwright is not yet configured)
+## Step 0b — Bootstrap check
 
 Check if `playwright.config.js` (or `playwright.config.ts`) exists in the frontend directory or project root.
 
-If NOT, set up the E2E infrastructure:
-
-1. **Detect the tech stack** from CLAUDE.md, package.json, docker-compose.yml.
-
-2. **Install Playwright:**
-   ```
-   npm install -D @playwright/test && npx playwright install chromium
-   ```
-   (Run in the frontend directory if separate from root.)
-
-3. **Create `docker-compose.test.yml`** in the project root with:
-   - Separate postgres (using `tmpfs` for speed, no persistent volume, NO exposed host port — backend connects via docker network)
-   - Backend on a separate port (e.g. 8091) so it doesn't conflict with dev
-   - Use a multi-arch Dockerfile (no `amd64/` prefix on base images) so it works on ARM (Apple Silicon) and x86
-   - If the existing Dockerfile uses arch-specific images, create a `Dockerfile.test` with multi-arch equivalents
-
-4. **Create test auth backdoor** (backend):
-   - A controller/endpoint like `POST /api/auth/test-login` that creates a user + session without OAuth
-   - Must be guarded so it's never active in production:
-     - Spring Boot: `@ConditionalOnProperty(name = "app.test-mode", havingValue = "true")`
-     - Express: middleware check for `APP_TEST_MODE` env var
-   - Add the endpoint to the security config's permit-all list
-   - Create an `application-test.properties` (or equivalent) that enables test mode
-
-5. **Create `playwright.config.js`:**
-   - testDir: `./e2e`
-   - baseURL: `http://localhost:5174`
-   - reporter: `[['html', {open: 'never'}], ['list']]` for HTML report generation
-   - screenshot: `'on'` — captures final state of every test (visible in HTML report)
-   - webServer: starts the frontend dev server on port 5174 pointing at test backend
-   - Make the frontend proxy target configurable via env var (e.g. `VITE_API_TARGET`)
-
-6. **Create `e2e/helpers.js`** with a `login(page, email)` and `loginAndGo(page, email, path)` function that calls the test-login endpoint.
-
-7. **Create first smoke test** `e2e/smoke.spec.js`:
-   - Unauthenticated user sees login page
-   - Authenticated user sees the main page
-   - Read the actual page content from failure screenshots to get the correct text/selectors
-
-8. **Add npm scripts:**
-   - `test:e2e` — runs all E2E tests headless (with env var pointing to test backend)
-   - `test:e2e:ui` — interactive Playwright UI mode (best for debugging)
-   - `test:e2e:report` — serves the HTML report on `0.0.0.0:8082` via `http-server` (accessible over network/Tailscale, not just localhost)
-
-9. **Exclude E2E tests from unit test runner** (e.g. add `e2e/**` to Vitest/Jest exclude list).
-
-10. **Add to .gitignore:** `playwright-report`, `test-results`
-
-11. **Update CLAUDE.md** with E2E section: commands, file locations, test users, report path.
-
-12. Run smoke tests and fix until green. Read screenshots on failure to understand actual page state.
+If NOT — use the Skill tool to invoke `e2e-setup`. Wait for it to complete before continuing.
 
 ---
 

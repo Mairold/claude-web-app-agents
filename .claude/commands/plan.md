@@ -9,6 +9,8 @@ Story: $ARGUMENTS
 
 1. `read_story("$ARGUMENTS")` — understand requirements fully. State assumptions, do not ask.
    (If MCP unavailable: use $ARGUMENTS as description if it has spaces, else ask user to paste requirements.)
+   If `$ARGUMENTS` starts with `--from-develop`, strip that prefix and treat the rest as the story slug.
+   Store whether called from develop: `FROM_DEVELOP = $ARGUMENTS contains "--from-develop"`
 
 2. **FOLLOWUP stories** (title contains "[FOLLOWUP]"): the `## Tasks` checklist IS the plan — skip all steps below. Print: `Plan ready for [slug]`
 
@@ -45,4 +47,5 @@ Story: $ARGUMENTS
    - Key design decision: if multiple approaches exist, state the chosen one and why
    - Reuse: name existing utilities, services, or patterns to build on — never duplicate
 
-   **Present the plan to the user and wait for approval before continuing.** Do not proceed to implementation until the user confirms.
+   **If called standalone (`/plan`):** Present the plan to the user and wait for approval before finishing. Do not proceed until the user confirms.
+   **If called from `/develop`:** Write the plan and continue — do not wait for approval.

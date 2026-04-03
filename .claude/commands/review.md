@@ -39,5 +39,5 @@ Collect all outputs. Print compact summary table (one line per agent, skip agent
 ```
 
 Do NOT write review findings into the story — stories are for the user, not internal review data.
-Only report CRITICAL and HIGH / MUST FIX findings for action. MEDIUM/LOW go into the summary but need no action.
-Do NOT create follow-up stories from reviews.
+Only report CRITICAL and HIGH / MUST FIX findings for action. MEDIUM findings are collected by /fix-and-ship into one follow-up story. LOW/Nice-to-have go into the summary but are ignored.
+Do NOT create follow-up stories from /review — that is /fix-and-ship's responsibility.
