@@ -1,15 +1,24 @@
-name: Generate flows.html
+name: Deploy Flow Visualizer
 
 on:
   push:
+    branches: [master]
     paths:
       - '.claude/agents/*.md'
       - '.claude/commands/*.md'
       - 'docs/generate-flows.js'
+  workflow_dispatch:
+
+permissions:
+  pages: write
+  id-token: write
 
 jobs:
-  generate:
+  deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -27,3 +36,10 @@ jobs:
           git add docs/flows.html
           git commit -m "docs: regenerate flows.html"
           git push
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
