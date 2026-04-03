@@ -32,11 +32,12 @@ curl -fsSL "$REPO/.claude/agents/tdd-test-writer.md"        -o .claude/agents/td
 curl -fsSL "$REPO/.claude/agents/tdd-implementer.md"        -o .claude/agents/tdd-implementer.md
 curl -fsSL "$REPO/.claude/agents/tdd-refactorer.md"         -o .claude/agents/tdd-refactorer.md
 
-# 8 commands
+# 9 commands
 curl -fsSL "$REPO/.claude/commands/develop.md"              -o .claude/commands/develop.md
 curl -fsSL "$REPO/.claude/commands/plan.md"                 -o .claude/commands/plan.md
 curl -fsSL "$REPO/.claude/commands/implement.md"            -o .claude/commands/implement.md
 curl -fsSL "$REPO/.claude/commands/e2e-test.md"             -o .claude/commands/e2e-test.md
+curl -fsSL "$REPO/.claude/commands/e2e-setup.md"           -o .claude/commands/e2e-setup.md
 curl -fsSL "$REPO/.claude/commands/review.md"               -o .claude/commands/review.md
 curl -fsSL "$REPO/.claude/commands/fix-and-ship.md"         -o .claude/commands/fix-and-ship.md
 curl -fsSL "$REPO/.claude/commands/fix-bug.md"              -o .claude/commands/fix-bug.md

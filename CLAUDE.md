@@ -20,6 +20,7 @@ When an MCP story tool is unavailable or a call fails:
 - `/plan <slug or description>` — read story, add AC + implementation plan
 - `/implement <slug or description>` — TDD implementation cycle
 - `/e2e-test <slug or description>` — write Playwright E2E tests (bootstraps Playwright on first use)
+- `/e2e-setup` — bootstrap Playwright E2E infrastructure (run once per project)
 - `/review <slug or description>` — parallel review (up to 6 agents, conditional tech-stack agents)
 - `/fix-and-ship <slug or description>` — fix CRITICAL/MUST FIX + close story
 - `/fix-bug <slug or description>` — standalone bug fix + deploy + done
