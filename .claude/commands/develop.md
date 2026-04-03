@@ -39,13 +39,26 @@ Otherwise: Use the Skill tool to invoke `review` with args "$ARGUMENTS".
 ## Phase 5 — Fix & Ship
 Use the Skill tool to invoke `fix-and-ship` with args "--from-develop $ARGUMENTS".
 
-## Phase 6 — Commit & Deploy
+## Phase 6 — Local deploy & commit
+
 1. Restore any docs/ changes: `git restore --staged docs/ 2>/dev/null; git checkout -- docs/ 2>/dev/null`
-2. `git add` modified files by name (never `git add -A`)
-3. `git commit -m "<short description>"`
-4. `git push`
-5. `docker compose up --build -d`
-6. Wait 10s, check `docker compose logs backend --tail 20` for startup errors
+2. `docker compose up --build -d`
+3. Wait 10s, check `docker compose logs backend --tail 20` for startup errors
+4. Detect host IP and exposed ports from docker-compose.yml, then print access URLs:
+   ```bash
+   HOST_IP=$(ip route show default 2>/dev/null | awk '/default/ {print $3}' | head -1)
+   [ -z "$HOST_IP" ] && HOST_IP=$(hostname -I 2>/dev/null | awk '{print $1}')
+   [ -z "$HOST_IP" ] && HOST_IP="localhost"
+   ```
+   Parse `docker-compose.yml` for `ports:` entries (format `"HOST:CONTAINER"` or `"PORT"`).
+   For each exposed port, print:
+   ```
+   ✅ Running — test at:
+      http://<HOST_IP>:<port>   # one line per exposed port
+   ```
+5. **Wait for user confirmation** before continuing.
+6. `git add` modified files by name (never `git add -A`)
+7. `git commit -m "<short description>"`
 
 ## Done
 Calculate total duration from `DEVELOP_START`. Print timing summary:

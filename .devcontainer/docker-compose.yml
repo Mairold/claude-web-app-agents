@@ -12,6 +12,7 @@ services:
       - claude-json:/home/node/.claude-json-dir
       - claude-history:/commandhistory
       - m2-cache:/home/node/.m2
+      - /var/run/docker.sock:/var/run/docker.sock
     command: sleep infinity
     ports:
       - "5173:5173"   # Vite/Svelte dev server
