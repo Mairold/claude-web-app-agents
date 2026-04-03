@@ -20,22 +20,10 @@ Story: $ARGUMENTS
    - Include mobile criterion if UI change
    - Include `- [ ]` checkbox format for each criterion
 
-4. **Triage — decide scope of planning:**
-
-   **Technical task** (migration, bug fix, refactor, config change, adding tests, dependency update):
-   - Use `update_story` to append under `## Details` (if MCP unavailable: print instead):
-     - What will be done and key assumptions (1-2 sentences, no file lists)
-     - Effort: [S/M/L] human → [S/M/L] with AI
-
-   **User-facing feature** (new UI, new endpoint, user flow change, ambiguous scope):
-   - First answer: (1) Is this the right problem to solve? (2) What's the actual user outcome? (3) What if we do nothing?
-   - Use `update_story` to append under `## Details` (if MCP unavailable: print instead):
-     - CURRENT: [one line — what exists today]
-     - THIS PLAN: [one line — what this story adds]
-     - 12-MONTH: [one line — where this is heading]
-     - Key assumptions (1-2 sentences, no file lists)
-     - Effort: [S/M/L] human → [S/M/L] with AI
-       (S=hours, M=day, L=days — AI typically drops one level)
+4. Use `update_story` to append under `## Details` (if MCP unavailable: print instead):
+   - What will be built and key assumptions (1-2 sentences, no file lists)
+   - Effort: [S/M/L] human → [S/M/L] with AI
+     (S=hours, M=day, L=days — AI typically drops one level)
 
 5. **Technical approach (conditional):** Skip if the story already has a `## Technical Approach` section or equivalent technical detail, OR if the story is simple (single-file change, config tweak, copy change).
 
