@@ -15,6 +15,11 @@
 - `@StateObject` for reference types this view owns
 - `@ObservedObject` for reference types injected from parent
 
+## Error Handling & Logging
+- Log every caught error using `Logger` (OSLog) at `.error` or `.fault` level
+- Never silently discard errors in `catch` blocks — at minimum log
+- Use a centralized error handler for network/API errors that logs before surfacing to UI
+
 ## Security
 - Secrets in Keychain with `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`
 - Never UserDefaults for sensitive data

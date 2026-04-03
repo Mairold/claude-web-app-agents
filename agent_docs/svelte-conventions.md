@@ -10,6 +10,7 @@
 
 ## API Calls
 - All fetch calls through `src/lib/api/` — never inline in components
+- All API errors must be logged (e.g. `console.error`) before surfacing to the user — no silent failures in catch blocks
 
 ## File Inputs
 - Never `display:none` — use `absolute w-0 h-0 overflow-hidden opacity-0`

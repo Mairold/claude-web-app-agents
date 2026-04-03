@@ -1,0 +1,29 @@
+name: Generate flows.html
+
+on:
+  push:
+    paths:
+      - '.claude/agents/*.md'
+      - '.claude/commands/*.md'
+      - 'docs/generate-flows.js'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: node docs/generate-flows.js
+
+      - name: Commit if changed
+        run: |
+          git diff --quiet docs/flows.html && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/flows.html
+          git commit -m "docs: regenerate flows.html"
+          git push

@@ -19,5 +19,13 @@
 - Never modify existing migrations
 - All tables must have: `created_at`, `created_by`, `changed_at`, `changed_by`
 
+## Global Exception Handling
+- A `@ControllerAdvice` global exception handler is mandatory in every Spring Boot project
+- Log every exception at WARN or ERROR level (ERROR for 5xx, WARN for 4xx)
+- Use `log.error("message", exception)` — always include the exception object for stack trace
+- **Never log sensitive data** (passwords, tokens, PII, session IDs, request bodies containing credentials) — sanitize or mask before logging
+- Return a consistent error response DTO (e.g. `ErrorResponse` record with `status`, `message`, `timestamp`)
+- Never leak stack traces or internal details to the client in production
+
 ## Security Config
 - Every new endpoint must be explicitly added to the security filter chain
