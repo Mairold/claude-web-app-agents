@@ -1,0 +1,25 @@
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - ..:/workspace:cached
+      - claude-config:/home/node/.claude
+      - claude-json:/home/node/.claude-json-dir
+      - claude-history:/commandhistory
+      - m2-cache:/home/node/.m2
+    command: sleep infinity
+    ports:
+      - "5173:5173"   # Vite/Svelte dev server
+      - "3000:3000"   # App server
+      - "8080:8080"   # Java backend
+
+volumes:
+  claude-config:
+  claude-json:
+  claude-history:
+  m2-cache:
