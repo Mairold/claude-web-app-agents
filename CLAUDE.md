@@ -7,6 +7,10 @@
 - `update_story` — update story description/content
 - `change_status` — change story status
 
+## MCP Safety Rules
+- **Never change story title/slug via MCP** — when calling `update_story`, keep the first `# Feature:` heading identical to what `read_story` returned. Changing the title regenerates the slug, which can orphan comments and cause data loss.
+- **Preserve original story content** — never rewrite the entire story from scratch. Always `read_story` first, then modify only specific sections (AC, Tasks, Details, Bugs). Keep all other sections and user-written text verbatim.
+
 ## MCP Fallback Behavior
 When an MCP story tool is unavailable or a call fails:
 - **`read_story`**: if `$ARGUMENTS` contains spaces, treat it as the task description directly. If it looks like a slug (no spaces, hyphen-separated), ask the user to paste the requirements.
@@ -32,12 +36,20 @@ When an MCP story tool is unavailable or a call fails:
 - When creating stories via `create_story`, check if the scope covers more than one vertical slice. If it does, split and note dependencies.
 - **Group related stories with a label.** When splitting a feature into multiple stories, apply a shared label (e.g. the feature name) to all of them.
 
+## TDD and Testing Rules
+- **Tests are part of every task** — always write tests with every task, not as a separate step. Don't wait for the user to ask.
+- **Failing tests — ask before fixing** — when a test fails, analyze root cause and present findings to the user before changing test or code. Never blindly modify tests.
+- **Re-run E2E after review fixes** — always re-run all E2E tests after fixing review findings in `/develop`. Don't assume fixes are safe.
+
+## Planning Rules
+- **Always wait for plan approval** — never start implementing before user approves the plan, even in `/develop`. Exception: if the story already has a detailed plan with tasks before `/plan` runs.
+
 ## Review Scope Rules
 - **Only review code written/modified in the current story.** Do not flag pre-existing issues in files that were only touched for minor edits (imports, signature changes).
 - **Only report CRITICAL and HIGH findings for inline fixing.** MEDIUM go into summary.
 - **Fix CRITICAL and HIGH inline.** MEDIUM findings across the whole review get bundled into exactly ONE follow-up story (not one per finding). LOW/Nice-to-have are logged but ignored.
 - **Max one follow-up story per `/develop` run.** Title format: `[FOLLOWUP] <original-slug> — review cleanup`
-- **No endless cycles.** Each `/develop` run produces exactly one review round. No re-reviews, no follow-up reviews.
+- **No endless cycles.** Each `/develop` run produces exactly one review round. No re-reviews, no follow-up reviews. Never create follow-up stories from reviews.
 
 ## Agents
 11 review/TDD agents in `.claude/agents/` — agent files are authoritative, not this section.
