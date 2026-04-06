@@ -12,7 +12,7 @@ curl -fsSL https://raw.githubusercontent.com/ahoa/claude-agents/master/install.s
 
 
 The installer will:
-- Copy 11 agents (8 review + 3 TDD), 8 commands, 3 skills, and 4 rules into `.claude/`
+- Copy 11 agents (8 review + 3 TDD), 11 commands, 3 skills, and 4 rules into `.claude/`
 - Append agent conventions to `CLAUDE.md`
 - Add a `SessionStart` hook to `.claude/settings.json` so agents **auto-update at the start of every Claude Code session**
 
@@ -29,12 +29,14 @@ Restart Claude Code after the first install — files are loaded at session star
 /fix-and-ship <slug>  — fix CRITICAL/MUST FIX + close story
 /fix-bug <slug>       — standalone: read bug → test → fix → deploy → done
 /refactor             — standalone: baseline → refactor → verify → deploy
+/retro                — analyze accumulated learnings, propose rule promotions
+/learn <desc|uuid>    — manually log or promote a learning
 ```
 
 ## Requirements
 
 - Claude Code with `/agents` support
-- MCP server exposing: `list_stories`, `read_story`, `create_story`, `update_story`, `change_status`
+- MCP server exposing: `list_stories`, `read_story`, `create_story`, `update_story`, `change_status`, `log_learning`, `list_learnings`, `promote_learning`
 
 ## /develop phases
 
@@ -88,6 +90,8 @@ Subsequent runs skip bootstrap and go straight to writing tests.
 | `/fix-and-ship`         | sonnet | Mechanical: fix + status change                   |
 | `/fix-bug`              | opus   | Root cause analysis requires deep reasoning       |
 | `/refactor`             | opus   | Code changes must preserve correctness            |
+| `/retro`                | sonnet | Pattern analysis, text generation                 |
+| `/learn`                | sonnet | Simple log or promote operation                   |
 
 ### Why this split
 
@@ -107,6 +111,16 @@ Swift and SwiftUI files (`.swift`) activate:
 - **`swiftui-reviewer`** — property wrapper misuse, performance anti-patterns, accessibility, navigation
 - **Rules** — `swift-best-practices.md` and `swift-naming.md` auto-activate for `**/*.swift`
 - **Skill** — `swiftui` skill auto-invokes for SwiftUI views, MVVM, Combine, property wrappers
+
+## Learnings
+
+Review findings (HIGH/CRITICAL) are automatically logged via `log_learning` after each `/review` or `/develop` run. Over time, patterns accumulate.
+
+- **`/retro`** — analyzes accumulated learnings, finds recurring patterns (3+ occurrences per project, 5+ cross-project), and proposes exact rule additions to CLAUDE.md or agent files. You confirm each promotion individually.
+- **`/learn <description>`** — manually log a learning from any context (debugging session, production incident, etc.)
+- **`/learn <uuid>`** — promote a specific learning to a permanent rule in CLAUDE.md or agent files
+
+Requires MCP server with `log_learning`, `list_learnings`, `promote_learning` endpoints.
 
 ### Verbosity constraints
 
