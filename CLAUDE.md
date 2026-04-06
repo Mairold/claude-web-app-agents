@@ -6,6 +6,9 @@
 - `create_story` — create a new story
 - `update_story` — update story description/content
 - `change_status` — change story status
+- `log_learning` — log a finding or pattern from a development phase
+- `list_learnings` — list accumulated learnings, grouped by pattern
+- `promote_learning` — mark a learning as promoted to CLAUDE.md
 
 ## MCP Safety Rules
 - **Never change story title/slug via MCP** — when calling `update_story`, keep the first `# Feature:` heading identical to what `read_story` returned. Changing the title regenerates the slug, which can orphan comments and cause data loss.
@@ -18,6 +21,9 @@ When an MCP story tool is unavailable or a call fails:
 - **`create_story`**: print the story content (title, description, tasks) as markdown. Prefix with `📋 Story (not saved — no story system):`.
 - **`list_stories`**: print `Story system unavailable` and continue.
 - **`change_status`**: print `[slug] done (story system unavailable)` and continue.
+- **`log_learning`**: print `[learning not saved — no MCP]` and continue. Never block the pipeline.
+- **`list_learnings`**: print `No learnings available` and continue.
+- **`promote_learning`**: print `[promote manually]` and continue.
 
 ## Custom Commands
 - `/develop <slug or description>` — full cycle: plan → implement → test → review → fix → commit → push → deploy
@@ -29,6 +35,8 @@ When an MCP story tool is unavailable or a call fails:
 - `/fix-and-ship <slug or description>` — fix CRITICAL/MUST FIX + close story
 - `/fix-bug <slug or description>` — standalone bug fix + deploy + done
 - `/refactor` — standalone refactoring + deploy
+- `/retro` — analyze accumulated learnings, propose rule promotions
+- `/learn <description or UUID>` — manually log or promote a learning
 
 ## Story Sizing
 - **Stories must be minimally testable units.** Never create a single story that spans DB migration + new service + UI changes for multiple concepts.

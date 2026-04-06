@@ -32,7 +32,7 @@ curl -fsSL "$REPO/.claude/agents/tdd-test-writer.md"        -o .claude/agents/td
 curl -fsSL "$REPO/.claude/agents/tdd-implementer.md"        -o .claude/agents/tdd-implementer.md
 curl -fsSL "$REPO/.claude/agents/tdd-refactorer.md"         -o .claude/agents/tdd-refactorer.md
 
-# 9 commands
+# 11 commands
 curl -fsSL "$REPO/.claude/commands/develop.md"              -o .claude/commands/develop.md
 curl -fsSL "$REPO/.claude/commands/plan.md"                 -o .claude/commands/plan.md
 curl -fsSL "$REPO/.claude/commands/implement.md"            -o .claude/commands/implement.md
@@ -42,6 +42,8 @@ curl -fsSL "$REPO/.claude/commands/review.md"               -o .claude/commands/
 curl -fsSL "$REPO/.claude/commands/fix-and-ship.md"         -o .claude/commands/fix-and-ship.md
 curl -fsSL "$REPO/.claude/commands/fix-bug.md"              -o .claude/commands/fix-bug.md
 curl -fsSL "$REPO/.claude/commands/refactor.md"             -o .claude/commands/refactor.md
+curl -fsSL "$REPO/.claude/commands/retro.md"                -o .claude/commands/retro.md
+curl -fsSL "$REPO/.claude/commands/learn.md"                -o .claude/commands/learn.md
 
 # 3 skills
 curl -fsSL "$REPO/.claude/skills/svelte-tailwind/SKILL.md"  -o .claude/skills/svelte-tailwind/SKILL.md
@@ -115,3 +117,5 @@ echo "   /review <slug>       — parallel review (up to 8 agents)"
 echo "   /fix-and-ship <slug> — fix findings + close story"
 echo "   /fix-bug <slug>      — standalone bug fix + deploy"
 echo "   /refactor            — standalone refactoring + deploy"
+echo "   /retro               — analyze learnings, propose rule promotions"
+echo "   /learn <desc|uuid>   — manually log or promote a learning"

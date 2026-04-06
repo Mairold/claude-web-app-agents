@@ -41,3 +41,27 @@ Collect all outputs. Print compact summary table (one line per agent, skip agent
 Do NOT write review findings into the story — stories are for the user, not internal review data.
 Only report CRITICAL and HIGH / MUST FIX findings for action. MEDIUM findings are collected by /fix-and-ship into one follow-up story. LOW/Nice-to-have go into the summary but are ignored.
 Do NOT create follow-up stories from /review — that is /fix-and-ship's responsibility.
+
+## Step 4 — Log learnings
+
+After synthesis, log HIGH and CRITICAL findings via `log_learning`.
+Read project name from CLAUDE.md (first line after `#` or `project:` field).
+
+For each HIGH or CRITICAL finding from Step 3:
+- phase: "review"
+- category: map agent to category:
+    security-reviewer    → "security"
+    architecture-reviewer → "architecture"
+    test-reviewer        → "testing"
+    docs-reviewer        → "docs"
+    svelte-reviewer      → "svelte"
+    spring-reviewer      → "spring"
+    swift-reviewer       → "swift"
+    swiftui-reviewer     → "swift"
+- agent: the agent name that found it
+- severity: "critical" or "high"
+- finding: one sentence — what the problem is (no file paths, no line numbers)
+- story_slug: $ARGUMENTS
+
+Call `log_learning` once per distinct finding.
+If MCP unavailable: skip silently, print `[learnings not logged]`, never block review output.
