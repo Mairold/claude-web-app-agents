@@ -9,6 +9,9 @@ Story: $ARGUMENTS
 
 Execute each phase in order. One line status after each phase.
 
+## Context management
+Each phase MUST output only a one-line status + timing. Do NOT repeat or summarize outputs from previous phases. If context is getting large, discard details from earlier phases — only the file list from implement matters for review.
+
 ## Timing
 Before each phase, run `date +%s` and store the result. After each phase completes, run `date +%s` again and calculate duration. Print duration after each phase status line in format: `(Xm Ys)`.
 
