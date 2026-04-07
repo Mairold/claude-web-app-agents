@@ -54,41 +54,43 @@ Print: `Diff-aware mode: testing [N] affected routes: [list]`
 
 ## Step 4 — Write tests
 
-Read existing E2E tests in the `e2e/` directory to understand patterns and helpers, then write tests that cover:
-- Happy path (the main user flow)
-- Key edge cases from the story's acceptance criteria
-- Mobile viewport if the story involves responsive UI changes (use `page.setViewportSize({ width: 375, height: 812 })`)
+Read ONE existing E2E test file to understand patterns and helpers (do not read all of them), then write ALL tests for this story in one go:
+- Happy path only (the main user flow)
+- One key edge case from acceptance criteria (pick the riskiest)
+- Skip mobile viewport unless story is specifically about responsive changes
+
+Keep it minimal — 3-5 tests max per story. More tests = more fix loops = slower.
 
 ### Conventions
 - One test file per feature/story: `e2e/<feature-name>.spec.js`
-- Use descriptive test names that read like user actions
 - Prefer `getByRole`, `getByText`, `getByLabel` over CSS selectors
 - Keep tests independent — each test logs in fresh
-- Use `test.describe` to group related tests
 - Use the `loginAndGo()` helper from `./helpers.js` for authentication
 
 ## Step 5 — Run and verify
 
-Run ALL E2E tests (not just the new ones) — this is a regression check:
+### 5a — Run NEW tests only first
+```
+npx playwright test e2e/<feature-name>.spec.js
+```
+This is fast and catches test-writing errors without waiting for the full suite.
+
+### 5b — Fix loop (max 3 attempts)
+When a test fails:
+1. Read the screenshot from `test-results/`
+2. Fix the issue (code or test — but never weaken assertions)
+3. Re-run the failing test file only
+
+**After 3 failed attempts on the same test:** skip it, mark as `test.skip()` with a `// TODO:` comment explaining the issue, and move on. Do not spend more time on it.
+
+### 5c — Full regression (only after new tests pass)
 ```
 npx playwright test
 ```
-
-### Find-fix-verify cycle
-When a test fails:
-1. Read the screenshot from `test-results/` to understand actual page state
-2. Fix the issue (in code or test — but never weaken assertions)
-3. Commit the fix atomically: `git commit -m "fix: <what was wrong>"`
-4. Generate a regression test that would have caught this bug
-5. Re-run and verify green
-
-### Handling failures
-
-- **New tests** (written in Step 4): Fix the underlying code or test — stay aligned with acceptance criteria. Never weaken assertions.
-- **Existing tests** (were passing before): Do NOT modify them. Analyze root cause, present findings to the user, wait for approval before changing anything.
+If an existing test breaks: do NOT modify it. Print the failure and ask the user how to proceed.
 
 ### Health score
-After all tests pass, compute:
+After all runs complete, compute:
 ```
 100 - (critical_failures × 25) - (high_failures × 10) - (warnings × 2)
 ```
