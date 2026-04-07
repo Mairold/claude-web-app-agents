@@ -28,6 +28,12 @@ globs: "**/*.java"
 - Prefer `application.yml` over `application.properties`
 - Use `@ConfigurationProperties` for type-safe config binding
 
+## Exceptions
+- All custom exceptions MUST extend `RuntimeException` — never checked exceptions
+- Create domain-specific exceptions (`OrderNotFoundException`, `InsufficientBalanceException`) — never throw generic `RuntimeException` or `IllegalArgumentException`
+- Handle with `@ControllerAdvice` + `@ExceptionHandler` — one global handler per project
+- Exception class per error category, not per method
+
 ## Code Quality
 - Methods ≤20 lines
 - Favor composition over inheritance

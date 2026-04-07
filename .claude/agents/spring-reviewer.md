@@ -16,7 +16,7 @@ FOCUS ONLY ON:
 - **Entity/DTO separation:** entities must not leak to controllers, DTOs must not contain business logic
 - **Flyway migrations:** snake_case naming, never modify existing migrations, tables must have created_at/created_by/changed_at/changed_by
 - **Java 21:** use records for DTOs, pattern matching, text blocks where appropriate
-- **Domain exceptions:** use domain-specific exceptions, not generic RuntimeException/IllegalArgumentException
+- **Domain exceptions:** all custom exceptions must extend `RuntimeException` — never checked exceptions. Use domain-specific names, not generic RuntimeException/IllegalArgumentException
 - **Security config:** new endpoints must be in the security filter chain with correct auth rules
 
 Return findings in this exact format:
