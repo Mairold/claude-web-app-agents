@@ -35,5 +35,5 @@ Story: $ARGUMENTS
    - Key design decision: if multiple approaches exist, state the chosen one and why
    - Reuse: name existing utilities, services, or patterns to build on — never duplicate
 
-   **If called standalone (`/plan`):** Present the plan to the user and wait for approval before finishing. Do not proceed until the user confirms.
-   **If called from `/develop`:** Write the plan and continue — do not wait for approval.
+   **Present the plan to the user and wait for approval before continuing.** Do not proceed until the user confirms.
+   **Exception:** If the story already had a `## Technical Approach` or `## Tasks` section with concrete steps BEFORE this `/plan` run, approval is not needed — the user already defined the plan.
