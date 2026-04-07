@@ -81,7 +81,10 @@ When a test fails:
 2. Fix the issue (code or test — but never weaken assertions)
 3. Re-run the failing test file only
 
-**After 3 failed attempts on the same test:** delete the test entirely. Flaky or unfixable tests waste time in every future run. Do not use `test.skip()` — dead tests accumulate and slow down the pipeline.
+**After 3 failed attempts on the same test:**
+1. Print: the test name, all 3 error messages, and what was tried each time
+2. Ask the user: keep trying or delete?
+3. If delete — remove the test entirely. No `test.skip()`, no TODO. Dead tests slow down every future run.
 
 ### 5c — Full regression (only after new tests pass)
 ```
