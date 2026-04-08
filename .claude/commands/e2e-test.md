@@ -87,6 +87,7 @@ When a test fails:
 3. If delete — remove the test entirely. No `test.skip()`, no TODO. Dead tests slow down every future run.
 
 ### 5c — Full regression (only after new tests pass)
+**IMPORTANT:** Always use Bash tool with `timeout: 360000` (6 minutes) for the full suite. Never use `run_in_background`.
 ```
 npx playwright test
 ```
