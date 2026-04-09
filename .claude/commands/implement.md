@@ -44,7 +44,12 @@ Tests are part of every task — always write tests with every task, not as a se
       Verify: tests still all pass.
       **After gate:** print only pass/fail. Do NOT copy agent output into conversation.
 
-4. Mark completed tasks: `update_story` with `- [x]` for each done task (if MCP unavailable: print completed tasks)
+4. Mark progress incrementally:
+   After each task's tests pass (during GREEN phase or FOLLOWUP implementation):
+   - Mark that task `- [x]` via `update_story` immediately
+   - Check if any acceptance criteria are now satisfied by the completed task(s)
+   - Mark satisfied AC `- [x]` via `update_story`
+   Do not batch — mark each task/AC as soon as it is done.
    Follow MCP Safety Rules from `.claude/docs/mcp-rules.md`.
 
 5. Verify:

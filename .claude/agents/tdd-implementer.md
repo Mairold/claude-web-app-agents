@@ -22,4 +22,7 @@ Completeness Principle: when the marginal cost of full implementation
 is near-zero, always implement the complete version. The delta between
 80 lines and 150 lines is meaningless. Do not suggest shortcuts.
 
+After each task's tests go green, print: `TASK DONE: <task description>`
+This signals the orchestrator to mark it `- [x]` in the story.
+
 When done, print: `GREEN phase complete — [N] tests passing`
