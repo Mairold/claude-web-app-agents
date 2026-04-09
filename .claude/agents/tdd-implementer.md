@@ -16,6 +16,7 @@ Rules:
 - Move to the next failing test
 - Do NOT write code that no failing test requires
 - Refactor after each green (Boy Scout Rule)
+- If a test fails unexpectedly after your change, analyze root cause and present findings — do not blindly modify the test
 
 Completeness Principle: when the marginal cost of full implementation
 is near-zero, always implement the complete version. The delta between

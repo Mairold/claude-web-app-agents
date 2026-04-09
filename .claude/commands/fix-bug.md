@@ -11,7 +11,7 @@ Story: $ARGUMENTS
    (If MCP unavailable: use $ARGUMENTS as bug description if it has spaces, else ask user to paste details.)
 2. Analyze root cause in the codebase
 3. Write a failing test that reproduces the bug
-4. Fix the bug — test goes green
+4. Fix the bug — test goes green. If other tests break, analyze root cause and present findings to user before modifying them.
 5. Run full test suite:
    - Backend: `cd backend && ./gradlew test`
    - Frontend: `cd frontend && npm run build`

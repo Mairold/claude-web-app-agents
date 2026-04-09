@@ -19,6 +19,10 @@
 - Never modify existing migrations
 - All tables must have: `created_at`, `created_by`, `changed_at`, `changed_by`
 
+## Exceptions
+- All custom exceptions MUST extend `RuntimeException` — never checked exceptions
+- Create domain-specific exceptions (`OrderNotFoundException`, `InsufficientBalanceException`) — never throw generic `RuntimeException` or `IllegalArgumentException`
+
 ## Global Exception Handling
 - A `@ControllerAdvice` global exception handler is mandatory in every Spring Boot project
 - Log every exception at WARN or ERROR level (ERROR for 5xx, WARN for 4xx)
