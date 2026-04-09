@@ -7,9 +7,11 @@ Story: $ARGUMENTS
 
 ---
 
-Completeness Principle: when the marginal cost of full implementation 
-is near-zero, always implement the complete version. The delta between 
+Completeness Principle: when the marginal cost of full implementation
+is near-zero, always implement the complete version. The delta between
 80 lines and 150 lines is meaningless. Do not suggest shortcuts.
+
+Tests are part of every task — always write tests with every task, not as a separate step.
 
 1. `read_story("$ARGUMENTS")` — get tasks and acceptance criteria
    (If MCP unavailable: use $ARGUMENTS as description if it has spaces, else ask user to paste requirements.)
