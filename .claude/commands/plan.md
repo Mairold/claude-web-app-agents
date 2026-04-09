@@ -7,9 +7,7 @@ Story: $ARGUMENTS
 
 ---
 
-**MCP safety:** never change the story title/slug in `update_story` — keep the `# Feature:` heading identical. Only modify specific sections (AC, Tasks, Details). Keep all user-written text verbatim.
-
-**Story sizing:** if the story spans more than one vertical slice (DB + service + UI for multiple concepts), split it into smaller stories before planning. Each story must be independently deployable and testable.
+**Before starting:** read and follow MCP Safety Rules and Story Sizing from CLAUDE.md.
 
 1. `read_story("$ARGUMENTS")` — understand requirements fully. State assumptions, do not ask.
    (If MCP unavailable: use $ARGUMENTS as description if it has spaces, else ask user to paste requirements.)
