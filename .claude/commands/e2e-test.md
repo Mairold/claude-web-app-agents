@@ -116,7 +116,8 @@ Print: `Health score: X/100`
 
 ## Step 7 — Update story
 
-If a story was provided, use `update_story` to append under `## Test Plan` (if MCP unavailable: print the content instead):
+If a story was provided, use `update_story` to append under `## Test Plan` (if MCP unavailable: print the content instead).
+**MCP safety:** never change the story title/slug. Only append the Test Plan section.
 - E2E test file(s) created
 - What flows are covered
 - Health score

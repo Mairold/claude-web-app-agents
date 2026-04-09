@@ -45,6 +45,7 @@ Tests are part of every task — always write tests with every task, not as a se
       **After gate:** print only pass/fail. Do NOT copy agent output into conversation.
 
 4. Mark completed tasks: `update_story` with `- [x]` for each done task (if MCP unavailable: print completed tasks)
+   **MCP safety:** never change the story title/slug. Only modify the Tasks section checkboxes.
 
 5. Verify:
    - Backend: `cd backend && ./gradlew test`
