@@ -26,9 +26,21 @@ Follow git rules from `.claude/docs/git-rules.md`.
 ## Step 3 — Deploy
 
 Run the `deploy` command from CLAUDE.md.
-If `post_deploy` is configured, run it and check output for errors.
+If `post_deploy` is configured, wait 10s then run it and check output for errors.
 
-Print access URLs if applicable (detect from docker-compose.yml or deployment output).
+Detect host IP and print access URLs:
+```bash
+HOST_IP=$(ip route show default 2>/dev/null | awk '/default/ {print $3}' | head -1)
+[ -z "$HOST_IP" ] && HOST_IP=$(hostname -I 2>/dev/null | awk '{print $1}')
+[ -z "$HOST_IP" ] && HOST_IP="localhost"
+```
+Parse `docker-compose.yml` (or deployment output) for exposed ports, then print:
+```
+Running — test at:
+   http://<HOST_IP>:<port>
+```
+
+**Wait for user confirmation** before closing the story.
 
 ## Step 4 — Close story
 
