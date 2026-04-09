@@ -11,7 +11,8 @@ Story: $ARGUMENTS
 
 Read `## Ship` section from CLAUDE.md. If missing, ask user:
 - `deploy`: how do you deploy? (e.g. `docker compose up --build -d`, `fly deploy`, `git push heroku`, `vercel --prod`, or custom command)
-- `post_deploy`: any post-deploy check? (e.g. `docker compose logs backend --tail 20`, health check URL, or leave empty)
+- `post_deploy`: any post-deploy check? (e.g. `docker compose logs backend --tail 20`, `curl -f https://app.example.com/health`, or leave empty)
+- `url`: how to reach the app after deploy? (e.g. `auto` to detect from docker/deployment output, or explicit URL like `https://app.example.com`)
 
 Save answers to CLAUDE.md under `## Ship`.
 
@@ -28,21 +29,23 @@ Follow git rules from `.claude/docs/git-rules.md`.
 Run the `deploy` command from CLAUDE.md.
 If `post_deploy` is configured, wait 10s then run it and check output for errors.
 
-Detect host IP and print access URLs:
-```bash
-HOST_IP=$(ip route show default 2>/dev/null | awk '/default/ {print $3}' | head -1)
-[ -z "$HOST_IP" ] && HOST_IP=$(hostname -I 2>/dev/null | awk '{print $1}')
-[ -z "$HOST_IP" ] && HOST_IP="localhost"
-```
-Parse `docker-compose.yml` (or deployment output) for exposed ports, then print:
-```
-Running — test at:
-   http://<HOST_IP>:<port>
-```
+## Step 4 — Print access URL
+
+If `url: auto`:
+- Detect host IP:
+  ```bash
+  HOST_IP=$(ip route show default 2>/dev/null | awk '/default/ {print $3}' | head -1)
+  [ -z "$HOST_IP" ] && HOST_IP=$(hostname -I 2>/dev/null | awk '{print $1}')
+  [ -z "$HOST_IP" ] && HOST_IP="localhost"
+  ```
+- Parse `docker-compose.yml` or deployment output for exposed ports
+- Print: `Running — test at: http://<HOST_IP>:<port>`
+
+If `url` is an explicit URL: print `Running — test at: <url>`
 
 **Wait for user confirmation** before closing the story.
 
-## Step 4 — Close story
+## Step 5 — Close story
 
 `change_status("$ARGUMENTS", "done")` (if MCP unavailable: print "[slug] done")
 
