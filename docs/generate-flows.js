@@ -26,7 +26,7 @@ const MD_FILES = [
   '.claude/commands/implement.md',
   '.claude/commands/review.md',
   '.claude/commands/e2e-test.md',
-  '.claude/commands/fix-and-ship.md',
+  '.claude/commands/ship.md',
   '.claude/commands/fix-bug.md',
   '.claude/commands/refactor.md',
 ];
@@ -399,7 +399,7 @@ const COMMAND_FILES = {
   'implement': '.claude/commands/implement.md',
   'review': '.claude/commands/review.md',
   'e2e-test': '.claude/commands/e2e-test.md',
-  'fix-and-ship': '.claude/commands/fix-and-ship.md',
+  'ship': '.claude/commands/ship.md',
   'fix-bug': '.claude/commands/fix-bug.md',
   'refactor': '.claude/commands/refactor.md',
 };
@@ -408,15 +408,14 @@ const FLOWS = [
   {
     id: 'develop', name: '/develop', color: 'var(--accent)', model: 'opus',
     mdFile: COMMAND_FILES['develop'],
-    desc: 'Kogu arendustsükkel: plan → implement → test → review → fix → commit → push → deploy.',
+    desc: 'Kogu arendustsükkel: plan → implement → test → review → ship.',
     steps: [
       { title: 'Timing Setup', tags: [], detail: '<code>date +%s</code> salvestab algusaja.', condition: null, loop: null, mdFile: null },
       { title: 'Phase 1 — Plan', tags: [{ text: 'skill: plan', cls: 'tag-agent' }, { text: 'sonnet', cls: 'tag-model' }], detail: 'Kutsub <strong>/plan</strong> skilli.', condition: null, loop: null, mdFile: COMMAND_FILES['plan'], link: 'plan' },
       { title: 'Phase 2 — Implement', tags: [{ text: 'skill: implement', cls: 'tag-agent' }, { text: 'opus', cls: 'tag-model' }], detail: 'TDD tsükkel: RED → GREEN → REFACTOR.', condition: null, loop: null, mdFile: COMMAND_FILES['implement'], link: 'implement' },
-      { title: 'Phase 3 — E2E Tests', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'skill: e2e-test', cls: 'tag-agent' }], detail: 'Playwright E2E testid.', condition: 'UI failid muudetud, >3 backend faili, API endpointid/turvaconfig muudetud või story label \\"security\\"/\\"architecture\\"', loop: null, mdFile: COMMAND_FILES['e2e-test'], link: 'e2e-test' },
-      { title: 'Phase 4 — Review', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'skill: review', cls: 'tag-agent' }], detail: 'Kuni 8 review agenti paralleelselt.', condition: 'Jäetakse vahele kui KÕIK muudetud failid on CSS-only, Tailwind või SVG ikoonid', loop: null, mdFile: COMMAND_FILES['review'], link: 'review' },
-      { title: 'Phase 5 — Fix & Ship', tags: [{ text: 'skill: fix-and-ship', cls: 'tag-agent' }], detail: 'Parandab CRITICAL/HIGH leiud.', condition: null, loop: null, mdFile: COMMAND_FILES['fix-and-ship'], link: 'fix-and-ship' },
-      { title: 'Phase 6 — Commit & Deploy', tags: [{ text: 'deploy', cls: 'tag-deploy' }], detail: '<code>git add</code> → <code>git commit</code> → <code>git push</code> → <code>docker compose up --build -d</code>', condition: null, loop: null, mdFile: null },
+      { title: 'Phase 3 — E2E Tests', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'skill: e2e-test', cls: 'tag-agent' }], detail: 'Playwright E2E testid.', condition: 'UI failid muudetud, >3 backend faili, API endpointid/turvaconfig muudetud või story label "security"/"architecture"', loop: null, mdFile: COMMAND_FILES['e2e-test'], link: 'e2e-test' },
+      { title: 'Phase 4 — Review + Fix', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'skill: review', cls: 'tag-agent' }], detail: 'Review agendid + fix CRITICAL/HIGH. Config: CLAUDE.md ## Review.', condition: 'Vahele kui CSS-only, Tailwind või SVG', loop: null, mdFile: COMMAND_FILES['review'], link: 'review' },
+      { title: 'Phase 5 — Ship', tags: [{ text: 'skill: ship', cls: 'tag-agent' }, { text: 'deploy', cls: 'tag-deploy' }], detail: 'Commit, deploy, mark done. Config: CLAUDE.md ## Ship.', condition: null, loop: null, mdFile: COMMAND_FILES['ship'], link: 'ship' },
       { title: 'Timing Summary', tags: [], detail: 'Ajatabel iga faasi kohta + testide arv.', condition: null, loop: null, mdFile: null }
     ]
   },
@@ -466,7 +465,10 @@ const FLOWS = [
         ]
       },
       { title: 'Spawn Agents', tags: [{ text: 'parallel', cls: 'tag-model' }], detail: 'Kõik valitud agendid samaaegselt.', condition: null, loop: null, mdFile: null, isParallel: true },
-      { title: 'Synthesize Results', tags: [], detail: 'CRITICAL+HIGH → parandamiseks. MEDIUM+LOW → kokkuvõte.', condition: null, loop: null, mdFile: null }
+      { title: 'Synthesize Results', tags: [], detail: 'Koondab leiud tabelisse.', condition: null, loop: null, mdFile: null },
+      { title: 'Fix Findings', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: 'CRITICAL/HIGH: auto fix või küsi kasutajalt. MEDIUM: follow-up story või skip.', condition: 'Konfigureeritav CLAUDE.md ## Review kaudu (review_fix: auto|ask, followup: create|skip)', loop: null, mdFile: null },
+      { title: 'Re-run E2E', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'tests', cls: 'tag-test' }], detail: 'Playwright testid pärast fixe.', condition: 'Ainult kui koodi muudeti fix-sammus', loop: null, mdFile: null },
+      { title: 'Log Learnings', tags: [{ text: 'MCP: log_learning', cls: 'tag-agent' }], detail: 'Logib HIGH/CRITICAL leiud MCP kaudu.', condition: null, loop: null, mdFile: null }
     ]
   },
   {
@@ -485,14 +487,14 @@ const FLOWS = [
     ]
   },
   {
-    id: 'fix-and-ship', name: '/fix-and-ship', color: 'var(--red)', model: 'sonnet',
-    mdFile: COMMAND_FILES['fix-and-ship'],
-    desc: 'Parandab CRITICAL/HIGH leiud ja sulgeb story.',
+    id: 'ship', name: '/ship', color: 'var(--green)', model: 'sonnet',
+    mdFile: COMMAND_FILES['ship'],
+    desc: 'Commit, deploy, mark done. Loeb deploy configi CLAUDE.md-st.',
     steps: [
-      { title: 'Review Check', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: '--from-develop → vahele.', condition: '--from-develop puudub: kontrollib /review', loop: null, mdFile: null },
-      { title: 'Fix CRITICAL + HIGH', tags: [], detail: 'Parandab otse koodis.', condition: null, loop: null, mdFile: null },
-      { title: 'Re-run E2E Tests', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'tests', cls: 'tag-test' }], detail: 'Playwright testid.', condition: 'Ainult kui koodi muudeti', loop: null, mdFile: null },
-      { title: 'Bundle MEDIUM → Follow-up', tags: [{ text: 'MCP: create_story', cls: 'tag-agent' }], detail: 'Üks follow-up story kõigi MEDIUM leidude jaoks.', condition: 'Ainult kui on MEDIUM leide', loop: null, mdFile: null },
+      { title: 'Read Deploy Config', tags: [{ text: 'conditional', cls: 'tag-conditional' }], detail: 'Loeb ## Ship sektsioon CLAUDE.md-st. Esimesel korral küsib kasutajalt.', condition: '## Ship puudub CLAUDE.md-st → STOP ja küsi', loop: null, mdFile: null },
+      { title: 'Commit', tags: [], detail: '<code>git add</code> failid nimepidi → <code>git commit</code>', condition: null, loop: null, mdFile: null },
+      { title: 'Deploy', tags: [{ text: 'conditional', cls: 'tag-conditional' }, { text: 'deploy', cls: 'tag-deploy' }], detail: 'Käivitab CLAUDE.md deploy käsu. Ootab post_deploy kontrolli.', condition: 'deploy: skip → jätab vahele', loop: null, mdFile: null },
+      { title: 'Print URL + Confirm', tags: [], detail: 'Näitab ligipääsu URL-i, ootab kasutaja kinnitust.', condition: null, loop: null, mdFile: null },
       { title: 'Close Story', tags: [{ text: 'MCP: change_status', cls: 'tag-agent' }], detail: '<code>change_status("slug", "done")</code>', condition: null, loop: null, mdFile: null }
     ]
   },
