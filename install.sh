@@ -63,6 +63,7 @@ curl -fsSL "$REPO/agent_docs/mobile-guidelines.md"          -o agent_docs/mobile
 curl -fsSL "$REPO/agent_docs/spring-conventions.md"         -o agent_docs/spring-conventions.md
 curl -fsSL "$REPO/agent_docs/svelte-conventions.md"         -o agent_docs/svelte-conventions.md
 curl -fsSL "$REPO/agent_docs/swift-conventions.md"          -o agent_docs/swift-conventions.md
+curl -fsSL "$REPO/agent_docs/mcp-rules.md"                 -o agent_docs/mcp-rules.md
 
 echo "$REMOTE_VERSION" > "$VERSION_FILE"
 
