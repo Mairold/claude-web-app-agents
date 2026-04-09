@@ -47,8 +47,8 @@ Tests are part of every task — always write tests with every task, not as a se
 4. Mark progress incrementally:
    After each task's tests pass (during GREEN phase or FOLLOWUP implementation):
    - Mark that task `- [x]` via `update_story` immediately
-   - Check if any acceptance criteria are now satisfied by the completed task(s)
-   - Mark satisfied AC `- [x]` via `update_story`
+   - Check if any acceptance criteria are now covered by a passing test
+   - Mark AC `- [x]` only if a test exists that verifies it
    Do not batch — mark each task/AC as soon as it is done.
    Follow MCP Safety Rules from `.claude/docs/mcp-rules.md`.
 
