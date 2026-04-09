@@ -41,13 +41,17 @@ Collect all outputs. Print compact summary table (one line per agent, skip agent
 Do NOT write review findings into the story — stories are for the user, not internal review data.
 **One review round per `/develop` run.** No re-reviews, no follow-up reviews.
 
-## Step 4 — Fix findings
+## Step 4 — Fix findings (MANDATORY config check)
 
-Read `## Review` section from CLAUDE.md. If missing, ask user:
-- `review_fix`: **auto** (fix CRITICAL/HIGH immediately) or **ask** (show each fix, wait for approval)?
-- `followup`: **create** (bundle MEDIUM into follow-up story) or **skip**?
+Read CLAUDE.md and look for a `## Review` section with `review_fix:` and `followup:` values.
 
-Save answers to CLAUDE.md under `## Review`.
+**If the section is missing or any value is missing: STOP and ask the user. Do NOT proceed with fixes. Do NOT guess or use defaults.**
+
+Ask:
+1. "How to handle CRITICAL/HIGH findings? `auto` (fix immediately) or `ask` (show each fix, wait for approval)?"
+2. "How to handle MEDIUM findings? `create` (bundle into follow-up story) or `skip` (print summary only)?"
+
+After user answers, write the `## Review` section to CLAUDE.md with their answers, then continue.
 
 Then apply:
 - **CRITICAL + HIGH:** if `review_fix: auto` → fix inline. If `review_fix: ask` → show each proposed fix, wait for user approval per fix.

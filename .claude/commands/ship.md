@@ -7,14 +7,18 @@ Story: $ARGUMENTS
 
 ---
 
-## Step 1 — Read deploy config
+## Step 1 — Read deploy config (MANDATORY)
 
-Read `## Ship` section from CLAUDE.md. If missing, ask user:
-- `deploy`: how do you deploy? (e.g. `docker compose up --build -d`, `fly deploy`, `git push heroku`, `vercel --prod`, or custom command)
-- `post_deploy`: any post-deploy check? (e.g. `docker compose logs backend --tail 20`, `curl -f https://app.example.com/health`, or leave empty)
-- `url`: how to reach the app after deploy? (e.g. `auto` to detect from docker/deployment output, or explicit URL like `https://app.example.com`)
+Read CLAUDE.md and look for a `## Ship` section with `deploy:`, `post_deploy:`, and `url:` values.
 
-Save answers to CLAUDE.md under `## Ship`.
+**If the section is missing or any value is missing: STOP and ask the user. Do NOT proceed to Step 2. Do NOT guess or use defaults.**
+
+Ask:
+1. "How do you deploy? (e.g. `docker compose up --build -d`, `fly deploy`, `vercel --prod`, `skip` for no deploy)"
+2. "Any post-deploy check? (e.g. `docker compose logs backend --tail 20`, health check URL, or leave empty)"
+3. "How to reach the app? (`auto` to detect, or explicit URL, or empty)"
+
+After user answers, write the `## Ship` section to CLAUDE.md with their answers, then continue.
 
 ## Step 2 — Commit
 
