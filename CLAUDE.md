@@ -1,6 +1,7 @@
 # Project Configuration
 
 ## Guidelines
+- Git: see `.claude/docs/git-rules.md`
 - MCP: see `.claude/docs/mcp-rules.md`
 - Mobile: see `.claude/docs/mobile-guidelines.md`
 - Clean Code: see `.claude/docs/clean-code.md`
