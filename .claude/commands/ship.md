@@ -26,7 +26,9 @@ Follow git rules from `.claude/docs/git-rules.md`.
 
 ## Step 3 — Deploy
 
-Run the `deploy` command from CLAUDE.md.
+If `deploy: skip` → skip steps 3 and 4, go straight to Step 5.
+
+Otherwise, run the `deploy` command from CLAUDE.md.
 If `post_deploy` is configured, wait 10s then run it and check output for errors.
 
 ## Step 4 — Print access URL
