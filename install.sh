@@ -64,6 +64,8 @@ curl -fsSL "$REPO/.claude/docs/spring-conventions.md"         -o .claude/docs/sp
 curl -fsSL "$REPO/.claude/docs/svelte-conventions.md"         -o .claude/docs/svelte-conventions.md
 curl -fsSL "$REPO/.claude/docs/swift-conventions.md"          -o .claude/docs/swift-conventions.md
 curl -fsSL "$REPO/.claude/docs/mcp-rules.md"                 -o .claude/docs/mcp-rules.md
+curl -fsSL "$REPO/.claude/docs/database-conventions.md"     -o .claude/docs/database-conventions.md
+curl -fsSL "$REPO/.claude/docs/security-conventions.md"     -o .claude/docs/security-conventions.md
 
 echo "$REMOTE_VERSION" > "$VERSION_FILE"
 
