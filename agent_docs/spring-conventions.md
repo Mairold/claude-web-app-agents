@@ -33,3 +33,4 @@
 
 ## Security Config
 - Every new endpoint must be explicitly added to the security filter chain
+- Bearer token auth for API endpoints, session auth for UI endpoints
