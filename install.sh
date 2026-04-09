@@ -19,6 +19,9 @@ echo "🤖 Installing Claude agents ($LOCAL_VERSION → $REMOTE_VERSION)..."
 
 mkdir -p .claude/agents .claude/commands .claude/skills/svelte-tailwind .claude/skills/ui-ux .claude/skills/swiftui .claude/rules .claude/docs
 
+# Remove legacy agent_docs if exists (moved to .claude/docs)
+[ -d "agent_docs" ] && rm -rf agent_docs && echo "🗑  Removed legacy agent_docs/ (now .claude/docs/)"
+
 # 11 agents (8 review + 3 TDD)
 curl -fsSL "$REPO/.claude/agents/security-reviewer.md"      -o .claude/agents/security-reviewer.md
 curl -fsSL "$REPO/.claude/agents/architecture-reviewer.md"  -o .claude/agents/architecture-reviewer.md
