@@ -68,13 +68,12 @@ curl -fsSL "$REPO/.claude/docs/mcp-rules.md"                 -o .claude/docs/mcp
 echo "$REMOTE_VERSION" > "$VERSION_FILE"
 
 if [ -f "CLAUDE.md" ]; then
-  if grep -q "## Clean Code Conventions" CLAUDE.md; then
-    echo "✅ CLAUDE.md already contains agent config, skipping"
+  if grep -q "## Guidelines" CLAUDE.md; then
+    echo "✅ CLAUDE.md already has Guidelines section, skipping"
   else
     echo "" >> CLAUDE.md
-    echo "---" >> CLAUDE.md
     curl -fsSL "$REPO/CLAUDE.md" >> CLAUDE.md
-    echo "✅ Appended agent config to existing CLAUDE.md"
+    echo "✅ Appended Guidelines to existing CLAUDE.md"
   fi
 else
   curl -fsSL "$REPO/CLAUDE.md" -o CLAUDE.md
