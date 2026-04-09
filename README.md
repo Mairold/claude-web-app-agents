@@ -48,6 +48,30 @@ Restart Claude Code after the first install — files are loaded at session star
 | 4 | Review          | `/review`       | —                            |
 | 5 | Ship            | `/ship`         | `change_status`              |
 
+## Project configuration
+
+On first run, `/review` and `/ship` ask how your project works and save the answers to your CLAUDE.md. After that, they use the saved config automatically.
+
+### Review config (`## Review` in CLAUDE.md)
+
+```yaml
+review_fix: auto        # auto — fix CRITICAL/HIGH immediately
+                        # ask  — show each fix, wait for approval
+followup: create        # create — bundle MEDIUM into follow-up story
+                        # skip   — print summary only, no follow-up
+```
+
+### Ship config (`## Ship` in CLAUDE.md)
+
+```yaml
+deploy: docker compose up --build -d   # or: fly deploy, vercel --prod, skip
+post_deploy: docker compose logs backend --tail 20   # or: curl health URL, empty
+url: auto                              # auto — detect from docker/output
+                                       # or explicit: https://app.example.com
+```
+
+`deploy: skip` — no deploy, just commit and mark done (e.g. Node projects without local deploy).
+
 ## /e2e-test bootstrap
 
 On first use in a project, `/e2e-test` automatically sets up the full E2E infrastructure:
