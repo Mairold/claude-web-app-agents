@@ -39,7 +39,7 @@ curl -fsSL "$REPO/.claude/commands/implement.md"            -o .claude/commands/
 curl -fsSL "$REPO/.claude/commands/e2e-test.md"             -o .claude/commands/e2e-test.md
 curl -fsSL "$REPO/.claude/commands/e2e-setup.md"           -o .claude/commands/e2e-setup.md
 curl -fsSL "$REPO/.claude/commands/review.md"               -o .claude/commands/review.md
-curl -fsSL "$REPO/.claude/commands/fix-and-ship.md"         -o .claude/commands/fix-and-ship.md
+curl -fsSL "$REPO/.claude/commands/ship.md"                 -o .claude/commands/ship.md
 curl -fsSL "$REPO/.claude/commands/fix-bug.md"              -o .claude/commands/fix-bug.md
 curl -fsSL "$REPO/.claude/commands/refactor.md"             -o .claude/commands/refactor.md
 curl -fsSL "$REPO/.claude/commands/retro.md"                -o .claude/commands/retro.md
@@ -115,7 +115,7 @@ echo "   /plan <slug>         — read story, add AC + plan"
 echo "   /implement <slug>    — TDD implementation"
 echo "   /e2e-test <slug>     — Playwright E2E tests"
 echo "   /review <slug>       — parallel review (up to 8 agents)"
-echo "   /fix-and-ship <slug> — fix findings + close story"
+echo "   /ship <slug>          — commit, deploy, close story"
 echo "   /fix-bug <slug>      — standalone bug fix + deploy"
 echo "   /refactor            — standalone refactoring + deploy"
 echo "   /retro               — analyze learnings, propose rule promotions"

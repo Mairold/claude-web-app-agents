@@ -26,7 +26,7 @@ Restart Claude Code after the first install — files are loaded at session star
 /implement <slug>     — TDD implementation
 /e2e-test <slug>      — Playwright E2E tests
 /review <slug>        — parallel review (up to 8 agents)
-/fix-and-ship <slug>  — fix CRITICAL/MUST FIX + close story
+/ship <slug>          — commit, deploy, close story
 /fix-bug <slug>       — standalone: read bug → test → fix → deploy → done
 /refactor             — standalone: baseline → refactor → verify → deploy
 /retro                — analyze accumulated learnings, propose rule promotions
@@ -46,8 +46,7 @@ Restart Claude Code after the first install — files are loaded at session star
 | 2 | Implement       | `/implement`    | `update_story` (tasks [x]) — spawns TDD agents |
 | 3 | E2E Tests       | `/e2e-test`     | `update_story` (test plan)   |
 | 4 | Review          | `/review`       | —                            |
-| 5 | Fix & Ship      | `/fix-and-ship` | `change_status`              |
-| 6 | Commit & Deploy | inline          | —                            |
+| 5 | Ship            | `/ship`         | `change_status`              |
 
 ## /e2e-test bootstrap
 
@@ -87,7 +86,7 @@ Subsequent runs skip bootstrap and go straight to writing tests.
 | `/implement`            | opus   | Code generation requires strongest model          |
 | `/e2e-test`             | sonnet | Test writing follows established patterns         |
 | `/review`               | sonnet | Spawns agents, no code generation                 |
-| `/fix-and-ship`         | sonnet | Mechanical: fix + status change                   |
+| `/ship`                 | sonnet | Commit + deploy from CLAUDE.md config              |
 | `/fix-bug`              | opus   | Root cause analysis requires deep reasoning       |
 | `/refactor`             | opus   | Code changes must preserve correctness            |
 | `/retro`                | sonnet | Pattern analysis, text generation                 |

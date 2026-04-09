@@ -39,9 +39,25 @@ Collect all outputs. Print compact summary table (one line per agent, skip agent
 ```
 
 Do NOT write review findings into the story — stories are for the user, not internal review data.
-Only report CRITICAL and HIGH / MUST FIX findings for action. MEDIUM findings are collected by /fix-and-ship into one follow-up story. LOW/Nice-to-have go into the summary but are ignored.
-Do NOT create follow-up stories from /review — that is /fix-and-ship's responsibility.
 **One review round per `/develop` run.** No re-reviews, no follow-up reviews.
+
+## Step 4 — Fix findings
+
+Read `## Review` section from CLAUDE.md. If missing, ask user:
+- `review_fix`: **auto** (fix CRITICAL/HIGH immediately) or **ask** (show each fix, wait for approval)?
+- `followup`: **create** (bundle MEDIUM into follow-up story) or **skip**?
+
+Save answers to CLAUDE.md under `## Review`.
+
+Then apply:
+- **CRITICAL + HIGH:** if `review_fix: auto` → fix inline. If `review_fix: ask` → show each proposed fix, wait for user approval per fix.
+- **MEDIUM:** if `followup: create` → collect all into ONE follow-up story (`[FOLLOWUP] <slug> — review cleanup`). If `followup: skip` → print summary only.
+- **LOW:** ignore entirely.
+
+If any code was changed, re-run E2E tests:
+- `docker compose -f docker-compose.test.yml up --build -d`
+- `npx playwright test`
+- `docker compose -f docker-compose.test.yml down`
 
 ## Step 4 — Log learnings
 
