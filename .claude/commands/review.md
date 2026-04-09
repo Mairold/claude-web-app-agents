@@ -8,6 +8,10 @@ Story: $ARGUMENTS
 ---
 
 ## Step 1 — Determine scope
+
+**Full codebase review:** If `$ARGUMENTS` contains "all", "kogu", "full", or "codebase" — review all source files (find by file type: .java, .svelte, .ts, .js, .swift etc). Skip triage. Print: `Full codebase review`. Note: "only review current story code" rule does NOT apply to full reviews.
+
+**Story review (default):**
 1. `read_story("$ARGUMENTS")` or use `git diff main --name-only` to find modified files. If MCP unavailable, use git diff directly.
 2. If no file list found, ask the user which paths to review.
 3. **Triage:** If ALL files are CSS-only, Tailwind class changes, or SVG icon components — skip review entirely. Print: `Review skipped (trivial change)`.
