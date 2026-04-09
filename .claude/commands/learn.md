@@ -9,7 +9,7 @@ $ARGUMENTS: description of what was learned, OR a learning UUID to promote.
 
 If $ARGUMENTS looks like a UUID (format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx):
   1. `list_learnings(include_promoted=true)` — find the learning by id
-  2. Show it and ask: which file to add to? (CLAUDE.md / agent file / agent_docs/)
+  2. Show it and ask: which file to add to? (CLAUDE.md / agent file / .claude/docs/)
   3. Write the text to the chosen file
   4. `promote_learning(id)`
   5. Print: `Learning promoted to [file]`

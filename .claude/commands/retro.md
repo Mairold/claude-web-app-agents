@@ -15,7 +15,7 @@ $ARGUMENTS: optional project name. If empty, reads project name from CLAUDE.md.
      with current access key (not all projects in the system)
 
 3. For each pattern:
-   - Skip if already present in CLAUDE.md, agent files, or agent_docs/
+   - Skip if already present in CLAUDE.md, agent files, or .claude/docs/
    - Skip if it's a one-off (not generalizable to a rule)
    - Propose exact text: which file, which section, what wording
 

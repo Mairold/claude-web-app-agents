@@ -17,7 +17,7 @@ fi
 
 echo "🤖 Installing Claude agents ($LOCAL_VERSION → $REMOTE_VERSION)..."
 
-mkdir -p .claude/agents .claude/commands .claude/skills/svelte-tailwind .claude/skills/ui-ux .claude/skills/swiftui .claude/rules agent_docs
+mkdir -p .claude/agents .claude/commands .claude/skills/svelte-tailwind .claude/skills/ui-ux .claude/skills/swiftui .claude/rules .claude/docs
 
 # 11 agents (8 review + 3 TDD)
 curl -fsSL "$REPO/.claude/agents/security-reviewer.md"      -o .claude/agents/security-reviewer.md
@@ -56,14 +56,14 @@ curl -fsSL "$REPO/.claude/rules/java-naming.md"             -o .claude/rules/jav
 curl -fsSL "$REPO/.claude/rules/swift-best-practices.md"    -o .claude/rules/swift-best-practices.md
 curl -fsSL "$REPO/.claude/rules/swift-naming.md"            -o .claude/rules/swift-naming.md
 
-# agent_docs (referenced by CLAUDE.md)
-curl -fsSL "$REPO/agent_docs/clean-code.md"                 -o agent_docs/clean-code.md
-curl -fsSL "$REPO/agent_docs/engineering-principles.md"     -o agent_docs/engineering-principles.md
-curl -fsSL "$REPO/agent_docs/mobile-guidelines.md"          -o agent_docs/mobile-guidelines.md
-curl -fsSL "$REPO/agent_docs/spring-conventions.md"         -o agent_docs/spring-conventions.md
-curl -fsSL "$REPO/agent_docs/svelte-conventions.md"         -o agent_docs/svelte-conventions.md
-curl -fsSL "$REPO/agent_docs/swift-conventions.md"          -o agent_docs/swift-conventions.md
-curl -fsSL "$REPO/agent_docs/mcp-rules.md"                 -o agent_docs/mcp-rules.md
+# docs (referenced by CLAUDE.md and commands)
+curl -fsSL "$REPO/.claude/docs/clean-code.md"                 -o .claude/docs/clean-code.md
+curl -fsSL "$REPO/.claude/docs/engineering-principles.md"     -o .claude/docs/engineering-principles.md
+curl -fsSL "$REPO/.claude/docs/mobile-guidelines.md"          -o .claude/docs/mobile-guidelines.md
+curl -fsSL "$REPO/.claude/docs/spring-conventions.md"         -o .claude/docs/spring-conventions.md
+curl -fsSL "$REPO/.claude/docs/svelte-conventions.md"         -o .claude/docs/svelte-conventions.md
+curl -fsSL "$REPO/.claude/docs/swift-conventions.md"          -o .claude/docs/swift-conventions.md
+curl -fsSL "$REPO/.claude/docs/mcp-rules.md"                 -o .claude/docs/mcp-rules.md
 
 echo "$REMOTE_VERSION" > "$VERSION_FILE"
 

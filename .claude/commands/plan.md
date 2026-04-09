@@ -7,7 +7,7 @@ Story: $ARGUMENTS
 
 ---
 
-**Before starting:** read and follow MCP Safety Rules and Story Sizing from `agent_docs/mcp-rules.md`.
+**Before starting:** read and follow MCP Safety Rules and Story Sizing from `.claude/docs/mcp-rules.md`.
 
 1. `read_story("$ARGUMENTS")` — understand requirements fully. State assumptions, do not ask.
    (If MCP unavailable: use $ARGUMENTS as description if it has spaces, else ask user to paste requirements.)

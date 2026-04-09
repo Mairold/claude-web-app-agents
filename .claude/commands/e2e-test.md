@@ -117,7 +117,7 @@ Print: `Health score: X/100`
 ## Step 7 — Update story
 
 If a story was provided, use `update_story` to append under `## Test Plan` (if MCP unavailable: print the content instead).
-Follow MCP Safety Rules from `agent_docs/mcp-rules.md`.
+Follow MCP Safety Rules from `.claude/docs/mcp-rules.md`.
 - E2E test file(s) created
 - What flows are covered
 - Health score
