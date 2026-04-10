@@ -60,6 +60,7 @@ curl -fsSL "$REPO/.claude/rules/swift-best-practices.md"    -o .claude/rules/swi
 curl -fsSL "$REPO/.claude/rules/swift-naming.md"            -o .claude/rules/swift-naming.md
 
 # docs (referenced by CLAUDE.md and commands)
+curl -fsSL "$REPO/.claude/docs/git-rules.md"                  -o .claude/docs/git-rules.md
 curl -fsSL "$REPO/.claude/docs/clean-code.md"                 -o .claude/docs/clean-code.md
 curl -fsSL "$REPO/.claude/docs/engineering-principles.md"     -o .claude/docs/engineering-principles.md
 curl -fsSL "$REPO/.claude/docs/mobile-guidelines.md"          -o .claude/docs/mobile-guidelines.md
