@@ -12,7 +12,7 @@
 - If running inside a Docker container, do not attempt `git push` — tell the user to push from host
 
 ## Branching
-- Work on master unless user specifies a branch
+- Work on master/main unless user specifies a branch
 - Do not create branches unless explicitly asked
 
 ## Deploy
