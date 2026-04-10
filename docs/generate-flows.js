@@ -343,6 +343,7 @@ function generateHtml(fileContentsBlock) {
   <div class="title-block">
     <h1>Claude Agents — Flow Visualizer</h1>
     <p>Interaktiivne arenduskäskude ja agentide ülevaade</p>
+    <span style="font-size:0.65rem;color:var(--text-dim)">${gitHash} · ${buildDate}</span>
   </div>
   <div class="view-toggle" id="viewToggle">
     <button class="active" data-view="timeline">Timeline</button>
@@ -780,6 +781,9 @@ selectFlow('develop');
 // MAIN
 // ============================================================
 console.log('Generating docs/flows.html...');
+const { execSync } = require('child_process');
+const gitHash = (() => { try { return execSync('git rev-parse --short HEAD', { cwd: ROOT }).toString().trim(); } catch { return 'unknown'; } })();
+const buildDate = new Date().toISOString().slice(0, 16).replace('T', ' ');
 const fileContentsBlock = readMdFiles();
 const html = generateHtml(fileContentsBlock);
 const outPath = path.join(__dirname, 'flows.html');
