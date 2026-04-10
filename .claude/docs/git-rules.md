@@ -16,6 +16,5 @@
 - Do not create branches unless explicitly asked
 
 ## Deploy
-- After commit: `docker compose up --build -d`
-- Wait 10s, check `docker compose logs backend --tail 20` for startup errors
-- Detect host IP and print access URLs for exposed ports
+- Deploy config is project-specific — read from `## Ship` section in CLAUDE.md
+- See `/ship` command for details
