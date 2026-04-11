@@ -53,11 +53,12 @@ curl -fsSL "$REPO/.claude/skills/svelte-tailwind/SKILL.md"  -o .claude/skills/sv
 curl -fsSL "$REPO/.claude/skills/ui-ux/SKILL.md"            -o .claude/skills/ui-ux/SKILL.md
 curl -fsSL "$REPO/.claude/skills/swiftui/SKILL.md"          -o .claude/skills/swiftui/SKILL.md
 
-# 4 rules (auto-activate for *.java and *.swift files)
+# 5 rules (auto-activate for *.java, *.swift, *.ts files)
 curl -fsSL "$REPO/.claude/rules/java-best-practices.md"     -o .claude/rules/java-best-practices.md
 curl -fsSL "$REPO/.claude/rules/java-naming.md"             -o .claude/rules/java-naming.md
 curl -fsSL "$REPO/.claude/rules/swift-best-practices.md"    -o .claude/rules/swift-best-practices.md
 curl -fsSL "$REPO/.claude/rules/swift-naming.md"            -o .claude/rules/swift-naming.md
+curl -fsSL "$REPO/.claude/rules/typescript-conventions.md"  -o .claude/rules/typescript-conventions.md
 
 # docs (referenced by CLAUDE.md and commands)
 curl -fsSL "$REPO/.claude/docs/git-rules.md"                  -o .claude/docs/git-rules.md
@@ -71,6 +72,7 @@ curl -fsSL "$REPO/.claude/docs/swift-conventions.md"          -o .claude/docs/sw
 curl -fsSL "$REPO/.claude/docs/mcp-rules.md"                 -o .claude/docs/mcp-rules.md
 curl -fsSL "$REPO/.claude/docs/database-conventions.md"     -o .claude/docs/database-conventions.md
 curl -fsSL "$REPO/.claude/docs/security-conventions.md"     -o .claude/docs/security-conventions.md
+curl -fsSL "$REPO/.claude/docs/hono-reference.md"           -o .claude/docs/hono-reference.md
 
 echo "$REMOTE_VERSION" > "$VERSION_FILE"
 
