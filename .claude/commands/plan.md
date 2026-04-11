@@ -1,5 +1,5 @@
 ---
-model: sonnet
+model: opus
 ---
 Read a story and add acceptance criteria and implementation plan.
 

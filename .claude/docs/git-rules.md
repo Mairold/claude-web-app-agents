@@ -3,7 +3,7 @@
 ## Commits
 - Short, descriptive commit messages — focus on "why", not "what"
 - No Co-Authored-By lines
-- `git add` specific files by name — never `git add -A` or `git add .`
+- After code changes, always `git add` changed/new files by name (do not commit). This makes review easier in IntelliJ.
 - Do not commit `.env`, credentials, `.DS_Store`, or large binaries
 
 ## Push

@@ -20,6 +20,10 @@ Ask:
 
 After user answers, write the `## Ship` section to CLAUDE.md with their answers, then continue.
 
+
+**Wait for user confirmation** before continuing. Ask if the user has reviewed all the new code so that it can be safely commited?
+
+
 ## Step 2 — Commit
 
 1. Restore any docs/ changes: `git restore --staged docs/ 2>/dev/null; git checkout -- docs/ 2>/dev/null`
@@ -48,8 +52,6 @@ If `url: auto`:
 - Print: `Running — test at: http://<HOST_IP>:<port>`
 
 If `url` is an explicit URL: print `Running — test at: <url>`
-
-**Wait for user confirmation** before closing the story.
 
 ## Step 5 — Close story
 
