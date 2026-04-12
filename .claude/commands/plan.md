@@ -27,7 +27,7 @@ Story: $ARGUMENTS
    - Effort: [S/M/L] human → [S/M/L] with AI
      (S=hours, M=day, L=days — AI typically drops one level)
 
-5. **Technical approach (conditional):** Skip if the story already has a `## Technical Approach` section or equivalent technical detail, OR if the story is simple (single-file change, config tweak, copy change).
+5. **Technical approach (conditional):** Skip if the story already has a `## Technical Approach` section or equivalent technical detail, OR if the story is simple (single-file change, config tweak, copy change), OR if the Tasks section already covers the implementation steps (don't duplicate).
 
    Otherwise, explore the codebase (Glob, Grep, Read) to understand existing patterns, then use `update_story` to append under `## Technical Approach` (if MCP unavailable: print instead):
    - Which existing files/modules will be modified and why
