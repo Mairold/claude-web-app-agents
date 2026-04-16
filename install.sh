@@ -60,6 +60,9 @@ curl -fsSL "$REPO/.claude/rules/swift-best-practices.md"    -o .claude/rules/swi
 curl -fsSL "$REPO/.claude/rules/swift-naming.md"            -o .claude/rules/swift-naming.md
 curl -fsSL "$REPO/.claude/rules/typescript-conventions.md"  -o .claude/rules/typescript-conventions.md
 
+# shared config (loaded automatically by Claude Code, never touches project CLAUDE.md)
+curl -fsSL "$REPO/.claude/rules/shared-config.md"    -o .claude/rules/shared-config.md
+
 # docs (referenced by CLAUDE.md and commands)
 curl -fsSL "$REPO/.claude/docs/git-rules.md"                  -o .claude/docs/git-rules.md
 curl -fsSL "$REPO/.claude/docs/docker-rules.md"               -o .claude/docs/docker-rules.md
@@ -76,18 +79,7 @@ curl -fsSL "$REPO/.claude/docs/hono-reference.md"           -o .claude/docs/hono
 
 echo "$REMOTE_VERSION" > "$VERSION_FILE"
 
-if [ -f "CLAUDE.md" ]; then
-  if grep -q "## Guidelines" CLAUDE.md; then
-    echo "✅ CLAUDE.md already has Guidelines section, skipping"
-  else
-    echo "" >> CLAUDE.md
-    curl -fsSL "$REPO/CLAUDE.md" >> CLAUDE.md
-    echo "✅ Appended Guidelines to existing CLAUDE.md"
-  fi
-else
-  curl -fsSL "$REPO/CLAUDE.md" -o CLAUDE.md
-  echo "✅ Created CLAUDE.md"
-fi
+echo "✅ CLAUDE.md untouched — project-specific config stays yours"
 
 # Set up SessionStart hook so agents auto-update on every Claude Code session
 if [ -f "$SETTINGS" ]; then

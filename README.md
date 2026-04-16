@@ -12,8 +12,9 @@ curl -fsSL https://raw.githubusercontent.com/ahoa/claude-agents/master/install.s
 
 
 The installer will:
-- Copy 11 agents (8 review + 3 TDD), 11 commands, 3 skills, and 4 rules into `.claude/`
-- Append agent conventions to `CLAUDE.md`
+- Copy 11 agents (8 review + 3 TDD), 11 commands, 3 skills, and 5 rules into `.claude/`
+- Copy shared config to `.claude/rules/shared-config.md` (auto-loaded by Claude Code)
+- Never modifies your project `CLAUDE.md` — it stays yours
 - Add a `SessionStart` hook to `.claude/settings.json` so agents **auto-update at the start of every Claude Code session**
 
 Restart Claude Code after the first install — files are loaded at session start.
