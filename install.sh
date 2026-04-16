@@ -54,6 +54,7 @@ curl -fsSL "$REPO/.claude/skills/ui-ux/SKILL.md"            -o .claude/skills/ui
 curl -fsSL "$REPO/.claude/skills/swiftui/SKILL.md"          -o .claude/skills/swiftui/SKILL.md
 
 # 5 rules (auto-activate for *.java, *.swift, *.ts files)
+# NOTE: project-*.md files in .claude/rules/ are NEVER overwritten — project-specific only
 curl -fsSL "$REPO/.claude/rules/java-best-practices.md"     -o .claude/rules/java-best-practices.md
 curl -fsSL "$REPO/.claude/rules/java-naming.md"             -o .claude/rules/java-naming.md
 curl -fsSL "$REPO/.claude/rules/swift-best-practices.md"    -o .claude/rules/swift-best-practices.md

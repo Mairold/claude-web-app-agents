@@ -39,9 +39,9 @@ When an MCP story tool is unavailable or a call fails:
 - **Group related stories with a label.** When splitting a feature into multiple stories, apply a shared label (e.g. the feature name) to all of them.
 
 ## Review Scope Rules
-- **Only review code written/modified in the current story.**
+- **Only review code written/modified in the current story.** Do not flag pre-existing issues in files that were only touched for minor edits (imports, signature changes).
 - **Only report CRITICAL and HIGH findings for inline fixing.** MEDIUM go into summary.
-- **Fix CRITICAL and HIGH inline.** MEDIUM findings get bundled into exactly ONE follow-up story.
+- **Fix CRITICAL and HIGH inline.** MEDIUM findings across the whole review get bundled into exactly ONE follow-up story (not one per finding). LOW/Nice-to-have are logged but ignored.
 - **Max one follow-up story per `/develop` run.**
 - **No endless cycles.** Each `/develop` run produces exactly one review round.
 
