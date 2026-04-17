@@ -1,3 +1,6 @@
+---
+paths: "**/*.{ts,tsx}"
+---
 # TypeScript Naming Conventions
 
 ## Fields & Properties

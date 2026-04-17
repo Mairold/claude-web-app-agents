@@ -1,5 +1,5 @@
 ---
-globs: "**/*.swift"
+paths: "**/*.swift"
 ---
 # Swift Naming Conventions
 
