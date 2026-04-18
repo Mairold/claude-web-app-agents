@@ -64,6 +64,27 @@ curl -fsSL "$REPO/.claude/rules/typescript-conventions.md"  -o .claude/rules/typ
 # shared config (loaded automatically by Claude Code, never touches project CLAUDE.md)
 curl -fsSL "$REPO/.claude/rules/shared-config.md"    -o .claude/rules/shared-config.md
 
+# Template: project-specific security rules (created once, never overwritten)
+if [ ! -f .claude/rules/project-security.md ]; then
+  cat > .claude/rules/project-security.md <<'TEMPLATE_EOF'
+# Project-specific security rules
+
+<!--
+Write rules here that apply ONLY to this project.
+
+Generic security conventions (OWASP, etc.) are loaded automatically —
+do NOT duplicate content from .claude/docs/security-conventions.md here.
+
+Examples of what belongs here:
+  - All admin endpoints require @PreAuthorize("hasRole('ADMIN')")
+  - PII fields (ssn, dob, phone) must be encrypted at rest
+  - Webhooks must verify HMAC signature before processing payload
+  - Test-login endpoint allowed only when env TEST_LOGIN_ENABLED=true
+-->
+TEMPLATE_EOF
+  echo "📄 Created .claude/rules/project-security.md (empty template — fill with project-specific rules)"
+fi
+
 # docs (referenced by CLAUDE.md and commands)
 curl -fsSL "$REPO/.claude/docs/git-rules.md"                  -o .claude/docs/git-rules.md
 curl -fsSL "$REPO/.claude/docs/docker-rules.md"               -o .claude/docs/docker-rules.md

@@ -75,34 +75,65 @@ url: auto                              # auto — detect from docker/output
 
 ## Custom rules
 
-Claude Code auto-loads every `.md` file under `.claude/rules/` at session start. No need to edit your project `CLAUDE.md` — drop a file in `.claude/rules/` and it's active on next session.
+Claude Code auto-loads every `.md` file under `.claude/rules/` at session start. **No need to edit your project `CLAUDE.md`** — drop a file in `.claude/rules/` and it's active on next session.
 
-### Project-specific rules
+### How rule files are loaded
 
-Files named `project-*.md` in `.claude/rules/` are **never overwritten** by the installer. Use them for rules that apply only to this codebase. Examples already shipped:
+| File pattern                        | When it loads                                     | Overwritten on update? |
+|-------------------------------------|---------------------------------------------------|------------------------|
+| `shared-config.md`                  | Every session, unconditionally                    | Yes — shared across all projects |
+| `java-best-practices.md`, etc.      | Only when matching files are opened (see `paths:`) | Yes — language conventions |
+| `project-*.md`                      | Every session, unconditionally                    | **No — yours to own**  |
+| Any other `*.md` you drop in        | Every session, unconditionally                    | No — installer ignores |
 
-- `project-security.md` — extra docs the `security-reviewer` consults
-- `project-spring.md` — extra docs the `spring-reviewer` consults
+### Writing project-specific rules
 
-```bash
-# Add a project-specific convention:
-echo "# Payment module rules\n\n- All money amounts use BigDecimal, never double" \
-  > .claude/rules/project-payments.md
+The installer creates `.claude/rules/project-security.md` once (empty template). Fill it with rules that are **unique to this project** — not generic OWASP or Spring best practices (those are already loaded).
+
+**Good project-specific rules** (go in `project-security.md`):
+
+```markdown
+# Project-specific security rules
+
+- All admin endpoints require `@PreAuthorize("hasRole('ADMIN')")`
+- PII fields (ssn, dob, phone) must be encrypted at rest with KMS key `pii-v2`
+- Webhooks from Stripe must verify HMAC signature using secret in `STRIPE_WEBHOOK_SECRET`
+- Test-login endpoint allowed only when env `TEST_LOGIN_ENABLED=true` (never in prod)
 ```
 
-### Scope a rule to specific files
+**What does NOT belong here** (already covered automatically):
 
-Add `paths:` frontmatter so the rule loads only when matching files are open:
+- OWASP Top 10 checklist → `security-reviewer` has this inline
+- Generic crypto advice ("don't use MD5") → `.claude/docs/security-conventions.md`
+- Language/framework conventions → `java-best-practices.md`, `spring-conventions.md`, etc.
+
+### Adding rules for other domains
+
+Drop any `.md` file into `.claude/rules/`. It loads on next session. Name with `project-` prefix to prevent the installer from ever overwriting it.
+
+```bash
+# Payments domain rules — never overwritten
+cat > .claude/rules/project-payments.md <<'EOF'
+# Payment module rules
+
+- All money amounts use BigDecimal, never double/float
+- Every charge must have an idempotency key from the client
+- Refunds > $500 require 2-person approval flag
+EOF
+```
+
+### Scoping a rule to specific files
+
+Add `paths:` frontmatter so the rule loads only when matching files are opened. Useful when the rule is noise in unrelated contexts:
 
 ```markdown
 ---
 paths: "**/*.java"
 ---
-# Java rules
-...
+# Java-only rules...
 ```
 
-Files **without** `paths:` load unconditionally in every session (good for cross-cutting conventions like `shared-config.md` or `typescript-conventions.md`).
+Files **without** `paths:` load unconditionally. Use `paths:` for language/framework rules (Java, Swift, TypeScript). Leave it off for cross-cutting conventions (security, business rules, domain policies).
 
 ### Shared config
 
