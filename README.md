@@ -107,6 +107,36 @@ The installer creates `.claude/rules/project-security.md` once (empty template).
 - Generic crypto advice ("don't use MD5") → `.claude/docs/security-conventions.md`
 - Language/framework conventions → `java-best-practices.md`, `spring-conventions.md`, etc.
 
+### Overriding shared conventions
+
+When a shared doc says one thing and your project needs an exception, **never edit `.claude/docs/*.md` directly** — the installer overwrites those on every update. Instead, write the override in `.claude/rules/project-*.md`.
+
+**Precedence (most specific wins):**
+
+1. `.claude/rules/project-*.md` — your project rules (never overwritten)
+2. `.claude/docs/*.md` — shared baseline (auto-updated by installer)
+3. Agent inline checklist (e.g. OWASP Top 10 in `security-reviewer`)
+
+**Example** — single-admin backoffice exempts IDOR checks.
+
+Baseline (`.claude/docs/security-conventions.md` — auto-updated, keep untouched):
+
+```markdown
+## IDOR Protection
+- All entity operations must verify ownership before exposing data
+```
+
+Project override (`.claude/rules/project-security.md` — yours to own):
+
+```markdown
+## Override: IDOR Protection
+- Single-admin backoffice — all authenticated users are trusted
+- Do NOT flag IDOR on backoffice endpoints
+- Revisit all endpoints if multi-user support is added
+```
+
+Agents that read project rules (currently `security-reviewer`) honor the override — the exemption wins over the OWASP checklist. To extend this to other reviewers (spring, architecture, etc.), add the same *"read `.claude/rules/project-*.md` first, project rules override"* pattern to the agent file.
+
 ### Adding rules for other domains
 
 Drop any `.md` file into `.claude/rules/`. It loads on next session. Name with `project-` prefix to prevent the installer from ever overwriting it.
