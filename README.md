@@ -117,25 +117,24 @@ When a shared doc says one thing and your project needs an exception, **never ed
 2. `.claude/docs/*.md` — shared baseline (auto-updated by installer)
 3. Agent inline checklist (e.g. OWASP Top 10 in `security-reviewer`)
 
-**Example** — single-admin backoffice exempts IDOR checks.
+**Example** — single-admin backoffice exempts IDOR checks that OWASP A01 would normally flag.
 
-Baseline (`.claude/docs/security-conventions.md` — auto-updated, keep untouched):
-
-```markdown
-## IDOR Protection
-- All entity operations must verify ownership before exposing data
-```
+`.claude/docs/security-conventions.md` is kept minimal (auto-updated, keep untouched) — it contains only rules that apply identically to **every** project. IDOR, rate limiting, file upload policies, etc. vary by project, so they live in project rules.
 
 Project override (`.claude/rules/project-security.md` — yours to own):
 
 ```markdown
-## Override: IDOR Protection
+# Project-specific security rules — single-admin backoffice
+
+## IDOR Protection (backoffice exception)
 - Single-admin backoffice — all authenticated users are trusted
-- Do NOT flag IDOR on backoffice endpoints
+- Do NOT flag IDOR on backoffice endpoints (OWASP A01 exempted here)
 - Revisit all endpoints if multi-user support is added
 ```
 
-Agents that read project rules (currently `security-reviewer`) honor the override — the exemption wins over the OWASP checklist. To extend this to other reviewers (spring, architecture, etc.), add the same *"read `.claude/rules/project-*.md` first, project rules override"* pattern to the agent file.
+Agents that read project rules (currently `security-reviewer`) honor the override — the exemption wins over the OWASP checklist. To extend this pattern to other reviewers (spring, architecture, etc.), add *"read `.claude/rules/project-*.md` first, project rules override"* to their agent file.
+
+**Rule of thumb** — a section belongs in shared `.claude/docs/*.md` **only if it's identical across every project**. The moment one project has an override or different implementation detail, move the whole section to `project-*.md` in each project.
 
 ### Adding rules for other domains
 
