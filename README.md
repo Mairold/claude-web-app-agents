@@ -86,6 +86,30 @@ Claude Code auto-loads every `.md` file under `.claude/rules/` at session start.
 | `project-*.md`                      | Every session, unconditionally                    | **No — yours to own**  |
 | Any other `*.md` you drop in        | Every session, unconditionally                    | No — installer ignores |
 
+### Files the installer overwrites — DO NOT edit project-specifically
+
+Every SessionStart, the installer refetches these paths. **Local edits are silently wiped on next session.** If you need a project deviation from anything listed below, express it in `.claude/rules/project-*.md` (see Overriding shared conventions below).
+
+| Path                                         | Contents                                        |
+|----------------------------------------------|-------------------------------------------------|
+| `.claude/agents/*.md`                        | All 11 review + TDD agents                      |
+| `.claude/commands/*.md`                      | All 11 slash commands (`/develop`, `/plan`, …)  |
+| `.claude/skills/*/SKILL.md`                  | Bundled skills (svelte-tailwind, ui-ux, swiftui) |
+| `.claude/rules/shared-config.md`             | Shared MCP tools, commands, review-scope rules  |
+| `.claude/rules/java-*.md`                    | Java conventions (best practices, naming)       |
+| `.claude/rules/swift-*.md`                   | Swift conventions (best practices, naming)      |
+| `.claude/rules/typescript-conventions.md`    | TypeScript conventions                          |
+| `.claude/docs/*.md`                          | All shared docs (security-conventions, spring-conventions, clean-code, git-rules, etc.) |
+| `.claude/agents-version`                     | Tracks installed version — installer writes it  |
+
+**Safe to edit — never overwritten:**
+
+- `.claude/rules/project-*.md` — your project-specific rules
+- `CLAUDE.md` — your project documentation
+- `.claude/settings.json` — the installer only adds the SessionStart hook on first install; other keys are untouched
+- `.claude/settings.local.json` — local Claude Code settings (not in git anyway)
+- Any `.md` file you add to `.claude/rules/` with a name not listed above
+
 ### Writing project-specific rules
 
 The installer creates `.claude/rules/project-security.md` once (empty template). Fill it with rules that are **unique to this project** — not generic OWASP or Spring best practices (those are already loaded).
