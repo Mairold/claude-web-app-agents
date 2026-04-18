@@ -73,6 +73,41 @@ url: auto                              # auto — detect from docker/output
 
 `deploy: skip` — no deploy, just commit and mark done (e.g. Node projects without local deploy).
 
+## Custom rules
+
+Claude Code auto-loads every `.md` file under `.claude/rules/` at session start. No need to edit your project `CLAUDE.md` — drop a file in `.claude/rules/` and it's active on next session.
+
+### Project-specific rules
+
+Files named `project-*.md` in `.claude/rules/` are **never overwritten** by the installer. Use them for rules that apply only to this codebase. Examples already shipped:
+
+- `project-security.md` — extra docs the `security-reviewer` consults
+- `project-spring.md` — extra docs the `spring-reviewer` consults
+
+```bash
+# Add a project-specific convention:
+echo "# Payment module rules\n\n- All money amounts use BigDecimal, never double" \
+  > .claude/rules/project-payments.md
+```
+
+### Scope a rule to specific files
+
+Add `paths:` frontmatter so the rule loads only when matching files are open:
+
+```markdown
+---
+paths: "**/*.java"
+---
+# Java rules
+...
+```
+
+Files **without** `paths:` load unconditionally in every session (good for cross-cutting conventions like `shared-config.md` or `typescript-conventions.md`).
+
+### Shared config
+
+`shared-config.md` is auto-updated by the installer and auto-loaded by Claude Code. It holds MCP tool list, command list, story-sizing rules, review-scope rules, and pointers to `.claude/docs/`. Your project `CLAUDE.md` stays untouched.
+
 ## /e2e-test bootstrap
 
 On first use in a project, `/e2e-test` automatically sets up the full E2E infrastructure:
