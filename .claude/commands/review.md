@@ -31,16 +31,39 @@ Determine which agents to run based on modified file types:
 - If `.swift` files modified: add `swift-reviewer` (model: sonnet) + `swiftui-reviewer` (model: sonnet)
 
 Spawn ALL selected agents in parallel using the Agent tool. Pass each agent:
-> Analyze these files: [MODIFIED_FILES]. Only review code written/modified in this story, not pre-existing issues. Return your findings as structured text.
+> Analyze these files: [MODIFIED_FILES]. Only review code written/modified in this story, not pre-existing issues. Return a single JSON object matching the agent's Output Format schema — no preamble, no markdown.
 
 ## Step 3 — Synthesize
-Collect all outputs. Print compact summary table (one line per agent, skip agents with no findings):
+
+Each agent returns a JSON object with `findings`, `clean_areas`, `summary`.
+Parse each agent's output as JSON. Count findings per severity.
+
+Print a compact summary table:
+
 ```
-| Agent | Findings |
-|-------|----------|
-| Security | 1 HIGH: missing auth check on new endpoint |
-| Spring | Clean |
+| Agent | Findings | Critical | High | Medium |
+|-------|----------|----------|------|--------|
+| Security | 3 | 1 | 2 | 0 |
+| Architecture | 1 | 0 | 1 | 0 |
+| Spring | 0 (clean) | 0 | 0 | 0 |
 ```
+
+Then print CRITICAL and HIGH findings with `title` + `location`:
+
+```
+**CRITICAL:**
+- [security] A04 — Hardcoded DB password (DbConfig.java:12)
+
+**HIGH:**
+- [security] A05 — SQL injection risk in search query (UserRepo.java:88)
+- [architecture] Circular dependency: Service A → B → A (ServiceA.java:15)
+```
+
+Clean areas (one line, joined from each agent's `clean_areas`): `Security: input validation, CSRF. Architecture: SOLID. Spring: DI patterns.`
+
+If an agent's output is not valid JSON:
+- Print: `⚠️ [agent-name] returned invalid JSON — skipping`
+- Continue with other agents' findings
 
 Do NOT write review findings into the story — stories are for the user, not internal review data.
 **One review round per `/develop` run.** No re-reviews, no follow-up reviews.
@@ -67,26 +90,32 @@ If any code was changed, re-run E2E tests:
 - `npx playwright test`
 - `docker compose -f docker-compose.test.yml down`
 
-## Step 4 — Log learnings
+## Step 5 — Log learnings
 
-After synthesis, log HIGH and CRITICAL findings via `log_learning`.
-Read project name from CLAUDE.md (first line after `#` or `project:` field).
+For each finding with `severity` of `critical` or `high` from Step 3:
 
-For each HIGH or CRITICAL finding from Step 3:
-- phase: "review"
-- category: map agent to category:
-    security-reviewer    → "security"
-    architecture-reviewer → "architecture"
-    test-reviewer        → "testing"
-    docs-reviewer        → "docs"
-    svelte-reviewer      → "svelte"
-    spring-reviewer      → "spring"
-    swift-reviewer       → "swift"
-    swiftui-reviewer     → "swift"
-- agent: the agent name that found it
-- severity: "critical" or "high"
-- finding: one sentence — what the problem is (no file paths, no line numbers)
-- story_slug: $ARGUMENTS
+```
+log_learning(
+  project=<project name from CLAUDE.md>,
+  story_slug=$ARGUMENTS,
+  phase="review",
+  category=finding.category,
+  agent=<agent that returned it>,
+  severity=finding.severity,
+  finding=finding.title
+)
+```
 
-Call `log_learning` once per distinct finding.
+No text parsing needed — `category`, `severity`, and `finding` come directly from the agent's JSON output. One `log_learning` call per finding.
+
 If MCP unavailable: skip silently, print `[learnings not logged]`, never block review output.
+
+## Step 6 — Output metrics for /develop
+
+On the very last line of review output, print exactly:
+
+```
+OUTPUT_METRICS: findings_critical=<N> findings_high=<N> findings_medium=<N>
+```
+
+`/develop` parses this line to call `log_metric` for the review phase.
