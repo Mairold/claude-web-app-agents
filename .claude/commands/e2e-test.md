@@ -121,3 +121,16 @@ Follow MCP Safety Rules from `.claude/docs/mcp-rules.md`.
 - E2E test file(s) created
 - What flows are covered
 - Health score
+
+## Step 8 — Output metrics
+
+As the very last line of output, emit:
+
+```
+OUTPUT_METRICS: tests_total=<N> tests_first_try=<true|false>
+```
+
+- `tests_total` — total Playwright tests that ran in steps 5a + 5c.
+- `tests_first_try=true` only if both step 5a and step 5c passed on the first attempt with no fix-loop iterations. Any entry into step 5b's fix loop → `false`.
+
+`/develop` parses this line to call `log_metric` for the E2E phase.

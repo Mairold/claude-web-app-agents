@@ -55,6 +55,7 @@ Tests are part of every task — always write tests with every task, not as a se
 5. Verify:
    - Backend: `cd backend && ./gradlew test`
    - Frontend: `cd frontend && npm run build`
+   - Track `TESTS_FIRST_TRY`: `true` if the verify step succeeds on the first run, `false` if any fix-and-retry iteration was needed.
 
 6. Track the list of all files created/modified — needed for review phase.
 
@@ -63,5 +64,7 @@ Tests are part of every task — always write tests with every task, not as a se
 Implementation done for [slug]
 Files: [list of created/modified files, one per line]
 Tests: [N] passing
+
+OUTPUT_METRICS: tests_total=[N] tests_first_try=[true|false]
 ```
-Do NOT echo back full agent outputs. The summary above is the only output needed for the next phase.
+Do NOT echo back full agent outputs. The summary above is the only output needed for the next phase. The `OUTPUT_METRICS:` line must be the very last line — `/develop` parses it for `log_metric`.
