@@ -7,6 +7,8 @@
 - `log_learning` — log a finding or pattern from a development phase
 - `list_learnings` — list accumulated learnings, grouped by pattern
 - `promote_learning` — mark a learning as promoted to CLAUDE.md
+- `log_metric` — log a development phase metric (duration, findings, outcome)
+- `get_metrics_trend` — aggregate metrics for trend analysis
 
 ## MCP Fallback Behavior
 When an MCP story tool is unavailable or a call fails:
@@ -18,6 +20,8 @@ When an MCP story tool is unavailable or a call fails:
 - **`log_learning`**: print `[learning not saved — no MCP]` and continue. Never block the pipeline.
 - **`list_learnings`**: print `No learnings available` and continue.
 - **`promote_learning`**: print `[promote manually]` and continue.
+- **`log_metric`**: print `[metric not saved — no MCP]` and continue. Never block the pipeline.
+- **`get_metrics_trend`**: print `No metrics available` and continue.
 
 ## Custom Commands
 - `/develop <slug or description>` — full cycle: plan → implement → test → review → fix → deploy
