@@ -24,6 +24,19 @@ At the very start, run `date +%s` and store as `DEVELOP_START`.
 - If a phase is skipped, do NOT call `log_metric` for that phase.
 - MCP fallback: if `log_metric` fails or MCP is unavailable, print `[metric not saved]` and continue. Never block the pipeline.
 
+## Phase 0 — Read develop config (MANDATORY)
+
+Read CLAUDE.md and look for a `## Develop` section with a `mode:` value.
+
+**If the section is missing or the value is missing: STOP and ask the user. Do NOT proceed. Do NOT guess or use defaults.**
+
+Ask:
+1. "What mode? `proto` (prototype — skip E2E tests for faster iteration) or `full` (complete flow with E2E)?"
+
+After the user answers, write the `## Develop` section to CLAUDE.md with their answer, then continue.
+
+Remember the `mode` value — Phase 3 uses it.
+
 ## Phase 1 — Plan
 Use the Skill tool to invoke `plan` with args "$ARGUMENTS".
 
@@ -44,7 +57,10 @@ log_metric(project=<project>, story_slug=$ARGUMENTS, phase="implement",
 ```
 
 ## Phase 3 — E2E Tests
-Run E2E tests if ANY of these are true:
+
+**If `mode: proto` (from Phase 0): skip E2E entirely.** Print: `E2E skipped (proto mode)` — no log_metric call.
+
+Otherwise, run E2E tests if ANY of these are true:
 - UI files (.svelte, frontend .js/.ts, CSS) were modified
 - More than 3 backend files were changed
 - API endpoints, return types, or security config changed
