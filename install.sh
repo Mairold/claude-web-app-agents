@@ -58,7 +58,7 @@ curl -fsSL "$REPO/.claude/skills/swiftui/SKILL.md"          -o .claude/skills/sw
 curl -fsSL "$REPO/.claude/rules/java-best-practices.md"     -o .claude/rules/java-best-practices.md
 curl -fsSL "$REPO/.claude/rules/java-naming.md"             -o .claude/rules/java-naming.md
 curl -fsSL "$REPO/.claude/rules/swift-best-practices.md"    -o .claude/rules/swift-best-practices.md
-curl -fsSL "$REPO/.claude/rules/swift-naming.md"            -o .claude/rules/swift-naming.md
+curl -fsSL "$REPO/.claude/rules/swift-naming.md"             -o .claude/rules/swift-naming.md
 curl -fsSL "$REPO/.claude/rules/typescript-conventions.md"  -o .claude/rules/typescript-conventions.md
 
 # shared config (loaded automatically by Claude Code, never touches project CLAUDE.md)
@@ -85,6 +85,28 @@ TEMPLATE_EOF
   echo "📄 Created .claude/rules/project-security.md (empty template — fill with project-specific rules)"
 fi
 
+# Template: project-specific E2E conventions (created once, never overwritten)
+if [ ! -f .claude/rules/project-e2e.md ]; then
+  cat > .claude/rules/project-e2e.md <<'TEMPLATE_EOF'
+# Project-specific E2E conventions
+
+<!--
+Write E2E conventions that apply ONLY to this project.
+
+Generic E2E conventions (selectors, mock layering, scope, isolation) are in
+.claude/docs/e2e-conventions.md — do NOT duplicate those here.
+
+Examples of what belongs here:
+  - Specific helper file paths (e.g. ui/e2e/helpers.js, ui/e2e/fixtures.js)
+  - Concrete shared fixtures (createOrder, claimOrder, setXMapping, ...)
+  - Project-specific mock env vars (e.g. SWAN_MOCK_DIR, S3_MOCK_DIR, MOCK_OTP_CODE)
+  - Known gotchas tied to this codebase's domain model
+  - Test-isolation rules specific to shared fixtures in this project
+-->
+TEMPLATE_EOF
+  echo "📄 Created .claude/rules/project-e2e.md (empty template — fill with project-specific rules)"
+fi
+
 # docs (referenced by CLAUDE.md and commands)
 curl -fsSL "$REPO/.claude/docs/git-rules.md"                  -o .claude/docs/git-rules.md
 curl -fsSL "$REPO/.claude/docs/docker-rules.md"               -o .claude/docs/docker-rules.md
@@ -97,7 +119,10 @@ curl -fsSL "$REPO/.claude/docs/swift-conventions.md"          -o .claude/docs/sw
 curl -fsSL "$REPO/.claude/docs/mcp-rules.md"                 -o .claude/docs/mcp-rules.md
 curl -fsSL "$REPO/.claude/docs/database-conventions.md"     -o .claude/docs/database-conventions.md
 curl -fsSL "$REPO/.claude/docs/security-conventions.md"     -o .claude/docs/security-conventions.md
-curl -fsSL "$REPO/.claude/docs/hono-reference.md"           -o .claude/docs/hono-reference.md
+curl -fsSL "$REPO/.claude/docs/e2e-conventions.md"          -o .claude/docs/e2e-conventions.md
+
+# Clean up removed docs (hono-reference.md moved to project-specific rules)
+[ -f .claude/docs/hono-reference.md ] && rm -f .claude/docs/hono-reference.md
 
 echo "$REMOTE_VERSION" > "$VERSION_FILE"
 

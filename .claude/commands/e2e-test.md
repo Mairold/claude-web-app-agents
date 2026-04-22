@@ -54,18 +54,11 @@ Print: `Diff-aware mode: testing [N] affected routes: [list]`
 
 ## Step 4 — Write tests
 
-Read ONE existing E2E test file to understand patterns and helpers (do not read all of them), then write ALL tests for this story in one go:
+**Read `.claude/docs/e2e-conventions.md` first** — those rules are mandatory (mock layering, API-over-SQL setup, selector preferences, test-isolation gotchas). Also read ONE existing E2E test file to understand local patterns and helpers.
+
+Then write ALL tests for this story in one go:
 - Happy path only (the main user flow)
 - One key edge case from acceptance criteria (pick the riskiest)
-- Skip mobile viewport unless story is specifically about responsive changes
-
-Keep it minimal — 3-5 tests max per story. More tests = more fix loops = slower.
-
-### Conventions
-- One test file per feature/story: `e2e/<feature-name>.spec.js`
-- Prefer `getByRole`, `getByText`, `getByLabel` over CSS selectors
-- Keep tests independent — each test logs in fresh
-- Use the `loginAndGo()` helper from `./helpers.js` for authentication
 
 ## Step 5 — Run and verify
 
