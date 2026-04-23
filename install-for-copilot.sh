@@ -40,11 +40,11 @@ COMMANDS=(develop plan implement e2e-test e2e-setup review ship fix-bug refactor
 SKILLS=(svelte-tailwind ui-ux swiftui)
 
 RULES=(java-best-practices java-naming swift-best-practices swift-naming
-       typescript-conventions project-security shared-config)
+       typescript-conventions shared-config)
 
 DOCS=(git-rules docker-rules clean-code engineering-principles mobile-guidelines
       spring-conventions svelte-conventions swift-conventions mcp-rules
-      database-conventions security-conventions hono-reference e2e-conventions)
+      database-conventions security-conventions e2e-conventions)
 
 for f in "${AGENTS[@]}";   do curl -fsSL "$REPO/.claude/agents/$f.md"           -o "$TMP/agents/$f.md"; done
 for f in "${COMMANDS[@]}"; do curl -fsSL "$REPO/.claude/commands/$f.md"         -o "$TMP/commands/$f.md"; done
@@ -187,6 +187,54 @@ print("  ✓ rules → instructions converted")
 print("  ✓ docs copied to .claude/docs/")
 PYEOF
 
+# --- Project-specific templates (created once, never overwritten) -----------
+# These live in .github/instructions/ next to the generated rule files and
+# carry the local customizations that must survive every re-install.
+if [ ! -f .github/instructions/project-security.instructions.md ]; then
+  cat > .github/instructions/project-security.instructions.md <<'TEMPLATE_EOF'
+# Project-specific security rules
+
+<!--
+Write rules here that apply ONLY to this project.
+
+Generic security conventions (OWASP, etc.) are loaded automatically —
+do NOT duplicate content from .claude/docs/security-conventions.md here.
+
+Examples of what belongs here:
+  - All admin endpoints require @PreAuthorize("hasRole('ADMIN')")
+  - PII fields (ssn, dob, phone) must be encrypted at rest
+  - Webhooks must verify HMAC signature before processing payload
+  - Test-login endpoint allowed only when env TEST_LOGIN_ENABLED=true
+-->
+TEMPLATE_EOF
+  echo "📄 Created .github/instructions/project-security.instructions.md (empty template)"
+fi
+
+if [ ! -f .github/instructions/project-e2e.instructions.md ]; then
+  cat > .github/instructions/project-e2e.instructions.md <<'TEMPLATE_EOF'
+# Project-specific E2E conventions
+
+<!--
+Write E2E conventions that apply ONLY to this project.
+
+Generic E2E conventions (selectors, mock layering, scope, isolation) are in
+.claude/docs/e2e-conventions.md — do NOT duplicate those here.
+
+Examples of what belongs here:
+  - Specific helper file paths (e.g. ui/e2e/helpers.js, ui/e2e/fixtures.js)
+  - Concrete shared fixtures (createOrder, claimOrder, setXMapping, ...)
+  - Project-specific mock env vars (e.g. SWAN_MOCK_DIR, S3_MOCK_DIR, MOCK_OTP_CODE)
+  - Known gotchas tied to this codebase's domain model
+  - Test-isolation rules specific to shared fixtures in this project
+-->
+TEMPLATE_EOF
+  echo "📄 Created .github/instructions/project-e2e.instructions.md (empty template)"
+fi
+
+# --- Clean up removed docs (hono-reference.md moved to project-specific rules)
+[ -f .claude/docs/hono-reference.md ] && rm -f .claude/docs/hono-reference.md
+[ -f .github/instructions/hono-reference.instructions.md ] && rm -f .github/instructions/hono-reference.instructions.md
+
 # --- AGENTS.md (repo-wide custom instructions for Copilot) ------------------
 # Point Copilot at the shared-config and the agent docs so it has the same
 # project context that Claude Code gets via CLAUDE.md + .claude/rules/.
@@ -205,7 +253,9 @@ relevant.
 - `.claude/docs/git-rules.md` — commit and branch conventions
 - `.claude/docs/docker-rules.md` — container conventions
 - `.claude/docs/mcp-rules.md` — MCP safety rules and story sizing
-- `.github/instructions/shared-config.instructions.md` — project-specific overrides
+- `.github/instructions/shared-config.instructions.md` — shared MCP tools, commands, review-scope rules
+- `.github/instructions/project-security.instructions.md` — project-specific security rules
+- `.github/instructions/project-e2e.instructions.md` — project-specific E2E conventions
 
 ## Per-language rules (auto-applied via applyTo)
 
