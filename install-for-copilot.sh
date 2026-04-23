@@ -77,28 +77,64 @@ def split_frontmatter(text):
             fm[k.strip()] = v.strip()
     return fm, body
 
+def _yaml_scalar(v):
+    """Quote a scalar value if it contains YAML special chars. Leave flow collections alone."""
+    s = str(v)
+    if not s:
+        return '""'
+    # Flow collection — already valid YAML, don't touch
+    if s[0] in "[{":
+        return s
+    # Double-quote when value is ambiguous to YAML parsers
+    needs_quote = (
+        ":" in s
+        or "#" in s
+        or s[0] in "*&!|>@%"
+        or s.lower() in ("null", "true", "false", "yes", "no", "~")
+    )
+    if needs_quote:
+        return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
+    return s
+
 def dump_frontmatter(fm):
     """Dump frontmatter dict back to YAML. Preserves insertion order."""
     if not fm:
         return ""
     out = ["---"]
     for k, v in fm.items():
-        out.append(f"{k}: {v}")
+        out.append(f"{k}: {_yaml_scalar(v)}")
     out.append("---")
     return "\n".join(out) + "\n"
+
+# Claude Code uses short aliases (opus/sonnet/haiku) — map to Copilot CLI identifiers.
+# Copilot respects model: pin within the session's cost tier (subagent can't escalate).
+# We substitute GPT where it's cheaper at equal or better fit:
+#   - opus  → gpt-5.3-codex (1×, coding-tuned) instead of claude-opus-4.6 (3×) → 3× cheaper
+#   - haiku → gpt-5-mini    (0×, free)        instead of claude-haiku-4.5 (0.33×) → effectively free
+#   - sonnet → claude-sonnet-4.6 (1×)         — kept on Claude: better at nuanced review, same cost
+MODEL_MAP = {
+    "opus":   "gpt-5.3-codex",
+    "sonnet": "claude-sonnet-4.6",
+    "haiku":  "gpt-5-mini",
+}
 
 # --- AGENTS: .claude/agents/NAME.md → .github/agents/NAME.agent.md -----------
 # Claude Code:   tools: Read, Grep, Glob   (comma-separated string)
 # Copilot CLI:   tools: ['Read', 'Grep', 'Glob']   (YAML array)
-# Claude Code has 'model: opus/sonnet/haiku' — we strip it (Copilot uses /model).
+# Claude Code:   model: opus | sonnet | haiku   (short alias)
+# Copilot CLI:   model: claude-opus-4.6 | claude-sonnet-4.6 | claude-haiku-4.5
 agents_src = tmp / "agents"
 agents_dst = cwd / ".github" / "agents"
 for src in sorted(agents_src.glob("*.md")):
     text = src.read_text()
     fm, body = split_frontmatter(text)
 
-    # Strip model — Copilot CLI uses /model to switch, not frontmatter
-    fm.pop("model", None)
+    # Map Claude Code model alias to Copilot CLI identifier.
+    # Unknown values are left untouched (may already be a full identifier).
+    if "model" in fm:
+        alias = fm["model"].strip().lower()
+        if alias in MODEL_MAP:
+            fm["model"] = MODEL_MAP[alias]
 
     # Convert 'tools: Read, Grep, Glob' → "tools: ['Read', 'Grep', 'Glob']"
     if "tools" in fm:
@@ -274,13 +310,32 @@ invoked via `/agent` or automatically when their expertise fits.
 
 ## Model selection
 
-Agent and skill frontmatter does not pin a model — use `/model` to switch.
-Recommended pairing (tune to availability):
+Agents **are** pinned to specific models via the `model:` frontmatter field.
+The installer maps Claude Code aliases to the cheapest sensible Copilot CLI
+model per role:
 
-- Orchestrators (`/develop`, `/implement`, `/fix-bug`, `/refactor`): strongest
-  model (e.g. Claude Opus or GPT-5 with reasoning).
-- Review and TDD subagents, other skills: mid-tier (Claude Sonnet, GPT-5).
-- `docs-reviewer`: fastest available (Claude Haiku).
+| Agent alias (source) | Copilot model            | Multiplier | Rationale |
+|----------------------|--------------------------|------------|-----------|
+| `opus`               | `gpt-5.3-codex`          | 1×         | Coding-tuned; 3× cheaper than Claude Opus at comparable code-gen quality |
+| `sonnet`             | `claude-sonnet-4.6`      | 1×         | Kept on Claude: better nuanced reasoning for review agents, same cost |
+| `haiku`              | `gpt-5-mini`             | 0×         | Free tier; fine for docs review where speed > nuance |
+
+Copilot CLI respects this pin **within the current session's cost tier** —
+a subagent cannot escalate to a higher tier than the main session. Start
+the session on `claude-sonnet-4.6` (1×) so all subagents run at their
+intended tier.
+
+If you need stronger code generation from `tdd-implementer`, override the
+frontmatter locally to `claude-opus-4.6` (3×) and start the session on
+Opus — but this triples the monthly budget.
+
+Skills do not support `model:` in frontmatter — model selection for skill
+execution is inherited from the invoking session or delegated to a pinned
+custom agent.
+
+Premium request budget: Business license = 300 requests/month, resets
+UTC 00:00 on the 1st. Only user prompts count; autonomous tool calls in
+the agent loop do not (per current docs — watch the billing dashboard).
 EOF
   echo "✅ Created AGENTS.md"
 else
