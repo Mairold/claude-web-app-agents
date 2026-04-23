@@ -6,10 +6,11 @@ Multi-agent review + development orchestration for Claude Code. Composable skill
 
 Run this in any project root in Hezner build machine:
 
+### Claude Code
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ahoa/claude-agents/master/install.sh | bash
 ```
-
 
 The installer will:
 - Copy 11 agents (8 review + 3 TDD), 11 commands, 3 skills, and 5 rules into `.claude/`
@@ -18,6 +19,22 @@ The installer will:
 - Add a `SessionStart` hook to `.claude/settings.json` so agents **auto-update at the start of every Claude Code session**
 
 Restart Claude Code after the first install — files are loaded at session start.
+
+### GitHub Copilot CLI
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ahoa/claude-agents/master/install-for-copilot.sh | bash
+```
+
+The installer will:
+- Convert the same 11 agents, 11 commands, and 3 skills into Copilot-compatible format under `.github/agents/`, `.github/skills/`
+- Convert rules into `.github/instructions/*.instructions.md` (with `applyTo:` frontmatter)
+- Keep shared docs in `.claude/docs/` (referenced by both CLIs, no duplication)
+- Create `AGENTS.md` at repo root with pointers for Copilot (only if missing)
+- Create empty `project-security` and `project-e2e` instruction templates (never overwritten)
+- Add a `sessionStart` hook at `.github/hooks/claude-agents-update.json` so agents **auto-update at the start of every Copilot CLI session**
+
+Run `copilot` in a folder you've trusted so `.mcp.json` loads.
 
 ## Commands
 
