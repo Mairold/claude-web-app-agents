@@ -24,18 +24,14 @@ At the very start, run `date +%s` and store as `DEVELOP_START`.
 - If a phase is skipped, do NOT call `log_metric` for that phase.
 - MCP fallback: if `log_metric` fails or MCP is unavailable, print `[metric not saved]` and continue. Never block the pipeline.
 
-## Phase 0 — Read develop config (MANDATORY)
+## Phase 0 — Read develop config (optional)
 
 Read CLAUDE.md and look for a `## Develop` section with a `mode:` value.
 
-**If the section is missing or the value is missing: STOP and ask the user. Do NOT proceed. Do NOT guess or use defaults.**
+- If found, remember the `mode` value — Phase 3 uses it.
+- If the section or value is missing, default to `mode: full`. Do NOT stop, do NOT ask, do NOT write anything to CLAUDE.md.
 
-Ask:
-1. "What mode? `proto` (prototype — skip E2E tests for faster iteration) or `full` (complete flow with E2E)?"
-
-After the user answers, write the `## Develop` section to CLAUDE.md with their answer, then continue.
-
-Remember the `mode` value — Phase 3 uses it.
+Only `mode: proto` changes behavior (skips E2E); `mode: full` is the normal flow.
 
 ## Phase 1 — Plan
 Use the Skill tool to invoke `plan` with args "$ARGUMENTS".
