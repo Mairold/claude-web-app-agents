@@ -118,6 +118,11 @@ MODEL_MAP = {
     "haiku":  "gpt-5-mini",
 }
 
+def rewrite_body(body):
+    """Rewrite Claude Code-specific references to Copilot CLI equivalents.
+    Applied to agent/skill/rule bodies — NOT to shared docs in .claude/docs/."""
+    return body.replace("CLAUDE.md", "AGENTS.md")
+
 # --- AGENTS: .claude/agents/NAME.md → .github/agents/NAME.agent.md -----------
 # Claude Code:   tools: Read, Grep, Glob   (comma-separated string)
 # Copilot CLI:   tools: ['Read', 'Grep', 'Glob']   (YAML array)
@@ -146,7 +151,7 @@ for src in sorted(agents_src.glob("*.md")):
         fm["name"] = src.stem
 
     dst = agents_dst / f"{src.stem}.agent.md"
-    dst.write_text(dump_frontmatter(fm) + body)
+    dst.write_text(dump_frontmatter(fm) + rewrite_body(body))
 
 # --- COMMANDS → SKILLS: .claude/commands/NAME.md → .github/skills/NAME/SKILL.md
 # Claude Code command:  frontmatter has only 'model: opus' (optional)
@@ -176,19 +181,20 @@ for src in sorted(commands_src.glob("*.md")):
     name = src.stem
     fm = {
         "name": name,
-        "description": CMD_DESCRIPTIONS.get(name, f"{name} workflow."),
+        "description": rewrite_body(CMD_DESCRIPTIONS.get(name, f"{name} workflow.")),
     }
     skill_dir = skills_dst / name
     skill_dir.mkdir(parents=True, exist_ok=True)
-    (skill_dir / "SKILL.md").write_text(dump_frontmatter(fm) + body)
+    (skill_dir / "SKILL.md").write_text(dump_frontmatter(fm) + rewrite_body(body))
 
 # --- SKILLS: .claude/skills/NAME/SKILL.md → .github/skills/NAME/SKILL.md -----
-# Format is already agentskills.io compatible. Copy verbatim.
+# Format is already agentskills.io compatible. Read + rewrite references, don't copy blindly.
 skills_src = tmp / "skills"
 for src_dir in sorted(p for p in skills_src.iterdir() if p.is_dir()):
     dst_dir = skills_dst / src_dir.name
     dst_dir.mkdir(parents=True, exist_ok=True)
-    shutil.copy(src_dir / "SKILL.md", dst_dir / "SKILL.md")
+    src_file = src_dir / "SKILL.md"
+    (dst_dir / "SKILL.md").write_text(rewrite_body(src_file.read_text()))
 
 # --- RULES → INSTRUCTIONS: .claude/rules/NAME.md → .github/instructions/NAME.instructions.md
 # Claude Code:  paths: "**/*.java"
@@ -206,7 +212,7 @@ for src in sorted(rules_src.glob("*.md")):
     # Rules without a path constraint become repo-wide instructions.
     # If no applyTo, keep frontmatter minimal (Copilot reads it repo-wide).
     dst = instr_dst / f"{src.stem}.instructions.md"
-    dst.write_text(dump_frontmatter(fm) + body)
+    dst.write_text(dump_frontmatter(fm) + rewrite_body(body))
 
 # --- DOCS: keep in .claude/docs/ (shared between Claude Code and Copilot) ----
 # Agents and skills reference these via relative paths like `.claude/docs/security-conventions.md`.
