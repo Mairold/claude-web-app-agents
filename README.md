@@ -51,7 +51,17 @@ Restart Claude Code after the first install — files are loaded at session star
 
 ## Project configuration
 
-On first run, `/review` and `/ship` ask how your project works and save the answers to your CLAUDE.md. After that, they use the saved config automatically.
+On first run, `/develop`, `/review`, and `/ship` ask how your project works and save the answers to your CLAUDE.md. After that, they use the saved config automatically.
+
+### Develop config (`## Develop` in CLAUDE.md)
+
+```yaml
+mode: proto             # proto — skip E2E tests for faster iteration
+                        # full  — complete flow with E2E
+```
+
+`mode: proto` — prototyping phase, E2E tests are skipped in Phase 3. Unit tests from `/implement` still run.
+`mode: full` — production flow, E2E triggers apply normally (UI files, >3 backend files, API/security changes, or `security`/`architecture` label).
 
 ### Review config (`## Review` in CLAUDE.md)
 
