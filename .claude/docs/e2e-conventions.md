@@ -42,7 +42,7 @@
 ## Scope
 
 - One story = 3–5 tests max. Happy path + the riskiest edge case from the acceptance criteria. More tests = more fix loops = slower pipelines.
-- One theme per `test()`. Don't mix layout + nav + form + DB side effects in a single block — split.
+- **No two tests should share the same Arrange.** E2E Arrange (login, seed data, navigate) is the slow part — don't duplicate it. One test can have multiple assertions off the same setup. Split into a new `test()` only when the Arrange genuinely differs (different user, different seed state, different starting route).
 - When updating existing functionality, extend the existing test for that feature rather than adding a new one. Only add a new `test()` if you're covering a genuinely new behavior or risk.
 - Keep each test compact. If setup + interactions + assertions don't fit on a screen, something's off — extract setup to a fixture or split.
 - Skip mobile viewport tests unless the story is specifically about responsive behavior.
