@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Generates docs/flows.html with embedded .md file contents.
+ * Generates docs/index.html with embedded .md file contents.
  * Run: node docs/generate-flows.js
  * Triggered automatically by git hooks (post-commit, post-merge).
  */
@@ -781,13 +781,13 @@ selectFlow('develop');
 // ============================================================
 // MAIN
 // ============================================================
-console.log('Generating docs/flows.html...');
+console.log('Generating docs/index.html...');
 const { execSync } = require('child_process');
 const gitHash = (() => { try { return execSync('git rev-parse --short HEAD', { cwd: ROOT }).toString().trim(); } catch { return 'unknown'; } })();
 const buildDate = new Date().toISOString().slice(0, 16).replace('T', ' ');
 const fileContentsBlock = readMdFiles();
 const html = generateHtml(fileContentsBlock);
-const outPath = path.join(__dirname, 'flows.html');
+const outPath = path.join(__dirname, 'index.html');
 fs.writeFileSync(outPath, html, 'utf-8');
 console.log(`  wrote ${outPath} (${Math.round(html.length / 1024)} KB)`);
 console.log('  embedded:', MD_FILES.length, 'files');

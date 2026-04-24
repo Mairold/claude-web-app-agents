@@ -31,11 +31,11 @@ jobs:
 
       - name: Commit if changed
         run: |
-          git diff --quiet docs/flows.html && exit 0
+          git diff --quiet docs/index.html && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/flows.html
-          git commit -m "docs: regenerate flows.html"
+          git add docs/index.html
+          git commit -m "docs: regenerate index.html"
           git push
 
       - uses: actions/configure-pages@v5
