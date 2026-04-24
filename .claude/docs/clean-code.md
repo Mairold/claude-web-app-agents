@@ -7,6 +7,6 @@ All agents and implementation must follow these rules:
 - **Error handling:** Exceptions not return codes. No null returns — use Optional/empty collections. Every thrown exception must be logged (at minimum WARN level) — use a global exception handler to guarantee nothing is unlogged. Never log sensitive data (passwords, tokens, PII, session IDs).
 - **Design:** No side effects. Command-query separation. Law of Demeter (no chaining).
 - **Abstraction:** DRY but don't over-abstract. Delete dead code. Comment only WHY. Prefer well-named methods over comments.
-- **Tests:** Arrange-Act-Assert. One concept per test. Same quality as production code.
+- **Tests:** Arrange-Act-Assert. Same quality as production code. **No two tests should share the same Arrange** — one test can have multiple assertions off the same setup. Split into a new test only when the Arrange genuinely differs (different inputs, different state, different mocks).
 - **File structure:** Public API and exports at the top, private/internal helpers at the bottom. Reader should see the "what" before the "how".
 - **Discipline:** Boy Scout Rule. Minimal design. Only extract when clearly needed.

@@ -17,7 +17,7 @@ Write tests based on interfaces and story requirements — not on implementation
 Rules:
 - Write tests that WILL fail — implementation does not exist yet
 - Cover: happy path, null/empty input, boundary values, error cases
-- Arrange-Act-Assert, one concept per test
+- Arrange-Act-Assert. No two tests share the same Arrange — consolidate multiple assertions under one setup; split only when Arrange genuinely differs.
 - Do NOT write any implementation code
 - Do NOT read implementation bodies — only signatures, interfaces, contracts
 
