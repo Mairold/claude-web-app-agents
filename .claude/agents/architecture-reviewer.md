@@ -23,8 +23,8 @@ FOCUS ONLY ON:
 - Hardcoded configuration that should be injected
 - AI context bloat: files >300 lines or classes that mix concerns make it hard for AI to reason about them in one context window — flag these even if they technically "work"
 - Error paths: for each new public method, trace what can go wrong — flag any path where an exception is swallowed silently or the user sees nothing. Format as: METHOD → what fails → rescued? → user sees
-- Exception logging: every thrown exception must be logged (at minimum WARN level). Flag any catch block that does not log, and verify a global exception handler exists (e.g. `@ControllerAdvice` in Spring). Missing global handler is a Must Fix.
-- Sensitive data in logs: flag any log statement that could leak passwords, tokens, PII, session IDs, or full request bodies with credentials. Must Fix.
+- Exception logging (see `.claude/docs/engineering-principles.md` §3): flag catch blocks without log calls. Missing global handler is a Must Fix.
+- Sensitive data in logs (see `.claude/docs/security-conventions.md`): flag any leak of passwords, tokens, PII, session IDs, or credentials in request bodies. Must Fix.
 - Cyclomatic complexity: flag any new method that branches more than 5 times (if/else/switch/catch chains). Propose extraction by name.
 - Duplicate logic: scan for methods or code blocks that do the same thing in different places. If two functions share >50% of their logic, flag it — name the existing one to reuse or extract a shared helper.
 

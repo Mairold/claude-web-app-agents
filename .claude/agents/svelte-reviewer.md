@@ -13,9 +13,8 @@ FOCUS ONLY ON:
 - **Runes in wrong files:** `$state`, `$derived`, `$effect` MUST be in `.svelte` or `.svelte.js` files, NEVER in plain `.js`/`.ts` — this has caused production breakage
 - **Store patterns:** shared state should use stores in `src/lib/stores/` as `.svelte.js` files, not module-level variables
 - **Component size:** components over 300 lines should be split — extract subcomponents proactively
-- **Mobile-first:** no hover-only interactions without touch fallback, use `sm:` prefix for desktop-only behavior, default (no prefix) = mobile
+- **Mobile** (see `.claude/docs/mobile-guidelines.md`): flag hover-only interactions without touch fallback, `display:none` on file inputs, and missing mobile-first breakpoints
 - **API calls:** must go through `src/lib/api/`, not inline fetch in components
-- **File inputs:** never `display:none` — use `absolute w-0 h-0 overflow-hidden opacity-0` (mobile browsers won't trigger click)
 - **SVG icons:** must be Svelte components in `src/lib/icons/` accepting `class` prop, never inline SVG in pages
 
 ## Output Format

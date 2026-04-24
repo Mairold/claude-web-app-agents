@@ -23,7 +23,7 @@
 ## Security
 - Secrets in Keychain with `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`
 - Never UserDefaults for sensitive data
-- No PII in logs
+- For sensitive-data logging rules: see `.claude/docs/security-conventions.md`
 
 ## Naming
 - Views: `NameView.swift`

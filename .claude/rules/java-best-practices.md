@@ -3,11 +3,6 @@ paths: "**/*.java"
 ---
 # Java Best Practices
 
-## Dependency Injection
-- Always constructor injection — never field injection (`@Autowired` on fields)
-- Use `@RequiredArgsConstructor` (Lombok) or explicit constructor
-- Declare injected fields as `private final`
-
 ## Modern Java (21+)
 - Use records for DTOs and immutable data carriers
 - Use pattern matching for `instanceof`
