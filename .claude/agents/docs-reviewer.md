@@ -16,7 +16,7 @@ FOCUS ONLY ON:
 
 Do NOT flag:
 - Missing inline comments on business logic — well-named functions and tests are the documentation.
-- Missing Javadoc/docstrings on private or internal methods.
+- Missing Javadoc or docstrings on ANY method, public or private. Project policy is **no Javadoc** — public HTTP API surface is documented via OpenAPI annotations on controllers.
 - Magic numbers, naming clarity, error message wording — these are other reviewers' territory.
 - Nice-to-have explanations, historical context, design rationale.
 
