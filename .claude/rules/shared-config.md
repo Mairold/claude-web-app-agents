@@ -70,3 +70,4 @@ Max 30 lines per review agent, max 3 lines per finding. Clean Areas section mand
 * Spring Boot: see `.claude/docs/spring-conventions.md`
 * SvelteKit: see `.claude/docs/svelte-conventions.md`
 * Swift/iOS: see `.claude/docs/swift-conventions.md`
+* E2E Tests: see `.claude/docs/e2e-conventions.md`
