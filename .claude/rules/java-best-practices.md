@@ -39,4 +39,3 @@ paths: "**/*.java"
 - Favor composition over inheritance
 - Meaningful names — no abbreviations (`customer` not `cust`)
 - Use `Objects.requireNonNull()` for null checks in constructors
-- **No Javadoc** — well-named methods, classes, and tests serve as documentation. For public HTTP APIs use OpenAPI annotations (`@Operation`, `@Parameter`), not Javadoc.
