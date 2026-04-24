@@ -25,7 +25,7 @@ Determine which agents to run based on modified file types:
 - `test-reviewer` (model: sonnet)
 
 **Conditionally run:**
-- If new API endpoints, public-facing changes, or README-affecting scope: add `docs-reviewer` (model: haiku)
+- If new/changed public HTTP API endpoints, or changes that alter README setup/env/run commands: add `docs-reviewer` (model: haiku). Do NOT add for internal refactors or touches to an existing endpoint's internals.
 - If `.svelte`, `.js`, `.ts` files in `frontend/`: add `svelte-reviewer` (model: sonnet)
 - If `.java` files in `backend/`: add `spring-reviewer` (model: sonnet)
 - If `.swift` files modified: add `swift-reviewer` (model: sonnet) + `swiftui-reviewer` (model: sonnet)
