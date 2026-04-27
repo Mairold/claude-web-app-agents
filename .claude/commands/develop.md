@@ -9,6 +9,11 @@ Story: $ARGUMENTS
 
 Execute each phase in order. One line status after each phase.
 
+## Continuous execution (CRITICAL)
+Phases run back-to-back without waiting for user input between them. Sub-skills (plan, implement, e2e-test, review, ship) emit `OUTPUT_METRICS: ...` as their final line — that ends the SUB-SKILL's work, NOT this `/develop` run. In the SAME response that closes a sub-skill, immediately continue: capture timestamp, call `log_metric`, and invoke the next phase's Skill. Do NOT let your response end at `OUTPUT_METRICS` — your trained instinct is to treat that as "deliverable complete", but `/develop` is still running.
+
+Pause only when a phase's own configuration in this file (or in the invoked sub-skill) explicitly requires it — for example, the plan-approval gate when `/plan` adds new content, or the commit-confirmation gate inside `ship`. Do NOT pause on your own initiative "to confirm" between phases. The skip-print outputs that individual phases below define (e.g. `E2E skipped (...)`, `Review skipped (...)`) are part of normal flow and do not count as pauses.
+
 ## Context management
 Each phase MUST output only a one-line status + timing. Do NOT repeat or summarize outputs from previous phases. If context is getting large, discard details from earlier phases — only the file list from implement matters for review.
 

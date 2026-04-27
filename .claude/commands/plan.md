@@ -17,7 +17,8 @@ Story: $ARGUMENTS
 3. **Check AC:** If no `## Acceptance Criteria` section (or empty), use `update_story` to add:
    (If MCP unavailable: print the AC content instead.)
    - Concrete, testable criteria derived from description and tasks
-   - Include mobile criterion if UI change
+   - **Match detail to story complexity:** trivial bug fix (one-line, single-file, copy change) → 1-2 AC items max; the bug description IS the spec. Don't pad with mobile / dark-mode / edge-case items unless the bug specifically involves them.
+   - Include mobile criterion only if the change is responsive/layout-related
    - Include `- [ ]` checkbox format for each criterion
 
 4. Use `update_story` to append under `## Details` (if MCP unavailable: print instead):

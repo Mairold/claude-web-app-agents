@@ -11,7 +11,7 @@ Story: $ARGUMENTS
 
 Read CLAUDE.md and look for a `## Ship` section with `deploy:`, `post_deploy:`, and `url:` values.
 
-**If the section is missing or any value is missing: STOP and ask the user. Do NOT proceed to Step 2. Do NOT guess or use defaults.**
+**If the section is missing or any value is missing: STOP and ask the user. Do NOT proceed. Do NOT guess or use defaults.**
 
 Ask:
 1. "How do you deploy? (e.g. `docker compose up --build -d`, `fly deploy`, `vercel --prod`, `skip` for no deploy)"
@@ -20,26 +20,16 @@ Ask:
 
 After user answers, write the `## Ship` section to CLAUDE.md with their answers, then continue.
 
+## Step 2 — Deploy
 
-**Wait for user confirmation** before continuing. Ask if the user has reviewed all the new code so that it can be safely commited?
-
-
-## Step 2 — Commit
-
-1. Restore any docs/ changes: `git restore --staged docs/ 2>/dev/null; git checkout -- docs/ 2>/dev/null`
-2. `git add` modified files by name (never `git add -A`)
-3. `git commit -m "<short description>"`
-
-Follow git rules from `.claude/docs/git-rules.md`.
-
-## Step 3 — Deploy
-
-If `deploy: skip` → skip steps 3 and 4, go straight to Step 5.
+If `deploy: skip` → skip Steps 2 and 3, go straight to Step 4.
 
 Otherwise, run the `deploy` command from CLAUDE.md.
 If `post_deploy` is configured, wait 10s then run it and check output for errors.
 
-## Step 4 — Print access URL
+Deploying BEFORE asking for commit confirmation lets the user verify the change in the running app before they sign off on the code.
+
+## Step 3 — Print access URL
 
 If `url: auto`:
 - Detect host IP:
@@ -52,6 +42,17 @@ If `url: auto`:
 - Print: `Running — test at: http://<HOST_IP>:<port>`
 
 If `url` is an explicit URL: print `Running — test at: <url>`
+
+## Step 4 — Commit (with confirmation)
+
+**Wait for user confirmation** before committing. Ask if the user has reviewed the deployed app and is ready to commit.
+
+After confirmation:
+1. Restore any docs/ changes: `git restore --staged docs/ 2>/dev/null; git checkout -- docs/ 2>/dev/null`
+2. `git add` modified files by name (never `git add -A`)
+3. `git commit -m "<short description>"`
+
+Follow git rules from `.claude/docs/git-rules.md`.
 
 ## Step 5 — Close story
 
